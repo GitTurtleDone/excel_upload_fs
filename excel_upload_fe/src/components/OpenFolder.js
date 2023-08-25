@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import axios, { AxiosResponse } from "axios";
-import OpenFolder from "./components/OpenFolder";
 
-function App() {
+function OpenFolder() {
   const [folderPath, setFolderPath] = useState("");
   const handleClick = () => {
     // fetch("http://localhost:5208/OpenFolder")
@@ -25,14 +24,34 @@ function App() {
     // Do something with the selected folder path
   };
 
-  const handleInputChange = () => {
-    setFolderPath(folderPath);
+  const handleInputChange = (e) => {
+    setFolderPath(e.target.value);
   };
 
+  const [uploadingFolder, setUploadingFolder] = useState("");
+  const selectUploadingFolder = (e) => {
+    setUploadingFolder(e.target.files[0]);
+  };
   return (
-    <div>
-      <OpenFolder />
-    </div>
+    <>
+      <div>
+        <button onClick={handleClick}>Select Folder</button>
+        <input
+          type="text"
+          value={folderPath}
+          onChange={handleInputChange}
+        ></input>
+      </div>
+      <div>
+        <button>Select .zip files</button>
+        <input
+          type="directory"
+          onChange={selectUploadingFolder}
+          webkitdirectory="true"
+        ></input>
+      </div>
+    </>
   );
 }
-export default App;
+
+export default OpenFolder;
