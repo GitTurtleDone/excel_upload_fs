@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "CkO5Gz9xQD0R2AmCustSJUtOLu8YMfNWpBX2+SNcaM0=",
+  "Source": "excel_upload_be",
+  "BasePath": "_content/excel_upload_be",
+  "Mode": "Default",
+  "ManifestType": "Publish",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
