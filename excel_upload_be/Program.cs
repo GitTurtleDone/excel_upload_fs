@@ -1,4 +1,5 @@
-
+using excel_upload_be.Models;
+using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -25,9 +26,10 @@ builder.Services.AddCors(options=>
     }
 
     );
-}
-
-);
+});
+builder.Services.AddDbContext<ExcelUploadContext>(options=>{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("conString"));
+});
 var app = builder.Build();
 
 
