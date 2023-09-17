@@ -8,8 +8,7 @@ using System.Text.Json;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using excel_upload_be.Models;
-//using excel_upload_be.Services;
-
+using excel_upload_be.Services;
 namespace excel_upload_be.Controllers;
 
 
@@ -19,13 +18,15 @@ namespace excel_upload_be.Controllers;
 
 public class UploadZipFileController : ControllerBase
 {
+    
+    private readonly IFolderTreeService _folderTreeService;
+    public UploadZipFileController(IFolderTreeService folderTreeService)
+    {
+        _folderTreeService = folderTreeService;
+    }
+    
     [HttpPost(Name = "PostUploadZipFile")]
-    // private readonly HttpClient _httpClient;
-
-    // public UploadZipFileController (IHttpClientFactory httpClientFactory)
-    // {
-    //     _httpClient = httpClientFactory.CreateClient();
-    // }
+    
     public async Task<IActionResult> Upload()
     {
         string publicFolderPath = @"..\..\PublicFolder";
@@ -71,48 +72,28 @@ public class UploadZipFileController : ControllerBase
                 string copiedFolderPath = Path.ChangeExtension(filePath,null) + "\\";
                 Console.WriteLine($"Copied .zip folder path: {copiedFolderPath}");
                 
-                folderTree = createFolderTree(copiedFolderPath);
-                jsonFolderTree = JsonSerializer.Serialize(folderTree);
-                Console.WriteLine(folderTree.Name);
-                Console.WriteLine(folderTree.Subfolders[0].Name);
-                static FolderNode createFolderTree(string folderPath)
+                
+                using (var client = new HttpClient())
                 {
-                    DirectoryInfo directoryInfo = new DirectoryInfo(folderPath);
-                    FolderNode folderNode = new FolderNode
-                    {
-                        Name = directoryInfo.Name,
-                        Files = directoryInfo.GetFiles().Select(fileInfo => fileInfo.Name).ToList(),
-                        Subfolders = new List<FolderNode>()
-                    };
+                    folderTree = _folderTreeService.createFolderTree(copiedFolderPath);
+                    jsonFolderTree = JsonSerializer.Serialize(folderTree);
+                    Console.WriteLine("folder tree name: " + folderTree.Name);
+                    Console.WriteLine("device name: " + folderTree.Subfolders[0].Name);
+                    // var response = await client.PostAsync("https://localhost:7200/WriteFolderTreeToDataBase", jsonFolderTree);
 
-                    foreach(var subdirectoryInfo in directoryInfo.GetDirectories())
-                    {       
-                        FolderNode subfolderNode = createFolderTree(subdirectoryInfo.FullName);
-                        folderNode.Subfolders.Add(subfolderNode);
-
-                    }
-                    return folderNode;  
+                    // if (response.IsSuccessStatusCode)
+                    // {
+                    //     // The data was successfully written to the database
+                    // }
+                    // else
+                    // {
+                    //     // Handle the error
+                    // }
                 }
 
-                // //return Ok(new { fileName, fileExtension });
-                // // Set the content type to application/json
-                // _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                
 
-                // // Make an HTTP POST request to the Controller2 endpoint
-                // HttpResponseMessage response = await _httpClient.PostAsync("https://localhost:7200/AccessExcelUploadDB/GetAllFiles", new StringContent(jsonData, Encoding.UTF8, "application/json"));
-
-                // // Check the response status
-                // if (response.IsSuccessStatusCode)
-                // {
-                //     // Request was successful
-                //     var responseContent = await response.Content.ReadAsStringAsync();
-                //     return Ok(responseContent);
-                // }
-                // else
-                // {
-                //     // Request failed
-                //     return BadRequest("Failed to send data to Controller2");
-                // }
+                
                         
                 return Ok(new {jsonFolderTree});
             }
@@ -127,9 +108,4 @@ public class UploadZipFileController : ControllerBase
         }
     }
 }
-public class FolderNode
-{
-    public string Name { get; set; }
-    public List<string> Files { get; set; }
-    public List<FolderNode> Subfolders { get; set; }
-}
+
