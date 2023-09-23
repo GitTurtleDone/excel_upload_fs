@@ -14,9 +14,9 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <!-- <PackageReference Include="ElectronNET.API" Version="23.6.1" /> -->
   </ItemGroup>
-  <ItemGroup>
+  <!-- <ItemGroup>
     <Content Update="electron.manifest.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-  </ItemGroup>
+  </ItemGroup> -->
 </Project>

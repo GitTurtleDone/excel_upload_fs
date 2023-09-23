@@ -9,6 +9,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using excel_upload_be.Models;
 using excel_upload_be.Services;
+using System.Text;
 namespace excel_upload_be.Controllers;
 
 
@@ -20,9 +21,11 @@ public class UploadZipFileController : ControllerBase
 {
     
     private readonly IFolderTreeService _folderTreeService;
-    public UploadZipFileController(IFolderTreeService folderTreeService)
+    private readonly ExcelUploadContext _DBContext;
+    public UploadZipFileController(IFolderTreeService folderTreeService, ExcelUploadContext dbContext)
     {
         _folderTreeService = folderTreeService;
+        _DBContext = dbContext;
     }
     
     [HttpPost(Name = "PostUploadZipFile")]
@@ -31,7 +34,7 @@ public class UploadZipFileController : ControllerBase
     {
         string publicFolderPath = @"..\..\PublicFolder";
         FolderNode folderTree;
-        string jsonFolderTree;
+        
         try
         {
             var formCollection = await Request.ReadFormAsync();
@@ -54,8 +57,6 @@ public class UploadZipFileController : ControllerBase
                 Console.WriteLine($"Extracted folder path: {extractionPath}");
                 using (var archive = ZipFile.OpenRead(filePath))
                 {
-                    
-                    
                     foreach (var entry in archive.Entries)
                     {
                         string entryPath = Path.Combine(extractionPath, entry.FullName);
@@ -65,36 +66,51 @@ public class UploadZipFileController : ControllerBase
                         {
                             entry.ExtractToFile(entryPath, true);
                         }
-                        }
+                    }
                 }
 
                 Console.WriteLine("Extraction complete.");
                 string copiedFolderPath = Path.ChangeExtension(filePath,null) + "\\";
                 Console.WriteLine($"Copied .zip folder path: {copiedFolderPath}");
-                
-                
-                using (var client = new HttpClient())
+                folderTree = _folderTreeService.createFolderTree(copiedFolderPath);
+                var jsonFolderTree = new StringContent(JsonSerializer.Serialize(folderTree), Encoding.UTF8, "appliation/json");
+                Console.WriteLine("folder tree name: " + folderTree.Name);
+                Console.WriteLine("device name: " + folderTree.Subfolders[0].Name);
+
+                List<FolderNode> devFolders = folderTree.Subfolders;
+                for (int i = 0; i < devFolders.Count; i++)
                 {
-                    folderTree = _folderTreeService.createFolderTree(copiedFolderPath);
-                    jsonFolderTree = JsonSerializer.Serialize(folderTree);
-                    Console.WriteLine("folder tree name: " + folderTree.Name);
-                    Console.WriteLine("device name: " + folderTree.Subfolders[0].Name);
-                    // var response = await client.PostAsync("https://localhost:7200/WriteFolderTreeToDataBase", jsonFolderTree);
+                    List<FolderNode> diodeFolders = devFolders[i].Subfolders;
+                    //Console.WriteLine(devFolders[i].Name);
+                    for (int j = 0; j < diodeFolders.Count; j++)
+                    {
+                        //Console.Write(diodeFolders[j].Name);
+                        List<string> fileNames = diodeFolders[j].Files;
+                        for (int k = 0; k < fileNames.Count; k++)
+                        {
+                            if (Path.GetExtension(fileNames[k]) == ".csv")
+                            {
+                                var dataFile = new DiodeDataFile
+                            {
+                                Batch = folderTree.Name,
+                                Device = devFolders[i].Name,
+                                Diode = diodeFolders[j].Name,
+                                FileName = fileNames[k],
+                            };
+                            //
+                            _DBContext.DiodeDataFiles.Add(dataFile);
+                            _DBContext.SaveChanges();
+                            Console.WriteLine ($"Batch: {folderTree.Name}, Device: {devFolders[i].Name}, Diode: {diodeFolders[j].Name}, File Name: {fileNames[k]} successfully added to the database");
+                            }
+                                
+                               
+                        }
+                    }
 
-                    // if (response.IsSuccessStatusCode)
-                    // {
-                    //     // The data was successfully written to the database
-                    // }
-                    // else
-                    // {
-                    //     // Handle the error
-                    // }
                 }
-
                 
-
-                
-                        
+                Console.WriteLine("Successfully added file");
+                     
                 return Ok(new {jsonFolderTree});
             }
             else

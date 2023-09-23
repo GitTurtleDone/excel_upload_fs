@@ -34,6 +34,7 @@ public class WriteFolderTreeToDatabaseController : ControllerBase
     [HttpPost("WriteFolderTreeToDatabase")]
     public async Task<IActionResult> WriteFolderTreeToDatabase([FromBody] FolderNode folderNode)
     {
+        Console.WriteLine("Went in to WriteFolderTreeToDataBase");
         if (folderNode == null) 
         {
             return BadRequest("Invalid folder tree");

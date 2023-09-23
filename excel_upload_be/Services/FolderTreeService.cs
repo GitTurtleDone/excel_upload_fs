@@ -29,6 +29,7 @@ namespace excel_upload_be.Services
         }
         public void WriteFolderTreeToDatabase(FolderNode folderNode)
         {
+            Console.WriteLine("Went into Folder Tree Service");
             Console.WriteLine(folderNode);
         }
     }
