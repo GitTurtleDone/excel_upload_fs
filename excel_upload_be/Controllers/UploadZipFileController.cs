@@ -8,8 +8,8 @@ using System.Text.Json;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using excel_upload_be.Models;
-//using excel_upload_be.Services;
-
+using excel_upload_be.Services;
+using System.Text;
 namespace excel_upload_be.Controllers;
 
 
@@ -19,18 +19,22 @@ namespace excel_upload_be.Controllers;
 
 public class UploadZipFileController : ControllerBase
 {
+    
+    private readonly IFolderTreeService _folderTreeService;
+    private readonly ExcelUploadContext _DBContext;
+    public UploadZipFileController(IFolderTreeService folderTreeService, ExcelUploadContext dbContext)
+    {
+        _folderTreeService = folderTreeService;
+        _DBContext = dbContext;
+    }
+    
     [HttpPost(Name = "PostUploadZipFile")]
-    // private readonly HttpClient _httpClient;
-
-    // public UploadZipFileController (IHttpClientFactory httpClientFactory)
-    // {
-    //     _httpClient = httpClientFactory.CreateClient();
-    // }
+    
     public async Task<IActionResult> Upload()
     {
         string publicFolderPath = @"..\..\PublicFolder";
         FolderNode folderTree;
-        string jsonFolderTree;
+        
         try
         {
             var formCollection = await Request.ReadFormAsync();
@@ -53,8 +57,6 @@ public class UploadZipFileController : ControllerBase
                 Console.WriteLine($"Extracted folder path: {extractionPath}");
                 using (var archive = ZipFile.OpenRead(filePath))
                 {
-                    
-                    
                     foreach (var entry in archive.Entries)
                     {
                         string entryPath = Path.Combine(extractionPath, entry.FullName);
@@ -64,56 +66,51 @@ public class UploadZipFileController : ControllerBase
                         {
                             entry.ExtractToFile(entryPath, true);
                         }
-                        }
+                    }
                 }
 
                 Console.WriteLine("Extraction complete.");
                 string copiedFolderPath = Path.ChangeExtension(filePath,null) + "\\";
                 Console.WriteLine($"Copied .zip folder path: {copiedFolderPath}");
-                
-                folderTree = createFolderTree(copiedFolderPath);
-                jsonFolderTree = JsonSerializer.Serialize(folderTree);
-                Console.WriteLine(folderTree.Name);
-                Console.WriteLine(folderTree.Subfolders[0].Name);
-                static FolderNode createFolderTree(string folderPath)
+                folderTree = _folderTreeService.createFolderTree(copiedFolderPath);
+                var jsonFolderTree = new StringContent(JsonSerializer.Serialize(folderTree), Encoding.UTF8, "appliation/json");
+                Console.WriteLine("folder tree name: " + folderTree.Name);
+                Console.WriteLine("device name: " + folderTree.Subfolders[0].Name);
+
+                List<FolderNode> devFolders = folderTree.Subfolders;
+                for (int i = 0; i < devFolders.Count; i++)
                 {
-                    DirectoryInfo directoryInfo = new DirectoryInfo(folderPath);
-                    FolderNode folderNode = new FolderNode
+                    List<FolderNode> diodeFolders = devFolders[i].Subfolders;
+                    //Console.WriteLine(devFolders[i].Name);
+                    for (int j = 0; j < diodeFolders.Count; j++)
                     {
-                        Name = directoryInfo.Name,
-                        Files = directoryInfo.GetFiles().Select(fileInfo => fileInfo.Name).ToList(),
-                        Subfolders = new List<FolderNode>()
-                    };
-
-                    foreach(var subdirectoryInfo in directoryInfo.GetDirectories())
-                    {       
-                        FolderNode subfolderNode = createFolderTree(subdirectoryInfo.FullName);
-                        folderNode.Subfolders.Add(subfolderNode);
-
+                        //Console.Write(diodeFolders[j].Name);
+                        List<string> fileNames = diodeFolders[j].Files;
+                        for (int k = 0; k < fileNames.Count; k++)
+                        {
+                            if (Path.GetExtension(fileNames[k]) == ".csv")
+                            {
+                                var dataFile = new DiodeDataFile
+                            {
+                                Batch = folderTree.Name,
+                                Device = devFolders[i].Name,
+                                Diode = diodeFolders[j].Name,
+                                FileName = fileNames[k],
+                            };
+                            //
+                            _DBContext.DiodeDataFiles.Add(dataFile);
+                            _DBContext.SaveChanges();
+                            Console.WriteLine ($"Batch: {folderTree.Name}, Device: {devFolders[i].Name}, Diode: {diodeFolders[j].Name}, File Name: {fileNames[k]} successfully added to the database");
+                            }
+                                
+                               
+                        }
                     }
-                    return folderNode;  
+
                 }
-
-                // //return Ok(new { fileName, fileExtension });
-                // // Set the content type to application/json
-                // _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-                // // Make an HTTP POST request to the Controller2 endpoint
-                // HttpResponseMessage response = await _httpClient.PostAsync("https://localhost:7200/AccessExcelUploadDB/GetAllFiles", new StringContent(jsonData, Encoding.UTF8, "application/json"));
-
-                // // Check the response status
-                // if (response.IsSuccessStatusCode)
-                // {
-                //     // Request was successful
-                //     var responseContent = await response.Content.ReadAsStringAsync();
-                //     return Ok(responseContent);
-                // }
-                // else
-                // {
-                //     // Request failed
-                //     return BadRequest("Failed to send data to Controller2");
-                // }
-                        
+                
+                Console.WriteLine("Successfully added file");
+                     
                 return Ok(new {jsonFolderTree});
             }
             else
@@ -127,9 +124,4 @@ public class UploadZipFileController : ControllerBase
         }
     }
 }
-public class FolderNode
-{
-    public string Name { get; set; }
-    public List<string> Files { get; set; }
-    public List<FolderNode> Subfolders { get; set; }
-}
+

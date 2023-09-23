@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using excel_upload_be.Models;
 using System.Text.Json;
-
+using excel_upload_be.Services;
 
 
 namespace excel_upload_be.Controllers;
@@ -53,12 +53,12 @@ public class AccessExcelUploadDBController : ControllerBase
     {
         var file = this._DBContext.DiodeDataFiles.FirstOrDefault(o=>o.FileId==_file.FileId);
         if (file != null) {
-            file.FileId = _file.FileId;
+            //file.FileId = _file.FileId;
             file.Batch = _file.Batch;
             file.Device = _file.Device;
             file.Diode = _file.Diode;
             file.FileName = _file.FileName;
-            this._DBContext.SaveChanges();
+            _DBContext.SaveChanges();
 
             return Ok(true);
         }

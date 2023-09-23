@@ -1,4 +1,5 @@
 using excel_upload_be.Models;
+using excel_upload_be.Services;
 using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +31,8 @@ builder.Services.AddCors(options=>
 builder.Services.AddDbContext<ExcelUploadContext>(options=>{
     options.UseSqlServer(builder.Configuration.GetConnectionString("conString"));
 });
+builder.Services.AddScoped<IFolderTreeService, FolderTreeService>();
+
 var app = builder.Build();
 
 
