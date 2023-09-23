@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios, { AxiosResponse } from "axios";
-import OpenFolder from "./components/OpenFolder";
+import OpenFolder from "./components/UploadZipFile";
+import UploadZipFile from "./components/UploadZipFile";
 
 function App() {
   const [folderPath, setFolderPath] = useState("");
@@ -31,7 +32,7 @@ function App() {
 
   return (
     <div>
-      <OpenFolder />
+      <UploadZipFile />
     </div>
   );
 }
