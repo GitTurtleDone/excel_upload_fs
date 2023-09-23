@@ -22,6 +22,22 @@ function OpenFolder() {
         console.log("File uploaded successfully");
         const jsonFolderTree = await response.json();
         console.log(jsonFolderTree);
+        //----------Creating components from the returned jsonFolderTree -------------
+        const folderTree = JSON.parse(jsonFolderTree);
+        const subfolders = folderTree.Subfolders;
+        console.log(subfolders[0].Name);
+
+        // // Check if subfolders exist and extract their names
+        // if (subfolders && subfolders.length >= 2) {
+        //   const firstSubfolderName = subfolders[0].name;
+        //   const secondSubfolderName = subfolders[1].name;
+
+        //   // Now you can use firstSubfolderName and secondSubfolderName as needed
+        // } else {
+        //   // Handle the case where there are not enough subfolders
+        // }
+
+        //----------Creating components from the returned jsonFolderTree -------------
       } else {
         console.error("File upload failed");
       }

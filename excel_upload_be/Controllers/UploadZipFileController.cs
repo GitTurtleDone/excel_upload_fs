@@ -73,7 +73,7 @@ public class UploadZipFileController : ControllerBase
                 string copiedFolderPath = Path.ChangeExtension(filePath,null) + "\\";
                 Console.WriteLine($"Copied .zip folder path: {copiedFolderPath}");
                 folderTree = _folderTreeService.createFolderTree(copiedFolderPath);
-                var jsonFolderTree = new StringContent(JsonSerializer.Serialize(folderTree), Encoding.UTF8, "appliation/json");
+                string jsonFolderTree = JsonSerializer.Serialize(folderTree);
                 Console.WriteLine("folder tree name: " + folderTree.Name);
                 Console.WriteLine("device name: " + folderTree.Subfolders[0].Name);
 
