@@ -91,26 +91,30 @@ public class UploadZipFileController : ControllerBase
                             if (Path.GetExtension(fileNames[k]) == ".csv")
                             {
                                 var dataFile = new DiodeDataFile
-                            {
-                                Batch = folderTree.Name,
-                                Device = devFolders[i].Name,
-                                Diode = diodeFolders[j].Name,
-                                FileName = fileNames[k],
-                            };
-                            //
-                            _DBContext.DiodeDataFiles.Add(dataFile);
-                            _DBContext.SaveChanges();
-                            Console.WriteLine ($"Batch: {folderTree.Name}, Device: {devFolders[i].Name}, Diode: {diodeFolders[j].Name}, File Name: {fileNames[k]} successfully added to the database");
+                                {
+                                    Batch = folderTree.Name,
+                                    Device = devFolders[i].Name,
+                                    Diode = diodeFolders[j].Name,
+                                    FileName = fileNames[k],
+                                };
+                                var existingDataFile = _DBContext.DiodeDataFiles.FirstOrDefault(e =>
+                                        e.Batch == dataFile.Batch &&
+                                        e.Device == dataFile.Device &&
+                                        e.Diode == dataFile.Diode &&
+                                        e.FileName == dataFile.FileName);
+                                if (existingDataFile == null)
+                                {
+                                    _DBContext.DiodeDataFiles.Add(dataFile);
+                                    _DBContext.SaveChanges();
+                                    Console.WriteLine ($"Batch: {folderTree.Name}, Device: {devFolders[i].Name}, Diode: {diodeFolders[j].Name}, File Name: {fileNames[k]} successfully added to the database");
+                                }
+                                else Console.WriteLine("The file is already in the database");
                             }
-                                
-                               
                         }
                     }
 
                 }
-                
-                Console.WriteLine("Successfully added file");
-                     
+                Console.WriteLine("Successfully added file");  
                 return Ok(new {jsonFolderTree});
             }
             else
