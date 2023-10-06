@@ -115,7 +115,7 @@ public class UploadZipFileController : ControllerBase
 
                 }
                 Console.WriteLine("Successfully added file");  
-                return Ok(new {jsonFolderTree});
+                return Ok(jsonFolderTree);
             }
             else
             {

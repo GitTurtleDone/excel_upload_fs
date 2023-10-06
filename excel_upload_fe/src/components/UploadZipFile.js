@@ -18,7 +18,7 @@ function UploadZipFile() {
       );
       // Handle the successful response here
       console.log("Data received:", response.data);
-      console.log(response.data.jsonFolderTree["Name"]);
+      console.log(response.data["Name"]);
     } catch (error) {
       // Handle any errors here
       console.error("Error:", error);
