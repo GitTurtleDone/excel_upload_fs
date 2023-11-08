@@ -29,7 +29,7 @@ public class WeatherForecastController : ControllerBase
             Summary = Summaries[Random.Shared.Next(Summaries.Length)]
         })
         .ToArray();
-        /*
+        /*do
         var weatherForecasts = new[]
         {
             new { Date = "2023-09-24", TemperatureC = 25, Summary = "Sunny" },
