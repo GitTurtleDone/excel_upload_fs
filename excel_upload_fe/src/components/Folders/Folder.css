@@ -1,0 +1,15 @@
+.folderLineContainer {
+  display: flex;
+  margin: 0 0;
+  padding: 0 0;
+  row-gap: 0;
+}
+.nameContainer {
+  margin: 5px 0;
+  row-gap: 0;
+  border: 2px solid #000000;
+}
+h6 {
+  margin: 0;
+  gap: 0;
+}
