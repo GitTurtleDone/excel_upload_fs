@@ -20,12 +20,13 @@ function BatchFolder({ folderTrees, updateCheckedBatchFolders }) {
   // Map the Name properties and join them with newline characters
   const folderTreeNames = folderTrees.map((folderTree) => folderTree.Name);
 
-  console.log("folderTreeNames: ", folderTreeNames);
   return (
     <div>
       <div>
         <button className="processButton">Process</button>
+        <h6>Batch Level Folders</h6>
       </div>
+
       <NameContainer
         arrNames={folderTreeNames}
         updateCheckedNames={updateCheckedNames}

@@ -6,6 +6,7 @@ import FolderTrees from "./components/FolderTrees";
 
 function App() {
   const [folderTrees, setFolderTrees] = useState([]);
+
   const updateFolderTree = async (data) => {
     const exists = folderTrees.some(
       (folderTree) => folderTree.Name === data.Name

@@ -10,9 +10,11 @@ import NameContainer from "./NameContainer";
 
 function DevFolder({
   folderTrees,
+  folderTreeNames,
   checkedBatchFolders,
   // updateCheckedDevFolders,
 }) {
+  const arrNames = [];
   const [devFolderTreeNames, setDevFolderTreeNames] = useState([]);
   const updateCheckedNames = (instance, data) => {
     console.log(`Callbac for Instance ${instance}: `, data);
@@ -44,34 +46,101 @@ function DevFolder({
     <div>
       <div>
         <button className="processButton">Process</button>
+        <h6>Device Level Folders</h6>
       </div>
-      <h6>Device level Folders</h6>
-      {Array.from({ length: devFolderNames }).map((_, index) => (
-        <NameContainer
-          key={index}
-          arrNames={devFolderNames[index]}
-          updateCheckedNames={(data) =>
-            (() => updateCheckedNames(index, data))()
-          }
-        ></NameContainer>
-      ))}
 
-      {Array.from({ length: devFolderNames }).map((_, index) => (
-        <NameContainer
-          key={index}
-          arrNames={devFolderNames[index]}
-          updateCheckedNames={updateCheckedNames.bind(null, index)}
-        ></NameContainer>
-      ))}
-
-      <NameContainer
+      {/* <NameContainer
         arrNames={devFolderNames[0]}
         updateCheckedNames={(data) => updateCheckedNames(0, data)}
       ></NameContainer>
       <NameContainer
         arrNames={devFolderNames[1]}
         updateCheckedNames={(data) => updateCheckedNames(1, data)}
-      ></NameContainer>
+      ></NameContainer> */}
+      {/* <div>
+        {(() => {
+          <h6>Folder:</h6>;
+          if (devFolderNames && devFolderNames.length > 0) {
+            for (let i = 0; i < devFolderNames.length; i++) {
+              <NameContainer
+                arrNames={devFolderNames[i]}
+                updateCheckedNames={(data) => updateCheckedNames(i, data)}
+              ></NameContainer>;
+            }
+          }
+        })()}
+      </div> */}
+      {/* {(() => {
+        arrNames = Array.isArray(devFolderNames[0])
+          ? devFolderNames[0]
+          : [devFolderNames[0]];
+        return;
+        arrNames.map((folderName) => (
+          <div className="folderLineContainer">
+            <input
+              type="checkbox"
+              // checked={checkedFolderNames.includes(folderName)}
+              // onChange={() => handleCheckboxChange(folderName)}
+            />
+            <h6>{folderName}</h6>
+          </div>
+        ));
+
+        //  <h6>Dev Folder 1</h6>
+      })()} */}
+
+      {/* {(() => {
+        // // Assign the value to arrNames
+        // const arrNames = Array.isArray(devFolderNames[0])
+        //   ? devFolderNames[0]
+        //   : [devFolderNames[0]];
+
+        // // Use parentheses instead of curly braces
+        // return arrNames.map((folderName) => (
+        //   <div className="folderLineContainer" key={folderName}>
+        //     <input
+        //       type="checkbox"
+        //       // checked={checkedFolderNames.includes(folderName)}
+        //       // onChange={() => handleCheckboxChange(folderName)}
+        //     />
+        //     <h6>{folderName}</h6>
+        //   </div>
+        // ));
+        return;
+        devFolderNames.map((_, index) => (
+          <NameContainer
+          key
+            arrNames={devFolderNames[index]}
+            updateCheckedNames={(data) => updateCheckedNames(index, data)}
+          ></NameContainer>
+        ));
+      })()} */}
+      {(() => {
+        // // Assign the value to arrNames
+        // const arrNames = Array.isArray(devFolderNames[0])
+        //   ? devFolderNames[0]
+        //   : [devFolderNames[0]];
+
+        // // Use parentheses instead of curly braces
+        // return arrNames.map((folderName) => (
+        //   <div className="folderLineContainer" key={folderName}>
+        //     <input
+        //       type="checkbox"
+        //       // checked={checkedFolderNames.includes(folderName)}
+        //       // onChange={() => handleCheckboxChange(folderName)}
+        //     />
+        //     <h6>{folderName}</h6>
+        //   </div>
+        // ));
+
+        return devFolderNames.map((_, index) => (
+          <NameContainer
+            // key={index} // Add a key prop for each NameContainer
+            arrNames={devFolderNames[index]}
+            updateCheckedNames={(data) => updateCheckedNames(index, data)}
+          ></NameContainer>
+        ));
+      })()}
     </div>
   );
 }

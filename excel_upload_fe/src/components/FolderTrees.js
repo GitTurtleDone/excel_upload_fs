@@ -5,7 +5,7 @@ import DevFolder from "./Folders/DevFolder";
 //import folderTree from "./UploadZipFile";
 //import axios, { AxiosResponse } from "axios";
 
-function FolderTrees({ folderTrees }) {
+function FolderTrees({ folderTrees, folderTreeNames }) {
   const [checkedBatchFolders, setCheckedBatchFolders] = useState([]);
   const [checkedDevFolders, setCheckedDevFolders] = useState([]);
   const updateCheckedBatchFolders = (data) => {
