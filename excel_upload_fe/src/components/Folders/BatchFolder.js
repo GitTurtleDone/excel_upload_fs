@@ -17,7 +17,6 @@ function BatchFolder({ folderTrees, updateCheckedBatchFolders }) {
     return <div>No folder trees available</div>;
   }
 
-  // Map the Name properties and join them with newline characters
   const folderTreeNames = folderTrees.map((folderTree) => folderTree.Name);
 
   return (

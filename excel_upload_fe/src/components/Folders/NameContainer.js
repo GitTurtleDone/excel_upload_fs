@@ -3,13 +3,17 @@ import React, { useState } from "react";
 function NameContainer({ arrNames, updateCheckedNames }) {
   const [checkedFolderNames, setCheckedFolderNames] = useState([]);
   const handleCheckboxChange = (folderName) => {
-    setCheckedFolderNames((prevCheckedFolderNames) =>
-      prevCheckedFolderNames.includes(folderName)
+    setCheckedFolderNames((prevCheckedFolderNames) => {
+      prevCheckedFolderNames = prevCheckedFolderNames.includes(folderName)
         ? prevCheckedFolderNames.filter(
             (checkedFolderName) => checkedFolderName !== folderName
           )
-        : [...prevCheckedFolderNames, folderName]
-    );
+        : [...prevCheckedFolderNames, folderName];
+
+      return arrNames.filter((arrName) =>
+        prevCheckedFolderNames.includes(arrName)
+      );
+    });
   };
   updateCheckedNames(checkedFolderNames);
   arrNames = Array.isArray(arrNames) ? arrNames : [arrNames];
