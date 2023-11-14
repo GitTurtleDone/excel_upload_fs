@@ -4,12 +4,17 @@ import NameContainer from "./NameContainer";
 
 function DevFolder({
   folderTrees,
-  folderTreeNames,
   checkedBatchFolders,
-  // updateCheckedDevFolders,
+  updateCheckedDevFolders,
 }) {
-  const updateCheckedNames = (instance, data) => {
-    console.log(`Callbac for Instance ${instance}: `, data);
+  const checkedDevFolders = Array.from(
+    { length: checkedBatchFolders },
+    () => []
+  );
+  const updateCheckedNames = (index, data) => {
+    checkedDevFolders[index] = data;
+    updateCheckedDevFolders(checkedDevFolders);
+    console.log(`Checked Dev Folders: `, checkedDevFolders);
   };
   if (!folderTrees) {
     return <div>No folder trees available</div>;
@@ -39,7 +44,7 @@ function DevFolder({
       {(() => {
         return devFolderNames.map((_, index) => (
           <NameContainer
-            // key={index} // Add a key prop for each NameContainer
+            key={index} // Add a key prop for each NameContainer
             arrNames={devFolderNames[index]}
             updateCheckedNames={(data) => updateCheckedNames(index, data)}
           ></NameContainer>

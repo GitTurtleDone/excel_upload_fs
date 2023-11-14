@@ -2,17 +2,22 @@ import React, { useState } from "react";
 import "./FolderTrees.css";
 import BatchFolder from "./Folders/BatchFolder";
 import DevFolder from "./Folders/DevFolder";
-//import folderTree from "./UploadZipFile";
-//import axios, { AxiosResponse } from "axios";
+import SBDFolder from "./Folders/SBDFolder";
 
 function FolderTrees({ folderTrees, folderTreeNames }) {
   const [checkedBatchFolders, setCheckedBatchFolders] = useState([]);
   const [checkedDevFolders, setCheckedDevFolders] = useState([]);
+  const [checkedSBDFolders, setCheckedSBDFolders] = useState([]);
   const updateCheckedBatchFolders = (data) => {
     setCheckedBatchFolders(data);
   };
   const updateCheckedDevFolders = (data) => {
     setCheckedDevFolders(data);
+    // console.log(`Checked Dev Folders: `, data);
+  };
+  const updateCheckedSBDFolders = (data) => {
+    //setCheckedSBDFolders(data);
+    console.log(`Checked SBD Folders: `, data);
   };
   return (
     <div className="folderTreeContainer">
@@ -23,12 +28,14 @@ function FolderTrees({ folderTrees, folderTreeNames }) {
       <DevFolder
         folderTrees={folderTrees}
         checkedBatchFolders={checkedBatchFolders}
-        // updateCheckedBatchFolders={updateCheckedDevFolders}
+        updateCheckedDevFolders={updateCheckedDevFolders}
       ></DevFolder>
-
-      {/* <BatchFolder folderTrees={folderTrees}></BatchFolder>
-      <BatchFolder folderTrees={folderTrees}></BatchFolder>
-      <BatchFolder folderTrees={folderTrees}></BatchFolder> */}
+      {/* <SBDFolder
+        folderTrees={folderTrees}
+        checkedBatchFolders={checkedBatchFolders}
+        checkedDevFolders={checkedDevFolders}
+        updateCheckedSBDFolders={updateCheckedSBDFolders}
+      ></SBDFolder> */}
     </div>
   );
 }

@@ -9,20 +9,22 @@ function NameContainer({ arrNames, updateCheckedNames }) {
             (checkedFolderName) => checkedFolderName !== folderName
           )
         : [...prevCheckedFolderNames, folderName];
-
-      return arrNames.filter((arrName) =>
+      let tempArr = arrNames.filter((arrName) =>
         prevCheckedFolderNames.includes(arrName)
       );
+      updateCheckedNames(tempArr);
+      return tempArr;
     });
   };
-  updateCheckedNames(checkedFolderNames);
+
   arrNames = Array.isArray(arrNames) ? arrNames : [arrNames];
   return (
     <div className="nameContainer">
-      {arrNames.map((folderName) => (
+      {arrNames.map((folderName, index) => (
         <div className="folderLineContainer">
           <input
             type="checkbox"
+            key={index}
             checked={checkedFolderNames.includes(folderName)}
             onChange={() => handleCheckboxChange(folderName)}
           />
