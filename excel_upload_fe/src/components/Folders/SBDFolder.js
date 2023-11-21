@@ -20,13 +20,19 @@ function SBDFolder({
   if (!folderTrees) {
     return <div>No folder trees available</div>;
   }
+  // console.log(
+  //   `Checked Batch Folders: `,
+  //   checkedBatchFolders,
+  //   `\n Checked Dev Folders: `,
+  //   checkedDevFolders
+  // );
   const batchFolderNames = [];
   checkedBatchFolders.forEach((checkedBatchFolder, index1) => {
     folderTrees.forEach((folderTree) => {
-      const devFolderNames = [];
       if (folderTree.Name === checkedBatchFolder) {
-        console.log("In SBDFolder, folder Tree Names: ", folderTree.Name);
+        // console.log("In SBDFolder, folder Tree Names: ", folderTree.Name);
         if (folderTree.Subfolders.length > 0) {
+          const devFolderNames = [];
           folderTree.Subfolders.forEach((devFolder) => {
             const sbdFolderNames = [];
             if (checkedDevFolders && checkedDevFolders[index1]) {
@@ -39,22 +45,19 @@ function SBDFolder({
                 );
               }
             }
-            console.log(
-              `In SBD Folder, sbdFolderNames {index1}`,
-              sbdFolderNames
-            );
+            // console.log(
+            //   `In SBD Folder, sbdFolderNames ${index1}`,
+            //   sbdFolderNames
+            // );
             devFolderNames.push(sbdFolderNames);
+            // console.log("In SBD Folder, devFolderNames: ", sbdFolderNames);
           });
+          batchFolderNames.push(devFolderNames);
         }
       }
-      devFolderNames.push(sbdFolderNames);
-      console.log("In SBD Folder, sbdFolderNames: ", sbdFolderNames);
     });
-    batchFolderNames.push(sbdFolderNames);
-    console.log(
-      "In SBD Folder, checked SBD folder Name array: ",
-      batchFolderNames
-    );
+
+    // console.log("In SBD Folder, batchFolderNames: ", batchFolderNames);
   });
 
   return (
@@ -64,7 +67,7 @@ function SBDFolder({
         <h6>SBD Level Folders</h6>
       </div>
 
-      {(() => {
+      {/* {(() => {
         return batchFolderNames.map((batchFolderName, index1) =>
           batchFolderName.map((devFolderName, index2) => (
             <NameContainer
@@ -76,7 +79,7 @@ function SBDFolder({
             ></NameContainer>
           ))
         );
-      })()}
+      })()} */}
     </div>
   );
 }
