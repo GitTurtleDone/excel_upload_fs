@@ -22,27 +22,39 @@ function SBDFolder({
   }
   const batchFolderNames = [];
   checkedBatchFolders.forEach((checkedBatchFolder, index1) => {
-    const devFolderNames = [];
     folderTrees.forEach((folderTree) => {
-      const sbdFolderNames = [];
+      const devFolderNames = [];
       if (folderTree.Name === checkedBatchFolder) {
+        console.log("In SBDFolder, folder Tree Names: ", folderTree.Name);
         if (folderTree.Subfolders.length > 0) {
           folderTree.Subfolders.forEach((devFolder) => {
+            const sbdFolderNames = [];
             if (checkedDevFolders && checkedDevFolders[index1]) {
               if (
                 checkedDevFolders[index1].length > 0 &&
                 checkedDevFolders[index1].includes(devFolder.Name)
               ) {
-                sbdFolderNames.push(devFolder.Name);
+                devFolder.Subfolders.forEach((sbdFolder) =>
+                  sbdFolderNames.push(sbdFolder.Name)
+                );
               }
             }
+            console.log(
+              `In SBD Folder, sbdFolderNames {index1}`,
+              sbdFolderNames
+            );
+            devFolderNames.push(sbdFolderNames);
           });
         }
       }
-      sbdFolderNames.push(sbdFolderNames);
+      devFolderNames.push(sbdFolderNames);
+      console.log("In SBD Folder, sbdFolderNames: ", sbdFolderNames);
     });
-    batchFolderNames.push(devFolderNames);
-    console.log("checked SBD folder Name array: ", batchFolderNames);
+    batchFolderNames.push(sbdFolderNames);
+    console.log(
+      "In SBD Folder, checked SBD folder Name array: ",
+      batchFolderNames
+    );
   });
 
   return (
