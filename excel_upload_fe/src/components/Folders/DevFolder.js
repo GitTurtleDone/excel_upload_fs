@@ -7,14 +7,14 @@ function DevFolder({
   checkedBatchFolders,
   updateCheckedDevFolders,
 }) {
-  const checkedDevFolders = Array.from(
-    { length: checkedBatchFolders },
-    () => []
-  );
+  const [checkedDevFolders, setCheckedDevFolders] = useState();
+
+  // Array.from({ length: checkedBatchFolders }, () => []
   const updateCheckedNames = (index, data) => {
-    checkedDevFolders[index] = data;
-    updateCheckedDevFolders(checkedDevFolders);
-    console.log(`Checked Dev Folders: `, checkedDevFolders);
+    // checkedDevFolders[index] = data;
+    // updateCheckedDevFolders(checkedDevFolders);
+    // console.log(`In Dev Folder, Checked Dev Folders: `, checkedDevFolders);
+    console.log(data);
   };
   if (!folderTrees) {
     return <div>No folder trees available</div>;
