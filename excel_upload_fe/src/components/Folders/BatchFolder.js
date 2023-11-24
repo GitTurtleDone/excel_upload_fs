@@ -46,6 +46,7 @@ function BatchFolder({
 
       <NameContainer
         arrNames={folderTreeNames}
+        arrCheckedNames={checkedBatchFolders}
         updateCheckedNames={updateCheckedNames}
       ></NameContainer>
     </div>

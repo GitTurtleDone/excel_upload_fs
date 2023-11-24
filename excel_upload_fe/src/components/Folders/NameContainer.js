@@ -1,7 +1,7 @@
 import "./Folder.css";
 import React, { useState } from "react";
-function NameContainer({ arrNames, updateCheckedNames }) {
-  const [checkedFolderNames, setCheckedFolderNames] = useState([]);
+function NameContainer({ arrNames, arrCheckedNames, updateCheckedNames }) {
+  const [checkedFolderNames, setCheckedFolderNames] = useState(arrCheckedNames);
   const handleCheckboxChange = (folderName) => {
     setCheckedFolderNames((prevCheckedFolderNames) => {
       prevCheckedFolderNames = prevCheckedFolderNames.includes(folderName)
@@ -18,6 +18,7 @@ function NameContainer({ arrNames, updateCheckedNames }) {
   };
 
   arrNames = Array.isArray(arrNames) ? arrNames : [arrNames];
+  console.log(`In Name Cointainer, arrCheckedNames: `, arrCheckedNames);
   return (
     <div className="nameContainer">
       {arrNames.map((folderName, index) => (
@@ -25,7 +26,11 @@ function NameContainer({ arrNames, updateCheckedNames }) {
           <input
             type="checkbox"
             key={index}
-            checked={checkedFolderNames.includes(folderName)}
+            checked={
+              arrCheckedNames && arrCheckedNames.includes(folderName)
+                ? true
+                : false
+            }
             onChange={() => handleCheckboxChange(folderName)}
           />
           <h6>{folderName}</h6>

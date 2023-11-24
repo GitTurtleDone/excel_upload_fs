@@ -5,23 +5,21 @@ import NameContainer from "./NameContainer";
 function DevFolder({
   folderTrees,
   checkedBatchFolders,
+  checkedDevFolders,
   updateCheckedDevFolders,
 }) {
-  const [checkedDevFolderNames, setCheckedDevFolderNames] = useState({});
-
-  // Array.from({ length: checkedBatchFolders }, () => []
-  const [checkedDevFolderNameMap, setCheckedDevFolderNameMap] = useState(
-    new Map()
-  );
+  const [checkedDevFolderNames, setCheckedDevFolderNames] =
+    useState(checkedDevFolders);
   const updateCheckedNames = (index, data) => {
-    checkedDevFolderNames[checkedBatchFolders[index]] = data;
-    let tempObj = { ...checkedDevFolderNames };
+    //
+    const tempObj = { ...checkedDevFolderNames };
+    tempObj[checkedBatchFolders[index]] = data;
     Object.entries(tempObj).forEach(([key, value]) => {
       if (!checkedBatchFolders.includes(key)) delete tempObj[key];
     });
     setCheckedDevFolderNames(tempObj);
     updateCheckedDevFolders(tempObj);
-    console.log("checked Dev Folder Names: ", checkedDevFolderNames);
+    console.log("In Dev Folder, checked Dev Folder Names: ", tempObj);
   };
   if (!folderTrees) {
     return <div>No folder trees available</div>;
@@ -40,6 +38,7 @@ function DevFolder({
     });
     devFolderNames.push(subFolderNames);
   });
+  console.log(`In Dev Folder, checkedDevFolderNames: `, checkedDevFolderNames);
 
   return (
     <div>
@@ -51,8 +50,13 @@ function DevFolder({
       {(() => {
         return devFolderNames.map((_, index) => (
           <NameContainer
-            key={index} // Add a key prop for each NameContainer
+            key={index}
             arrNames={devFolderNames[index]}
+            arrCheckedNames={
+              checkedDevFolderNames && checkedDevFolderNames[index]
+                ? checkedDevFolderNames[index]
+                : []
+            }
             updateCheckedNames={(data) => updateCheckedNames(index, data)}
           ></NameContainer>
         ));
