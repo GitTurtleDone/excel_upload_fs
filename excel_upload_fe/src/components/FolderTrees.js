@@ -47,12 +47,12 @@ function FolderTrees({ folderTrees, folderTreeNames }) {
         checkedDevFolders={checkedDevFolders}
         updateCheckedDevFolders={updateCheckedDevFolders}
       ></DevFolder>
-      {/* <SBDFolder
+      <SBDFolder
         folderTrees={folderTrees}
         checkedBatchFolders={checkedBatchFolders}
         checkedDevFolders={checkedDevFolders}
         updateCheckedSBDFolders={updateCheckedSBDFolders}
-      ></SBDFolder> */}
+      ></SBDFolder>
     </div>
   );
 }

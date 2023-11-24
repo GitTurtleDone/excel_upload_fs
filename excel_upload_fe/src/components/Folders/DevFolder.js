@@ -53,16 +53,23 @@ function DevFolder({
 
       {(() => {
         return devFolderNames.map((_, index) => (
-          <NameContainer
-            key={index}
-            arrNames={devFolderNames[index]}
-            arrCheckedNames={
-              checkedDevFolderNames && checkedDevFolderNames[index]
-                ? checkedDevFolderNames[index]
-                : []
-            }
-            updateCheckedNames={(data) => updateCheckedNames(index, data)}
-          ></NameContainer>
+          <div>
+            <h6>
+              {checkedBatchFolders && checkedBatchFolders[index]
+                ? checkedBatchFolders[index]
+                : ""}
+            </h6>
+            <NameContainer
+              key={index}
+              arrNames={devFolderNames[index]}
+              // arrCheckedNames={
+              //   checkedDevFolderNames && checkedDevFolderNames[index]
+              //     ? checkedDevFolderNames[index]
+              //     : []
+              // }
+              updateCheckedNames={(data) => updateCheckedNames(index, data)}
+            ></NameContainer>
+          </div>
         ));
       })()}
     </div>
