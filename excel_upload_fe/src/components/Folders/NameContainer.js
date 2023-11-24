@@ -18,7 +18,7 @@ function NameContainer({ arrNames, arrCheckedNames, updateCheckedNames }) {
   };
 
   arrNames = Array.isArray(arrNames) ? arrNames : [arrNames];
-  console.log(`In Name Cointainer, arrCheckedNames: `, arrCheckedNames);
+  //console.log(`In Name Cointainer, arrCheckedNames: `, arrCheckedNames);
   return (
     <div className="nameContainer">
       {arrNames.map((folderName, index) => (
@@ -26,11 +26,7 @@ function NameContainer({ arrNames, arrCheckedNames, updateCheckedNames }) {
           <input
             type="checkbox"
             key={index}
-            checked={
-              arrCheckedNames && arrCheckedNames.includes(folderName)
-                ? true
-                : false
-            }
+            checked={checkedFolderNames.includes(folderName)}
             onChange={() => handleCheckboxChange(folderName)}
           />
           <h6>{folderName}</h6>

@@ -12,14 +12,18 @@ function DevFolder({
     useState(checkedDevFolders);
   const updateCheckedNames = (index, data) => {
     //
-    const tempObj = { ...checkedDevFolderNames };
-    tempObj[checkedBatchFolders[index]] = data;
-    Object.entries(tempObj).forEach(([key, value]) => {
-      if (!checkedBatchFolders.includes(key)) delete tempObj[key];
+    setCheckedDevFolderNames((prevCheckedDevFolderNames) => {
+      const tempObj = { ...prevCheckedDevFolderNames };
+      tempObj[checkedBatchFolders[index]] = data;
+      Object.entries(tempObj).forEach(([key, value]) => {
+        if (!checkedBatchFolders.includes(key)) delete tempObj[key];
+        if (Array.isArray(value) && value.length === 0) delete tempObj[key];
+      });
+
+      updateCheckedDevFolders(tempObj);
+      console.log("In Dev Folder, checked Dev Folder Names: ", tempObj);
+      return tempObj;
     });
-    setCheckedDevFolderNames(tempObj);
-    updateCheckedDevFolders(tempObj);
-    console.log("In Dev Folder, checked Dev Folder Names: ", tempObj);
   };
   if (!folderTrees) {
     return <div>No folder trees available</div>;

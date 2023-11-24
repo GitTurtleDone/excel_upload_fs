@@ -1,27 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\gtd19\\NZ2307\\Programming\\Full-Stack\\excel_upload_fs\\excel_upload_be\\excel_upload_be.csproj": {}
+    "C:\\Users\\Dell User\\NZ2208\\Programming\\Full-Stack\\excel_upload_fs\\excel_upload_be\\excel_upload_be.csproj": {}
   },
   "projects": {
-    "C:\\Users\\gtd19\\NZ2307\\Programming\\Full-Stack\\excel_upload_fs\\excel_upload_be\\excel_upload_be.csproj": {
+    "C:\\Users\\Dell User\\NZ2208\\Programming\\Full-Stack\\excel_upload_fs\\excel_upload_be\\excel_upload_be.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\gtd19\\NZ2307\\Programming\\Full-Stack\\excel_upload_fs\\excel_upload_be\\excel_upload_be.csproj",
+        "projectUniqueName": "C:\\Users\\Dell User\\NZ2208\\Programming\\Full-Stack\\excel_upload_fs\\excel_upload_be\\excel_upload_be.csproj",
         "projectName": "excel_upload_be",
-        "projectPath": "C:\\Users\\gtd19\\NZ2307\\Programming\\Full-Stack\\excel_upload_fs\\excel_upload_be\\excel_upload_be.csproj",
-        "packagesPath": "C:\\Users\\gtd19\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\gtd19\\NZ2307\\Programming\\Full-Stack\\excel_upload_fs\\excel_upload_be\\obj\\",
+        "projectPath": "C:\\Users\\Dell User\\NZ2208\\Programming\\Full-Stack\\excel_upload_fs\\excel_upload_be\\excel_upload_be.csproj",
+        "packagesPath": "C:\\Users\\Dell User\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Dell User\\NZ2208\\Programming\\Full-Stack\\excel_upload_fs\\excel_upload_be\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\gtd19\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\Dell User\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -78,7 +76,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.404\\RuntimeIdentifierGraph.json"
         }
       }
     }
