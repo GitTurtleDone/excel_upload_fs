@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Folder.css";
 import NameContainer from "./NameContainer";
 
@@ -7,14 +7,21 @@ function DevFolder({
   checkedBatchFolders,
   updateCheckedDevFolders,
 }) {
-  const [checkedDevFolders, setCheckedDevFolders] = useState();
+  const [checkedDevFolderNames, setCheckedDevFolderNames] = useState({});
 
   // Array.from({ length: checkedBatchFolders }, () => []
+  const [checkedDevFolderNameMap, setCheckedDevFolderNameMap] = useState(
+    new Map()
+  );
   const updateCheckedNames = (index, data) => {
-    // checkedDevFolders[index] = data;
-    // updateCheckedDevFolders(checkedDevFolders);
-    // console.log(`In Dev Folder, Checked Dev Folders: `, checkedDevFolders);
-    console.log(data);
+    checkedDevFolderNames[checkedBatchFolders[index]] = data;
+    let tempObj = { ...checkedDevFolderNames };
+    Object.entries(tempObj).forEach(([key, value]) => {
+      if (!checkedBatchFolders.includes(key)) delete tempObj[key];
+    });
+    setCheckedDevFolderNames(tempObj);
+    updateCheckedDevFolders(tempObj);
+    console.log("checked Dev Folder Names: ", checkedDevFolderNames);
   };
   if (!folderTrees) {
     return <div>No folder trees available</div>;

@@ -10,6 +10,19 @@ function FolderTrees({ folderTrees, folderTreeNames }) {
   const [checkedSBDFolders, setCheckedSBDFolders] = useState([]);
   const updateCheckedBatchFolders = (data) => {
     setCheckedBatchFolders(data);
+    const tempObj = { ...checkedDevFolders };
+    console.log("In Folder Tree Folder, checked Batch Folders:  ", data);
+    Object.entries(tempObj).forEach(([key, value]) => {
+      if (!data.includes(key)) {
+        console.log("In Batch Folder, key ", key);
+        delete tempObj[key];
+      }
+    });
+    setCheckedDevFolders(tempObj);
+    console.log(
+      "In Folder Tree, checked Dev Folder Names: ",
+      checkedDevFolders
+    );
   };
   const updateCheckedDevFolders = (data) => {
     setCheckedDevFolders(data);
@@ -23,7 +36,10 @@ function FolderTrees({ folderTrees, folderTreeNames }) {
     <div className="folderTreeContainer">
       <BatchFolder
         folderTrees={folderTrees}
+        checkedBatchFolders={checkedBatchFolders}
         updateCheckedBatchFolders={updateCheckedBatchFolders}
+        checkedDevFolders={checkedDevFolders}
+        updateCheckedDevFolders={updateCheckedDevFolders}
       ></BatchFolder>
       <DevFolder
         folderTrees={folderTrees}
