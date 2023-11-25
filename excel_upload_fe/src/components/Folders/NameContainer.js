@@ -1,21 +1,17 @@
 import "./Folder.css";
 import React, { useState } from "react";
-// function NameContainer({ arrNames, arrCheckedNames, updateCheckedNames }) {
-function NameContainer({ arrNames, updateCheckedNames }) {
-  const [checkedFolderNames, setCheckedFolderNames] = useState([]);
+function NameContainer({ arrNames, arrCheckedNames, updateCheckedNames }) {
+  // function NameContainer({ arrNames, updateCheckedNames }) {
+  const [checkedFolderNames, setCheckedFolderNames] = useState(arrCheckedNames);
   const handleCheckboxChange = (folderName) => {
-    setCheckedFolderNames((prevCheckedFolderNames) => {
-      prevCheckedFolderNames = prevCheckedFolderNames.includes(folderName)
-        ? prevCheckedFolderNames.filter(
-            (checkedFolderName) => checkedFolderName !== folderName
-          )
-        : [...prevCheckedFolderNames, folderName];
-      let tempArr = arrNames.filter((arrName) =>
-        prevCheckedFolderNames.includes(arrName)
-      );
-      updateCheckedNames(tempArr);
-      return tempArr;
-    });
+    let tempArr = [...arrCheckedNames];
+    tempArr = tempArr.includes(folderName)
+      ? tempArr.filter((checkedFolderName) => checkedFolderName !== folderName)
+      : [...tempArr, folderName];
+    // These codes to keep same order as seen in the parent folder
+    let tempArr1 = arrNames.filter((arrName) => tempArr.includes(arrName));
+    setCheckedFolderNames(tempArr1);
+    updateCheckedNames(tempArr1);
   };
 
   arrNames = Array.isArray(arrNames) ? arrNames : [arrNames];
@@ -27,9 +23,7 @@ function NameContainer({ arrNames, updateCheckedNames }) {
           <input
             type="checkbox"
             key={index}
-            // checked={
-            //   checkedFolderNames && checkedFolderNames.includes(folderName)
-            // }
+            checked={arrCheckedNames && arrCheckedNames.includes(folderName)}
             onChange={() => handleCheckboxChange(folderName)}
           />
           <h6>{folderName}</h6>

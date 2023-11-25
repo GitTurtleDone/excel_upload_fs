@@ -13,15 +13,30 @@ import DevFolder from "./DevFolder";
 function BatchFolder({
   folderTrees,
   checkedBatchFolders,
-  updateCheckedBatchFolders,
   checkedDevFolders,
+  updateCheckedBatchFolders,
   updateCheckedDevFolders,
 }) {
   const [checkedDevFolderNames, setCheckedDevFolderNames] =
     useState(checkedDevFolders);
+  const [checkedBatchFolderNames, setCheckedBatchFolderNames] =
+    useState(checkedBatchFolders);
   const updateCheckedNames = (data) => {
     updateCheckedBatchFolders(data);
+    // setCheckedDevFolderNames((prevCheckedDevFolderNames) => {
+    //   const tempObj = { ...prevCheckedDevFolderNames };
+    //   Object.entries(tempObj).forEach(([key, value]) => {
+    //     if (!data.includes(key)) {
+    //       delete tempObj[key];
+    //     }
+    //     if (Array.isArray(value) && value.length === 0) delete tempObj[key];
+    //   });
 
+    //   console.log("In Batch Folders, checked Dev Folder Names: ", tempObj);
+
+    //   updateCheckedDevFolders(tempObj);
+    //   return tempObj;
+    // });
     const tempObj = { ...checkedDevFolders };
     Object.entries(tempObj).forEach(([key, value]) => {
       if (!data.includes(key)) {
@@ -32,11 +47,8 @@ function BatchFolder({
 
     console.log("In Batch Folders, checked Dev Folder Names: ", tempObj);
     setCheckedDevFolderNames(tempObj);
-    updateCheckedDevFolders(checkedDevFolders);
+    updateCheckedDevFolders(tempObj);
   };
-  if (!folderTrees) {
-    return <div>No folder trees available</div>;
-  }
 
   const folderTreeNames = folderTrees.map((folderTree) => folderTree.Name);
 
@@ -49,7 +61,7 @@ function BatchFolder({
 
       <NameContainer
         arrNames={folderTreeNames}
-        // arrCheckedNames={checkedBatchFolders}
+        arrCheckedNames={checkedBatchFolders}
         updateCheckedNames={updateCheckedNames}
       ></NameContainer>
     </div>

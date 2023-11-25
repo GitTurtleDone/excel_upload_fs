@@ -8,26 +8,34 @@ function DevFolder({
   checkedDevFolders,
   updateCheckedDevFolders,
 }) {
-  const [checkedDevFolderNames, setCheckedDevFolderNames] =
-    useState(checkedDevFolders);
+  // const [checkedDevFolderNames, setCheckedDevFolderNames] =
+  //   useState(checkedDevFolders);
   const updateCheckedNames = (index, data) => {
     //
-    setCheckedDevFolderNames((prevCheckedDevFolderNames) => {
-      const tempObj = { ...prevCheckedDevFolderNames };
-      tempObj[checkedBatchFolders[index]] = data;
-      Object.entries(tempObj).forEach(([key, value]) => {
-        if (!checkedBatchFolders.includes(key)) delete tempObj[key];
-        if (Array.isArray(value) && value.length === 0) delete tempObj[key];
-      });
-
-      updateCheckedDevFolders(tempObj);
-      console.log("In Dev Folder, checked Dev Folder Names: ", tempObj);
-      return tempObj;
+    const tempObj = { ...checkedDevFolders };
+    tempObj[checkedBatchFolders[index]] = data;
+    Object.entries(tempObj).forEach(([key, value]) => {
+      if (!checkedBatchFolders.includes(key)) delete tempObj[key];
+      if (Array.isArray(value) && value.length === 0) delete tempObj[key];
     });
+
+    updateCheckedDevFolders(tempObj);
+    //setCheckedDevFolderNames(tempObj);
+    console.log("In Dev Folder, checked Dev Folder Names: ", tempObj);
+    //somehow using prevCheckedDevFolderNames gave some small bugs
+    // setCheckedDevFolderNames((prevCheckedDevFolderNames) => {
+    //   const tempObj = { ...prevCheckedDevFolderNames };
+    //   tempObj[checkedBatchFolders[index]] = data;
+    //   Object.entries(tempObj).forEach(([key, value]) => {
+    //     if (!checkedBatchFolders.includes(key)) delete tempObj[key];
+    //     if (Array.isArray(value) && value.length === 0) delete tempObj[key];
+    //   });
+
+    //   updateCheckedDevFolders(tempObj);
+    //   console.log("In Dev Folder, checked Dev Folder Names: ", tempObj);
+    //   return tempObj;
+    // });
   };
-  // if (!folderTrees) {
-  //   return <div>No folder trees available</div>;
-  // }
   const devFolderNames = [];
   checkedBatchFolders.forEach((checkedBatchFolder) => {
     const subFolderNames = [];
@@ -42,7 +50,10 @@ function DevFolder({
     });
     devFolderNames.push(subFolderNames);
   });
-  console.log(`In Dev Folder, checkedDevFolderNames: `, checkedDevFolderNames);
+  // console.log(
+  //   `In Dev Folder before rendering, checkedDevFolders: `,
+  //   checkedDevFolders
+  // );
 
   return (
     <div>
@@ -59,14 +70,22 @@ function DevFolder({
                 ? checkedBatchFolders[index]
                 : ""}
             </h6>
+            {/* <h6>
+              During rendering
+              {checkedDevFolders &&
+              checkedDevFolders[checkedBatchFolders[index]]
+                ? checkedDevFolders[checkedBatchFolders[index]]
+                : []}
+            </h6> */}
             <NameContainer
               key={index}
               arrNames={devFolderNames[index]}
-              // arrCheckedNames={
-              //   checkedDevFolderNames && checkedDevFolderNames[index]
-              //     ? checkedDevFolderNames[index]
-              //     : []
-              // }
+              arrCheckedNames={
+                checkedDevFolders &&
+                checkedDevFolders[checkedBatchFolders[index]]
+                  ? checkedDevFolders[checkedBatchFolders[index]]
+                  : []
+              }
               updateCheckedNames={(data) => updateCheckedNames(index, data)}
             ></NameContainer>
           </div>

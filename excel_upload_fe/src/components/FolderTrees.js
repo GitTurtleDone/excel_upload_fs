@@ -6,8 +6,8 @@ import SBDFolder from "./Folders/SBDFolder";
 
 function FolderTrees({ folderTrees, folderTreeNames }) {
   const [checkedBatchFolders, setCheckedBatchFolders] = useState([]);
-  const [checkedDevFolders, setCheckedDevFolders] = useState([]);
-  const [checkedSBDFolders, setCheckedSBDFolders] = useState([]);
+  const [checkedDevFolders, setCheckedDevFolders] = useState({});
+  const [checkedSBDFolders, setCheckedSBDFolders] = useState({});
   const updateCheckedBatchFolders = (data) => {
     setCheckedBatchFolders(data);
     // const tempObj = { ...checkedDevFolders };
@@ -26,11 +26,11 @@ function FolderTrees({ folderTrees, folderTreeNames }) {
   };
   const updateCheckedDevFolders = (data) => {
     setCheckedDevFolders(data);
-    // console.log(`Checked Dev Folders: `, data);
+    console.log(`In Folder trees, checkedDevFolders: `, data);
   };
   const updateCheckedSBDFolders = (data) => {
-    //setCheckedSBDFolders(data);
-    console.log(`Checked SBD Folders: `, data);
+    setCheckedSBDFolders(data);
+    console.log(`Checked SBD Folders after clicked: `, data);
   };
   return (
     <div className="folderTreeContainer">
@@ -51,6 +51,7 @@ function FolderTrees({ folderTrees, folderTreeNames }) {
         folderTrees={folderTrees}
         checkedBatchFolders={checkedBatchFolders}
         checkedDevFolders={checkedDevFolders}
+        checkedSBDFolders={checkedSBDFolders}
         updateCheckedSBDFolders={updateCheckedSBDFolders}
       ></SBDFolder>
     </div>
