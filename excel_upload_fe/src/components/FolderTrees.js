@@ -45,7 +45,9 @@ function FolderTrees({ folderTrees, folderTreeNames }) {
         folderTrees={folderTrees}
         checkedBatchFolders={checkedBatchFolders}
         checkedDevFolders={checkedDevFolders}
+        checkedSBDFolders={checkedSBDFolders}
         updateCheckedDevFolders={updateCheckedDevFolders}
+        updateCheckedSBDFolders={updateCheckedSBDFolders}
       ></DevFolder>
       <SBDFolder
         folderTrees={folderTrees}

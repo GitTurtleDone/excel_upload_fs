@@ -6,7 +6,9 @@ function DevFolder({
   folderTrees,
   checkedBatchFolders,
   checkedDevFolders,
+  checkedSBDFolders,
   updateCheckedDevFolders,
+  updateCheckedSBDFolders,
 }) {
   // const [checkedDevFolderNames, setCheckedDevFolderNames] =
   //   useState(checkedDevFolders);
@@ -20,8 +22,42 @@ function DevFolder({
     });
 
     updateCheckedDevFolders(tempObj);
-    //setCheckedDevFolderNames(tempObj);
     console.log("In Dev Folder, checked Dev Folder Names: ", tempObj);
+    const tempObj1 = { ...checkedSBDFolders };
+    Object.entries(tempObj1).forEach(
+      ([batchFolderName, batchFolderSubFolders]) => {
+        if (!checkedBatchFolders.includes(batchFolderName))
+          delete tempObj1[batchFolderName];
+        else {
+          if (Object.entries(batchFolderSubFolders)) {
+            Object.entries(batchFolderSubFolders)(
+              ([devFolderName, devFolderSubFolders]) => {
+                if (
+                  !checkedBatchFolders[batchFolderName].includes(devFolderName)
+                ) {
+                  delete tempObj1[batchFolderName][devFolderName];
+                }
+              }
+            );
+          }
+          // if (
+          //   Object.keys(value).length === 0 &&
+          //   tempObj1[key].constructor === Object
+          // )
+          //   delete tempObj1[key];
+          // if (Array.isArray(value) && value.length === 0) delete tempObj1[key];
+          // else if (Object.entries(value))
+          //   Object.entries(value).forEach(([key2, value2]) => {
+          //     // console.log(`Went in key2 ${key2}  `);
+          //     if (Array.isArray(value2) && value2.length === 0) {
+          //       //console.log(`Went in value2 ${value2}  `);
+          //       delete tempObj1[key][key2];
+          //     }
+          //   });
+        }
+      }
+    );
+    updateCheckedSBDFolders(tempObj1);
     //somehow using prevCheckedDevFolderNames gave some small bugs
     // setCheckedDevFolderNames((prevCheckedDevFolderNames) => {
     //   const tempObj = { ...prevCheckedDevFolderNames };

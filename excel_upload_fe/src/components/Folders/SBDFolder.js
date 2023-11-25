@@ -190,10 +190,10 @@ function SBDFolder({
                 {checkedSBDFolders &&
                 checkedSBDFolders[checkedBatchFolders[index1]]
                   ? checkedSBDFolders[checkedBatchFolders[index1]][
-                      checkedDevFolders[checkedBatchFolders[index1][index2]]
+                      checkedDevFolders[checkedBatchFolders[index1]][index2]
                     ]
                     ? checkedSBDFolders[checkedBatchFolders[index1]][
-                        checkedDevFolders[checkedBatchFolders[index1][index2]]
+                        checkedDevFolders[checkedBatchFolders[index1]][index2]
                       ]
                     : []
                   : []}
@@ -210,9 +210,7 @@ function SBDFolder({
                       ? checkedSBDFolders[checkedBatchFolders[index1]][
                           checkedDevFolders[checkedBatchFolders[index1]][index2]
                         ]
-                      : checkedSBDFolders[checkedBatchFolders[index1]][
-                          checkedDevFolders[checkedBatchFolders[index1]]
-                        ]
+                      : []
                     : []
                 }
                 // arrCheckedNames={["B15", "C08"]}
