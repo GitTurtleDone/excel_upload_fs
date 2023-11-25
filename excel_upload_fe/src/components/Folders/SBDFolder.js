@@ -6,27 +6,54 @@ function SBDFolder({
   folderTrees,
   checkedBatchFolders,
   checkedDevFolders,
+  checkedSBDFolders,
   updateCheckedSBDFolders,
 }) {
-  const checkedSBDFolders = Array.from({ length: checkedDevFolders }, () =>
-    checkedDevFolders.forEach((folder) =>
-      Array.from({ length: folder }, () => [])
-    )
-  );
+  const [checkedSBDFolderNames, setCheckedSBDFolderNames] =
+    useState(checkedSBDFolders);
   const updateCheckedNames = (index1, index2, data) => {
-    // checkedSBDFolders[index1][index2] = data;
-    // updateCheckedSBDFolders(checkedSBDFolders);
-    console.log(data);
+    setCheckedSBDFolderNames((prevCheckedSBDFolderNames) => {
+      const tempObj = { ...prevCheckedSBDFolderNames };
+      if (checkedDevFolders && checkedBatchFolders[index1]) {
+        if (!tempObj[Object.keys(checkedDevFolders)[index1]]) {
+          tempObj[Object.keys(checkedDevFolders)[index1]] = {};
+        }
+      }
+      if (checkedDevFolders[Object.keys(checkedDevFolders)[index1]][index2]) {
+        tempObj[Object.keys(checkedDevFolders)[index1]][
+          checkedDevFolders[Object.keys(checkedDevFolders)[index1]][index2]
+        ] = data;
+      } else {
+        tempObj[Object.keys(checkedDevFolders)[index1]][
+          checkedDevFolders[Object.keys(checkedDevFolders)[index1]]
+        ] = data;
+      }
+
+      Object.entries(tempObj).forEach(([key, value]) => {
+        if (!checkedBatchFolders.includes(key)) delete tempObj[key];
+        else {
+          if (
+            Object.keys(value).length === 0 &&
+            tempObj[key].constructor === Object
+          )
+            delete tempObj[key];
+          if (Array.isArray(value) && value.length === 0) delete tempObj[key];
+          else if (Object.entries(value))
+            Object.entries(value).forEach(([key2, value2]) => {
+              console.log(`Went in key2 ${key2}  `);
+              if (Array.isArray(value2) && value2.length === 0) {
+                console.log(`Went in value2 ${value2}  `);
+                delete tempObj[key][key2];
+              }
+            });
+        }
+      });
+      console.log(`In SBD Folders,  checkedSBDFolders`, tempObj);
+      updateCheckedSBDFolders(tempObj);
+      return tempObj;
+    });
   };
-  if (!folderTrees) {
-    return <div>No folder trees available</div>;
-  }
-  // console.log(
-  //   `Checked Batch Folders: `,
-  //   checkedBatchFolders,
-  //   `\n Checked Dev Folders: `,
-  //   checkedDevFolders
-  // );
+
   const batchFolderNames = [];
   checkedBatchFolders.forEach((checkedBatchFolder, index1) => {
     folderTrees.forEach((folderTree) => {

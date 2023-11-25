@@ -25,9 +25,9 @@ function DevFolder({
       return tempObj;
     });
   };
-  if (!folderTrees) {
-    return <div>No folder trees available</div>;
-  }
+  // if (!folderTrees) {
+  //   return <div>No folder trees available</div>;
+  // }
   const devFolderNames = [];
   checkedBatchFolders.forEach((checkedBatchFolder) => {
     const subFolderNames = [];
