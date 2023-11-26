@@ -26,14 +26,22 @@ function DevFolder({
     const tempObj1 = { ...checkedSBDFolders };
     Object.entries(tempObj1).forEach(
       ([batchFolderName, batchFolderSubFolders]) => {
-        if (!checkedBatchFolders.includes(batchFolderName))
+        if (
+          Object.keys(tempObj) &&
+          !Object.keys(tempObj).includes(batchFolderName)
+        )
           delete tempObj1[batchFolderName];
         else {
           if (Object.entries(batchFolderSubFolders)) {
-            Object.entries(batchFolderSubFolders)(
+            Object.entries(batchFolderSubFolders).forEach(
               ([devFolderName, devFolderSubFolders]) => {
+                console.log(
+                  "In Dev Folder, tempObj[batchFolderName]",
+                  tempObj[batchFolderName]
+                );
                 if (
-                  !checkedBatchFolders[batchFolderName].includes(devFolderName)
+                  Array.isArray(tempObj[batchFolderName]) &&
+                  !tempObj[batchFolderName].includes(devFolderName)
                 ) {
                   delete tempObj1[batchFolderName][devFolderName];
                 }

@@ -47,7 +47,7 @@ function SBDFolder({
           });
       }
     });
-    console.log(`In SBD Folders,  checkedSBDFolders`, tempObj);
+    // console.log(`In SBD Folders,  checkedSBDFolders`, tempObj);
     updateCheckedSBDFolders(tempObj);
     // setCheckedSBDFolderNames((prevCheckedSBDFolderNames) => {
     //   const tempObj = { ...prevCheckedSBDFolderNames };
