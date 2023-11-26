@@ -92,18 +92,26 @@ function SBDFolder({
   };
 
   const batchFolderNames = [];
-  Object.entries(checkedDevFolders).forEach(([key, value]) =>
+  // These codes are to re-order the keys in the checkedDevFolder otherwise it doesnot render
+  // in a proper order
+  const tempDevObj = {};
+  checkedBatchFolders.forEach((batchFolderName) => {
+    if (checkedDevFolders[batchFolderName])
+      tempDevObj[batchFolderName] = checkedDevFolders[batchFolderName];
+  });
+
+  Object.keys(tempDevObj).forEach((key) =>
     folderTrees.forEach((folderTree) => {
       if (folderTree.Name === key) {
-        // console.log("In SBDFolder, folder Tree Names: ", folderTree.Name);
+        console.log("In SBDFolder, folder Tree Names: ", folderTree.Name);
         if (folderTree.Subfolders.length > 0) {
           const devFolderNames = [];
           folderTree.Subfolders.forEach((devFolder) => {
             const sbdFolderNames = [];
-            if (checkedDevFolders && checkedDevFolders[key]) {
+            if (tempDevObj && tempDevObj[key]) {
               if (
-                checkedDevFolders[key].length > 0 &&
-                checkedDevFolders[key].includes(devFolder.Name)
+                tempDevObj[key].length > 0 &&
+                tempDevObj[key].includes(devFolder.Name)
               ) {
                 devFolder.Subfolders.forEach((sbdFolder) =>
                   sbdFolderNames.push(sbdFolder.Name)
@@ -119,6 +127,34 @@ function SBDFolder({
       }
     })
   );
+
+  // Object.keys(checkedDevFolders).forEach((key) =>
+  //   folderTrees.forEach((folderTree) => {
+  //     if (folderTree.Name === key) {
+  //       console.log("In SBDFolder, folder Tree Names: ", folderTree.Name);
+  //       if (folderTree.Subfolders.length > 0) {
+  //         const devFolderNames = [];
+  //         folderTree.Subfolders.forEach((devFolder) => {
+  //           const sbdFolderNames = [];
+  //           if (checkedDevFolders && checkedDevFolders[key]) {
+  //             if (
+  //               checkedDevFolders[key].length > 0 &&
+  //               checkedDevFolders[key].includes(devFolder.Name)
+  //             ) {
+  //               devFolder.Subfolders.forEach((sbdFolder) =>
+  //                 sbdFolderNames.push(sbdFolder.Name)
+  //               );
+  //             }
+  //           }
+
+  //           devFolderNames.push(sbdFolderNames);
+  //           // console.log("In SBD Folder, devFolderNames: ", sbdFolderNames);
+  //         });
+  //         batchFolderNames.push(devFolderNames);
+  //       }
+  //     }
+  //   })
+  // );
   // checkedBatchFolders.forEach((checkedBatchFolder, index1) => {
   //   folderTrees.forEach((folderTree) => {
   //     if (folderTree.Name === checkedBatchFolder) {
@@ -152,6 +188,11 @@ function SBDFolder({
     "In SBD Folder before rendering, batchFolderNames: ",
     batchFolderNames
   );
+  console.log(
+    "In SBD Folder before rendering, checkedDevFolders: ",
+    checkedDevFolders
+  );
+
   console.log(
     "In SBD Folder before rendering, checkedSBDFolders: ",
     checkedSBDFolders

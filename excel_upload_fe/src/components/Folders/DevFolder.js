@@ -29,9 +29,10 @@ function DevFolder({
         if (
           Object.keys(tempObj) &&
           !Object.keys(tempObj).includes(batchFolderName)
-        )
+        ) {
           delete tempObj1[batchFolderName];
-        else {
+          console.log("In dev Folder, Went in tempObj1[batchFolderName]");
+        } else {
           if (Object.entries(batchFolderSubFolders)) {
             Object.entries(batchFolderSubFolders).forEach(
               ([devFolderName, devFolderSubFolders]) => {
@@ -43,6 +44,9 @@ function DevFolder({
                   Array.isArray(tempObj[batchFolderName]) &&
                   !tempObj[batchFolderName].includes(devFolderName)
                 ) {
+                  console.log(
+                    "In dev Folder, Went in tempObj1[batchFolderName][devFolderName]"
+                  );
                   delete tempObj1[batchFolderName][devFolderName];
                 }
               }

@@ -26,7 +26,7 @@ function FolderTrees({ folderTrees, folderTreeNames }) {
   };
   const updateCheckedDevFolders = (data) => {
     setCheckedDevFolders(data);
-    console.log(`In Folder trees, checkedDevFolders: `, data);
+    console.log(`In Folder trees, checkedDevFolders after clicked: `, data);
   };
   const updateCheckedSBDFolders = (data) => {
     setCheckedSBDFolders(data);
