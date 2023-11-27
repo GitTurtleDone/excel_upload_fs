@@ -12,11 +12,26 @@ function NameContainer({ arrNames, arrCheckedNames, updateCheckedNames }) {
     let tempArr1 = arrNames.filter((arrName) => tempArr.includes(arrName));
     setCheckedFolderNames(tempArr1);
     updateCheckedNames(tempArr1);
-    setSelectAll(arrNames === tempArr1);
+    setSelectAll(
+      () =>
+        Array.isArray(arrNames) &&
+        Array.isArray(tempArr1) &&
+        arrNames.every((arrName) => tempArr1.includes(arrName))
+    );
+    // console.log(
+    //   `In Name Container: arrNames === tempArr1, ${
+    //     arrNames === tempArr1
+    //   }, arrNames ${arrNames}, tempArr1 ${tempArr1}`
+    // );
   };
 
   arrNames = Array.isArray(arrNames) ? arrNames : [arrNames];
-  const [selectAll, setSelectAll] = useState(false);
+  const [selectAll, setSelectAll] = useState(
+    () =>
+      Array.isArray(arrNames) &&
+      Array.isArray(arrCheckedNames) &&
+      arrNames.every((arrName) => arrCheckedNames.includes(arrName))
+  );
   const handleSelectAll = (selectAll) => {
     setSelectAll(!selectAll);
     if (!selectAll) updateCheckedNames(arrNames);

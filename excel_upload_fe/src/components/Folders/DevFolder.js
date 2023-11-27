@@ -31,22 +31,22 @@ function DevFolder({
           !Object.keys(tempObj).includes(batchFolderName)
         ) {
           delete tempObj1[batchFolderName];
-          console.log("In dev Folder, Went in tempObj1[batchFolderName]");
+          // console.log("In dev Folder, Went in tempObj1[batchFolderName]");
         } else {
           if (Object.entries(batchFolderSubFolders)) {
             Object.entries(batchFolderSubFolders).forEach(
               ([devFolderName, devFolderSubFolders]) => {
-                console.log(
-                  "In Dev Folder, tempObj[batchFolderName]",
-                  tempObj[batchFolderName]
-                );
+                // console.log(
+                //   "In Dev Folder, tempObj[batchFolderName]",
+                //   tempObj[batchFolderName]
+                // );
                 if (
                   Array.isArray(tempObj[batchFolderName]) &&
                   !tempObj[batchFolderName].includes(devFolderName)
                 ) {
-                  console.log(
-                    "In dev Folder, Went in tempObj1[batchFolderName][devFolderName]"
-                  );
+                  // console.log(
+                  //   "In dev Folder, Went in tempObj1[batchFolderName][devFolderName]"
+                  // );
                   delete tempObj1[batchFolderName][devFolderName];
                 }
               }

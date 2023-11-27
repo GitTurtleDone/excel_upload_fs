@@ -141,7 +141,7 @@ function SBDFolder({
   Object.keys(tempDevObj).forEach((key) =>
     folderTrees.forEach((folderTree) => {
       if (folderTree.Name === key) {
-        console.log("In SBDFolder, folder Tree Names: ", folderTree.Name);
+        // console.log("In SBDFolder, folder Tree Names: ", folderTree.Name);
         if (folderTree.Subfolders.length > 0) {
           const devFolderNames = [];
           folderTree.Subfolders.forEach((devFolder) => {
@@ -171,7 +171,7 @@ function SBDFolder({
   Object.keys(tempDevObj).forEach((key) =>
     folderTrees.forEach((folderTree) => {
       if (folderTree.Name === key) {
-        console.log("In SBDFolder, folder Tree Names: ", folderTree.Name);
+        // console.log("In SBDFolder, folder Tree Names: ", folderTree.Name);
         batchFolderNamesObj[key] = {};
         if (folderTree.Subfolders.length > 0) {
           // let devFolderNames = {};
@@ -279,23 +279,23 @@ function SBDFolder({
 
   //   // console.log("In SBD Folder, batchFolderNames: ", batchFolderNames);
   // });
-  console.log(
-    "In SBD Folder before rendering, batchFolderNames: ",
-    batchFolderNames
-  );
-  console.log(
-    "In SBD Folder before rendering, checkedDevFolders: ",
-    checkedDevFolders
-  );
+  // console.log(
+  //   "In SBD Folder before rendering, batchFolderNames: ",
+  //   batchFolderNames
+  // );
+  // console.log(
+  //   "In SBD Folder before rendering, checkedDevFolders: ",
+  //   checkedDevFolders
+  // );
 
-  console.log(
-    "In SBD Folder before rendering, checkedSBDFolders: ",
-    checkedSBDFolders
-  );
-  console.log(
-    "In SBD Folder before rendering, batchFolderNamesObj: ",
-    batchFolderNamesObj
-  );
+  // console.log(
+  //   "In SBD Folder before rendering, checkedSBDFolders: ",
+  //   checkedSBDFolders
+  // );
+  // console.log(
+  //   "In SBD Folder before rendering, batchFolderNamesObj: ",
+  //   batchFolderNamesObj
+  // );
   // return <h6> under construction</h6>;
 
   return (
