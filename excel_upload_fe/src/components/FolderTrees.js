@@ -26,20 +26,22 @@ function FolderTrees({ folderTrees, folderTreeNames }) {
   };
   const updateCheckedDevFolders = (data) => {
     setCheckedDevFolders(data);
-    console.log(`In Folder trees, checkedDevFolders after clicked: `, data);
+    // console.log(`In Folder trees, checkedDevFolders after clicked: `, data);
   };
   const updateCheckedSBDFolders = (data) => {
     setCheckedSBDFolders(data);
-    console.log(`Checked SBD Folders after clicked: `, data);
+    // console.log(`Checked SBD Folders after clicked: `, data);
   };
   return (
     <div className="folderTreeContainer">
       <BatchFolder
         folderTrees={folderTrees}
         checkedBatchFolders={checkedBatchFolders}
-        updateCheckedBatchFolders={updateCheckedBatchFolders}
         checkedDevFolders={checkedDevFolders}
+        checkedSBDFolders={checkedSBDFolders}
+        updateCheckedBatchFolders={updateCheckedBatchFolders}
         updateCheckedDevFolders={updateCheckedDevFolders}
+        updateCheckedSBDFolders={updateCheckedSBDFolders}
       ></BatchFolder>
       <DevFolder
         folderTrees={folderTrees}
