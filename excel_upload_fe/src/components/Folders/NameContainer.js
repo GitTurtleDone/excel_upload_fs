@@ -12,12 +12,26 @@ function NameContainer({ arrNames, arrCheckedNames, updateCheckedNames }) {
     let tempArr1 = arrNames.filter((arrName) => tempArr.includes(arrName));
     setCheckedFolderNames(tempArr1);
     updateCheckedNames(tempArr1);
+    setSelectAll(arrNames === tempArr1);
   };
 
   arrNames = Array.isArray(arrNames) ? arrNames : [arrNames];
+  const [selectAll, setSelectAll] = useState(false);
+  const handleSelectAll = (selectAll) => {
+    setSelectAll(!selectAll);
+    if (!selectAll) updateCheckedNames(arrNames);
+    else updateCheckedNames([]);
+  };
   //console.log(`In Name Cointainer, arrCheckedNames: `, arrCheckedNames);
   return (
     <div className="nameContainer">
+      <input
+        type="checkbox"
+        key="selectAll"
+        checked={selectAll}
+        onChange={() => handleSelectAll(selectAll)}
+      />
+      Select All
       {arrNames.map((folderName, index) => (
         <div className="folderLineContainer">
           <input
