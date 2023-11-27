@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import axios, { AxiosResponse } from "axios";
 
-function OpenFolder() {
+function UploadZipFile({ updateFolderTree }) {
   const [file, setFile] = useState(null);
+  //const [folderTree, setFolderTree] = useState(null);
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
@@ -11,21 +12,18 @@ function OpenFolder() {
   const handleUpload = async () => {
     const formData = new FormData();
     formData.append("file", file);
-
     try {
-      const response = await fetch("https://localhost:7200/UploadZipFile", {
-        method: "POST",
-        body: formData,
-      });
-
-      if (response.ok) {
-        console.log("File uploaded successfully");
-        const jsonFolderTree = await response.json();
-        console.log(jsonFolderTree);
-      } else {
-        console.error("File upload failed");
-      }
+      const response = await axios.post(
+        "https://localhost:7200/UploadZipFile",
+        formData
+      );
+      // Handle the successful response here
+      console.log("Data received:", response.data);
+      console.log("Name in Upload Zip File", response.data["Name"]);
+      //setFolderTree(response.data);
+      updateFolderTree(response.data);
     } catch (error) {
+      // Handle any errors here
       console.error("Error:", error);
     }
   };
@@ -38,4 +36,4 @@ function OpenFolder() {
   );
 }
 
-export default OpenFolder;
+export default UploadZipFile;

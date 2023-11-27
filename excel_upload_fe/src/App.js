@@ -1,37 +1,37 @@
 import React, { useState } from "react";
 import axios, { AxiosResponse } from "axios";
-import OpenFolder from "./components/OpenFolder";
+//import OpenFolder from "./components/UploadZipFile";
+import UploadZipFile from "./components/UploadZipFile";
+import FolderTrees from "./components/FolderTrees";
 
 function App() {
-  const [folderPath, setFolderPath] = useState("");
-  const handleClick = () => {
-    // fetch("http://localhost:5208/OpenFolder")
-    //   //.then(response => response.json()) // Make an HTTP request to the backend endpoint
-    //   .then(({ folderPath } = response.json())); // Extract the folder path from the response JSON
+  const [folderTrees, setFolderTrees] = useState([]);
 
-    axios
-      .get("https://localhost:7200/OpenFolder")
-      .then((response) => {
-        //const { folderPath } = response.data.folderPath; // Assuming the response has a property named "folderPath"
-        // Use the folderPath in your React component as needed
-        console.log(response.data.FolderPath);
-        setFolderPath(response.data.folderPath);
-      })
-      .catch((error) => {
-        // Handle errors
-        console.error(error);
-      });
-
-    // Do something with the selected folder path
+  const updateFolderTree = async (data) => {
+    const exists = folderTrees.some(
+      (folderTree) => folderTree.Name === data.Name
+    );
+    if (!exists)
+      setFolderTrees((prevFolderTrees) => [...prevFolderTrees, data]);
   };
 
-  const handleInputChange = () => {
-    setFolderPath(folderPath);
+  const [uploadFrame, setUploadFrame] = useState(1);
+  const addUploadFrame = () => {
+    setUploadFrame((prevUploadFrame) => prevUploadFrame + 1);
+  };
+  const removeUploadFrame = () => {
+    setUploadFrame((prevUploadFrame) => prevUploadFrame - 1);
   };
 
   return (
     <div>
-      <OpenFolder />
+      <button onClick={addUploadFrame}>+</button>
+      <button onClick={removeUploadFrame}>-</button>
+      {Array.from({ length: uploadFrame }).map((_, index) => (
+        <UploadZipFile key={index} updateFolderTree={updateFolderTree} />
+      ))}
+
+      <FolderTrees folderTrees={folderTrees} />
     </div>
   );
 }
