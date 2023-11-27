@@ -16,6 +16,7 @@ function NameContainer({ arrNames, arrCheckedNames, updateCheckedNames }) {
       () =>
         Array.isArray(arrNames) &&
         Array.isArray(tempArr1) &&
+        arrNames.length > 0 &&
         arrNames.every((arrName) => tempArr1.includes(arrName))
     );
     // console.log(
@@ -30,6 +31,7 @@ function NameContainer({ arrNames, arrCheckedNames, updateCheckedNames }) {
     () =>
       Array.isArray(arrNames) &&
       Array.isArray(arrCheckedNames) &&
+      arrNames.length > 0 &&
       arrNames.every((arrName) => arrCheckedNames.includes(arrName))
   );
   const handleSelectAll = (selectAll) => {
