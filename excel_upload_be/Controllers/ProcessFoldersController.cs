@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
-using OfficeOpenXml;
-using OfficeOpenXml.Style;
+// using OfficeOpenXml;
+// using OfficeOpenXml.Style;
 using System.Globalization;
 using System.Threading;
 
@@ -21,7 +21,7 @@ string filePath = "C:\\Users\\gtd19\\" +
 
 Console.WriteLine(filePath);
 */
-
+/*
 class Program
 {
     static void Main()
@@ -109,6 +109,7 @@ class Program
     }
 
 }
+*/
 
 public class ComparisonFolder
 {
