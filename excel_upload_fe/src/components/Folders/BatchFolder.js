@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./Folder.css";
 import NameContainer from "./NameContainer";
 import DevFolder from "./DevFolder";
+import axios, { AxiosResponse } from "axios";
 
 // import HighlightableTextArea from "./HighlightableTextArea";
 // import "codemirror/lib/codemirror.css";
@@ -25,20 +26,6 @@ function BatchFolder({
     useState(checkedBatchFolders);
   const updateCheckedNames = (data) => {
     updateCheckedBatchFolders(data);
-    // setCheckedDevFolderNames((prevCheckedDevFolderNames) => {
-    //   const tempObj = { ...prevCheckedDevFolderNames };
-    //   Object.entries(tempObj).forEach(([key, value]) => {
-    //     if (!data.includes(key)) {
-    //       delete tempObj[key];
-    //     }
-    //     if (Array.isArray(value) && value.length === 0) delete tempObj[key];
-    //   });
-
-    //   console.log("In Batch Folders, checked Dev Folder Names: ", tempObj);
-
-    //   updateCheckedDevFolders(tempObj);
-    //   return tempObj;
-    // });
     const tempObj = { ...checkedDevFolders };
     Object.entries(tempObj).forEach(([key, value]) => {
       if (!data.includes(key)) {
@@ -48,7 +35,6 @@ function BatchFolder({
     });
 
     console.log("In Batch Folders, checked Dev Folder Names: ", tempObj);
-    // setCheckedDevFolderNames(tempObj);
     updateCheckedDevFolders(tempObj);
 
     const objTempSBDFolders = { ...checkedSBDFolders };
@@ -67,11 +53,27 @@ function BatchFolder({
   };
 
   const folderTreeNames = folderTrees.map((folderTree) => folderTree.Name);
+  const processBatchFolder = async () => {
+    try {
+      const response = await axios
+        .post("https://localhost:7200/ProcessFolders", checkedBatchFolders)
+        .then((response) => {
+          console.log("Response from ProcessBatchFolder ", response.data);
+        })
+        .catch((error) => {
+          console.error("Errors in axios: ", error);
+        });
+    } catch (error) {
+      console.error("Processing batch folder error: ", error);
+    }
+  };
 
   return (
     <div>
       <div>
-        <button className="processButton">Process</button>
+        <button className="processButton" onClick={processBatchFolder}>
+          Process
+        </button>
         <h6>Batch Level Folders</h6>
       </div>
 
