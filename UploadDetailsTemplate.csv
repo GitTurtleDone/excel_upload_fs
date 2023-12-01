@@ -1,0 +1,35 @@
+C-V Sweep Mod,CVbIV,10,1
+I_V Diode Full wo PowComp,Full,7,1
+I_V Diode Full,Full,7,1
+I_V Diode For,ForNRev,7,1
+I_V Diode For wo PowComp,ForNRevWO,7,1
+I_V Diode Rev,ForNRev,7,4
+I_V Diode Rev,ForNRevWO,7,4
+I_V Diode For 4V,ForNRev4V,7,1
+I_V Diode Rev 4V,ForNRev4V,7,4
+I_V Diode For 5V,ForNRev5V,7,1
+I_V Diode Rev 5V,ForNRev5V,7,4
+I_V Diode For 6V,ForNRev6V,7,1
+I_V Diode Rev 6V,ForNRev6V,7,4
+I_V Diode Rev 100 V,Rev100,7,1
+I_V Diode Full AfterRev100,FullARev100,7,1
+I_V Diode Full AfterRev100 wo PC,FullARev100WO,7,1
+I_V Diode For AfterRev100,ForNRevARev100,7,1
+I_V Diode For AfterRev100 wo PC,ForNRevARev100WO,7,1
+I_V Diode For AfterRev100 w PC,ForNRevARev100,7,1
+I_V Diode Rev AfterRev100,ForNRevARev100,7,4
+I_V Diode Rev AfterRev100,ForNRevARev100WO,7,4
+C-V Sweep Mod AfterIV,CVaRev100,10,1
+KL For,ForNRevKL,10,1
+KL Rev,ForNRevKL,10,5
+KL For After Rev500,ForNRevARev500KL,10,1
+KL Rev After Rev500,ForNRevARev500KL,10,5
+Pico Rev 500,Rev500,3,1
+I_V Diode Full AfterRev500 wo PC,FullARev500WO,7,1
+I_V Diode For Full After Rev500 wo PowComp,FullARev500WO,7,1
+I_V Diode Full After Rev 500 V,FullARev500,7,1
+I_V Diode For After Rev 500 V,ForNRevARev500,7,1
+I_V Diode For After Rev500 wo PowComp,ForNRevARev500WO,7,1
+I_V Diode Rev After Rev500 wo PowComp,ForNRevARev500,7,4
+I_V Diode Rev After Rev500 wo PowComp,ForNRevARev500WO,7,4
+C-V Sweep Mod After Rev500,CVaRev500,10,1

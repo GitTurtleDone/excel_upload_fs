@@ -53,15 +53,18 @@ function BatchFolder({
   };
 
   const folderTreeNames = folderTrees.map((folderTree) => folderTree.Name);
-  const processBatchFolder = async () => {
+  const processBatchFolders = async () => {
     try {
       const response = await axios
-        .post("https://localhost:7200/ProcessFolders", checkedBatchFolders)
+        .post(
+          "https://localhost:7200/ProcessFolders/PostProcessBatchFolders",
+          checkedBatchFolders
+        )
         .then((response) => {
           console.log("Response from ProcessBatchFolder ", response.data);
         })
         .catch((error) => {
-          console.error("Errors in axios: ", error);
+          console.error("Errors in axios BatchFolder.js: ", error);
         });
     } catch (error) {
       console.error("Processing batch folder error: ", error);
@@ -71,7 +74,7 @@ function BatchFolder({
   return (
     <div>
       <div>
-        <button className="processButton" onClick={processBatchFolder}>
+        <button className="processButton" onClick={processBatchFolders}>
           Process
         </button>
         <h6>Batch Level Folders</h6>

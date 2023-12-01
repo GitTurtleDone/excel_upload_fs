@@ -20,20 +20,18 @@ namespace excel_upload_be.Controllers;
 public class ProcessFoldersController : ControllerBase
 {
     
-    private readonly IFolderTreeService _folderTreeService;
-    private readonly ExcelUploadContext _DBContext;
-    public ProcessFoldersController(IFolderTreeService folderTreeService, ExcelUploadContext dbContext)
+    private readonly IFolderTreeService _processFolderService;
+    public ProcessFoldersController(IProcessFoldersService processFoldersService)
     {
-        _folderTreeService = folderTreeService;
-        _DBContext = dbContext;
+        _processFolderService = processFoldersService;
     }
     
-    [HttpPost(Name = "PostProcessBatchFolders")]
+    [HttpPost("PostProcessBatchFolders")]
     
     public async Task<IActionResult> ProcessBatchFolders([FromBody] List<string> folderTrees)
     {
-        // string publicFolderPath = @"..\..\PublicFolder";
-        // FolderNode folderTree;
+        string publicFolderPath = @"..\..\PublicFolder";
+        FolderNode folderTree;
         
         try
         {
@@ -41,6 +39,27 @@ public class ProcessFoldersController : ControllerBase
             // var file = formCollection.Files[0];
             Console.WriteLine(folderTrees[0]);
             return Ok("Got the folderTrees in .NET");
+
+            
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Internal server error: {ex.Message}");
+        }
+    }
+    [HttpPost("PostProcessDevFolders")]
+    
+    public async Task<IActionResult> ProcessDevFolders([FromBody] List<string> devFolders)
+    {
+        string publicFolderPath = @"..\..\PublicFolder";
+        // FolderNode folderTree;
+        
+        try
+        {
+            // var formCollection = await Request.ReadFormAsync();
+            // var file = formCollection.Files[0];
+            Console.WriteLine($"Received devFolders: {devFolders}");
+            return Ok("Got the devFolders in .NET");
 
             
         }
