@@ -32,6 +32,7 @@ builder.Services.AddDbContext<ExcelUploadContext>(options=>{
     options.UseSqlServer(builder.Configuration.GetConnectionString("conString"));
 });
 builder.Services.AddScoped<IFolderTreeService, FolderTreeService>();
+builder.Services.AddScoped<IProcessDevFoldersService, DeviceFolder>();
 
 var app = builder.Build();
 

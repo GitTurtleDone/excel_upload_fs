@@ -373,7 +373,7 @@ public class ComparisonFolder
     
     }
 }
-public class DeviceFolder
+public class DeviceFolder : IProcessDevFoldersService
 
 {
     public string FolderPath { get; set;}

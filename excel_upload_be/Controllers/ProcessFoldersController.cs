@@ -20,10 +20,10 @@ namespace excel_upload_be.Controllers;
 public class ProcessFoldersController : ControllerBase
 {
     
-    private readonly IFolderTreeService _processFolderService;
-    public ProcessFoldersController(IProcessFoldersService processFoldersService)
+    private readonly IProcessDevFoldersService _processDevFoldersService;
+    public ProcessFoldersController(IProcessDevFoldersService processDevFoldersService)
     {
-        _processFolderService = processFoldersService;
+        _processDevFoldersService = processDevFoldersService;
     }
     
     [HttpPost("PostProcessBatchFolders")]
