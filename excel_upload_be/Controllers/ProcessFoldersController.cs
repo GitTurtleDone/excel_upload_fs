@@ -51,14 +51,47 @@ public class ProcessFoldersController : ControllerBase
     
     public async Task<IActionResult> ProcessDevFolders([FromBody] List<string> devFolders)
     {
-        string publicFolderPath = @"..\..\PublicFolder";
+        string publicFolderPath = @"../../PublicFolder/";
         // FolderNode folderTree;
         
         try
         {
-            // var formCollection = await Request.ReadFormAsync();
-            // var file = formCollection.Files[0];
-            Console.WriteLine($"Received devFolders: {devFolders}");
+            
+            devFolders.ForEach((devFolderPath) => {
+                devFolderPath = publicFolderPath + devFolderPath;
+                Console.WriteLine($"Received devFolder: {devFolderPath}");
+                _processDevFoldersService.FolderPath = devFolderPath;
+                _processDevFoldersService.processDeviceFolder();
+                
+            });
+            
+            return Ok("Got the devFolders in .NET");
+
+            
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Internal server error: {ex.Message}");
+        }
+    }
+    [HttpPost("PostProcessSBDFolders")]
+    
+    public async Task<IActionResult> ProcessSBDFolders([FromBody] List<string> SBDFolders)
+    {
+        string publicFolderPath = @"../../PublicFolder/";
+        // FolderNode folderTree;
+        
+        try
+        {
+            
+            SBDFolders.ForEach((SBDFolderPath) => {
+                SBDFolderPath = publicFolderPath + SBDFolderPath;
+                Console.WriteLine($"Received devFolder: {SBDFolderPath}");
+                _processDevFoldersService.FolderPath = SBDFolderPath;
+                _processDevFoldersService.processDeviceFolder();
+                
+            });
+            
             return Ok("Got the devFolders in .NET");
 
             
