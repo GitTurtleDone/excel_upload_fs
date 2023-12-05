@@ -33,6 +33,7 @@ builder.Services.AddDbContext<ExcelUploadContext>(options=>{
 });
 builder.Services.AddScoped<IFolderTreeService, FolderTreeService>();
 builder.Services.AddScoped<IProcessDevFoldersService, DeviceFolder>();
+builder.Services.AddScoped<IProcessSBDFoldersService, SBDFolder>();
 
 var app = builder.Build();
 

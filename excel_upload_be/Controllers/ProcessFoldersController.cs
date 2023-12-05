@@ -21,9 +21,12 @@ public class ProcessFoldersController : ControllerBase
 {
     
     private readonly IProcessDevFoldersService _processDevFoldersService;
-    public ProcessFoldersController(IProcessDevFoldersService processDevFoldersService)
+    private readonly IProcessSBDFoldersService _processSBDFoldersService;
+    public ProcessFoldersController(IProcessDevFoldersService processDevFoldersService,
+    IProcessSBDFoldersService processSBDFoldersService)
     {
         _processDevFoldersService = processDevFoldersService;
+        _processSBDFoldersService = processSBDFoldersService;
     }
     
     [HttpPost("PostProcessBatchFolders")]
@@ -86,9 +89,9 @@ public class ProcessFoldersController : ControllerBase
             
             SBDFolders.ForEach((SBDFolderPath) => {
                 SBDFolderPath = publicFolderPath + SBDFolderPath;
-                Console.WriteLine($"Received devFolder: {SBDFolderPath}");
-                _processDevFoldersService.FolderPath = SBDFolderPath;
-                _processDevFoldersService.processDeviceFolder();
+                Console.WriteLine($"Received SBDFolder: {SBDFolderPath}");
+                // _processSBDFoldersService.FolderPath = SBDFolderPath;
+                // _processSBDFoldersService.processSBDFolder();
                 
             });
             

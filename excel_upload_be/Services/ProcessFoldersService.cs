@@ -543,7 +543,7 @@ public class DeviceFolder : IProcessDevFoldersService
 
 }    
 
-public class SBDFolder
+public class SBDFolder : IProcessSBDFoldersService
 {
     public string FolderPath { get; set;}
     public string WorkbookPath { get; set; }
