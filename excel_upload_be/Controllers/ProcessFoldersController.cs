@@ -31,7 +31,7 @@ public class ProcessFoldersController : ControllerBase
     
     [HttpPost("PostProcessBatchFolders")]
     
-    public async Task<IActionResult> ProcessBatchFolders([FromBody] List<string> folderTrees)
+    public async Task<IActionResult> ProcessBatchFolders([FromBody] List<string> devFolders)
     {
         string publicFolderPath = @"..\..\PublicFolder";
         FolderNode folderTree;
@@ -40,7 +40,7 @@ public class ProcessFoldersController : ControllerBase
         {
             // var formCollection = await Request.ReadFormAsync();
             // var file = formCollection.Files[0];
-            Console.WriteLine(folderTrees[0]);
+            Console.WriteLine(devFolders[0]);
             return Ok("Got the folderTrees in .NET");
 
             

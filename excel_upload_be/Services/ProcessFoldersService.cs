@@ -79,40 +79,11 @@ class Program
         //comparisonFolder.uploadOneSheet((@"../230216_Fab230215/230414_Fab230215IrOxNonRecess/Dev07/E05/Fab230215IrOxNonRecess_Dev07_E05.xlsx", @"Rev500", 3, 1, 509,3),
         //                                 (@"../IrOxOASRecVsNonRec/E_500um.xlsx", @"Rev500I", 3,1,509,3));
         //Comparison stopped
-       
-        
-       
-       
-        
-        
-        
-        
-        
-        
-        
-
-        
-
-        
-        
-        
-        
-       
-        
-
-        
-        
-
-        
-        
-        
-          
     }
 
 }
-*/
-
-public class ComparisonFolder
+*/      
+public class ComparisonFolder: IProcessBatchFoldersService
 {
     public string FolderPath {get; set;}
     public string[] ComparedFolderPaths { get; set;}

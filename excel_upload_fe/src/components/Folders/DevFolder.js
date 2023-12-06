@@ -52,18 +52,17 @@ function DevFolder({
     updateCheckedSBDFolders(tempObj1);
   };
   const devFolderNames = [];
-  checkedBatchFolders.forEach((checkedBatchFolder) => {
-    const subFolderNames = [];
+  checkedBatchFolders.forEach((checkedBatchFolderName) => {
+    const devFolderNamePaths = [];
     folderTrees.forEach((folderTree) => {
-      if (folderTree.Name === checkedBatchFolder) {
+      if (folderTree.Name === checkedBatchFolderName) {
         if (folderTree.Subfolders.length > 0) {
-          folderTree.Subfolders.forEach((subFolder) => {
-            subFolderNames.push(subFolder.Name);
+          folderTree.Subfolders.forEach((devFolder) => {
+            devFolderNames.push(checkedBatchFolderName + "/" + devFolder.Name);
           });
         }
       }
     });
-    devFolderNames.push(subFolderNames);
   });
   const processDevFolders = async () => {
     const objTemp = { ...checkedDevFolders };
@@ -82,12 +81,6 @@ function DevFolder({
         .post(
           "https://localhost:7200/ProcessFolders/PostProcessDevFolders",
           lstDevFolders
-          // JSON.stringify(jsonStrTemp),
-          // {
-          //   headers: {
-          //     "Content-Type": "application/json",
-          //   },
-          // }
         )
         .then((response) => {
           console.log("Response from ProcessDevFolder ", response.data);
@@ -98,17 +91,6 @@ function DevFolder({
     } catch (error) {
       console.error("Processing dev folder error: ", error);
     }
-    // const response = await axios
-    //   .post(
-    //     "https://localhost:7200/ProcessFolders/PostProcessDevFolders",
-    //     checkedDevFolders
-    //   )
-    //   .then((response) =>
-    //     console.log("Response from DevFolder.js: ", response.data)
-    //   )
-    //   .catch((error) =>
-    //     console.log("Error catched in axios DevFolder.js: ", error)
-    //   );
   };
 
   return (

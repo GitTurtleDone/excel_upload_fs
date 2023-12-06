@@ -55,10 +55,28 @@ function BatchFolder({
   const folderTreeNames = folderTrees.map((folderTree) => folderTree.Name);
   const processBatchFolders = async () => {
     try {
+      const devFolderNames = [];
+      checkedBatchFolders.forEach((checkedBatchFolderName) => {
+        const subFolderNames = [];
+        folderTrees.forEach((folderTree) => {
+          if (folderTree.Name === checkedBatchFolderName) {
+            if (folderTree.Subfolders.length > 0) {
+              folderTree.Subfolders.forEach((subFolder) => {
+                devFolderNames.push(
+                  checkedBatchFolderName + "/" + subFolder.Name
+                );
+              });
+            }
+          }
+        });
+      });
+      console.log("In BatchFolder.js: ", devFolderNames);
       const response = await axios
         .post(
-          "https://localhost:7200/ProcessFolders/PostProcessBatchFolders",
-          checkedBatchFolders
+          // send to PostProcessDevFolders because uploading is similar to uploading DevFolders
+          // The only difference is uploading all Dev Folders under the Batch Folder.
+          "https://localhost:7200/ProcessFolders/PostProcessDevFolders",
+          devFolderNames
         )
         .then((response) => {
           console.log("Response from ProcessBatchFolder ", response.data);
