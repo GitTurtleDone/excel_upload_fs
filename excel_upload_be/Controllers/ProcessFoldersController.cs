@@ -90,12 +90,12 @@ public class ProcessFoldersController : ControllerBase
             SBDFolders.ForEach((SBDFolderPath) => {
                 SBDFolderPath = publicFolderPath + SBDFolderPath;
                 Console.WriteLine($"Received SBDFolder: {SBDFolderPath}");
-                // _processSBDFoldersService.FolderPath = SBDFolderPath;
-                // _processSBDFoldersService.processSBDFolder();
+                _processSBDFoldersService.FolderPath = SBDFolderPath;
+                _processSBDFoldersService.processSBDFolder();
                 
             });
             
-            return Ok("Got the devFolders in .NET");
+            return Ok("Got the SBDFolders in .NET");
 
             
         }

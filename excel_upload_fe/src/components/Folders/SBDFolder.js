@@ -98,7 +98,7 @@ function SBDFolder({
       }
     })
   );
-  const processSBDFolder = () => {
+  const processSBDFolders = async () => {
     try {
       let arrTempSBDFolderPaths = [];
       console.log("In SBDFolder.js checkedSBDFolders: ", checkedSBDFolders);
@@ -115,15 +115,24 @@ function SBDFolder({
           );
         }
       );
-      console.log(
-        "In SBDFolder.js arrTempSBDFolderPaths: ",
-        arrTempSBDFolderPaths
-      );
+      // console.log(
+      //   "In SBDFolder.js arrTempSBDFolderPaths: ",
+      //   arrTempSBDFolderPaths
+      // );
 
       // axios.post(
       //   "https://localhost:7200/ProcessFolder/ProcessSBDFolders",
 
       // )
+      const response = await axios
+        .post(
+          "https://localhost:7200/ProcessFolders/PostProcessSBDFolders",
+          arrTempSBDFolderPaths
+        )
+        .then((response) => console.log("Response from C#: ", response.data))
+        .catch((error) =>
+          console.error("Errors in axios SBDFolder.js: ", error)
+        );
     } catch (error) {
       console.log("Error in SBDFolder.js: ", { error });
     }
@@ -132,7 +141,7 @@ function SBDFolder({
   return (
     <div>
       <div>
-        <button className="processButton" onClick={processSBDFolder}>
+        <button className="processButton" onClick={processSBDFolders}>
           Process
         </button>
         <h6>SBD Level Folders</h6>

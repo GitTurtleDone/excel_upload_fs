@@ -66,10 +66,6 @@ function DevFolder({
     devFolderNames.push(subFolderNames);
   });
   const processDevFolders = async () => {
-    // const path = require("path");
-
-    // // Get the folder separation symbol
-    // const folderSeparator = path.sep;
     const objTemp = { ...checkedDevFolders };
     const lstDevFolders = [];
     Object.entries(objTemp).forEach(([batchFolderName, devFolders]) => {
