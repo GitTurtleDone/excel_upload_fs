@@ -30,7 +30,12 @@ function UploadZipFile({ updateFolderTree }) {
 
   return (
     <div>
-      <input type="file" accept=".zip" onChange={handleFileChange} />
+      <input
+        text="Choose .zip file"
+        type="file"
+        accept=".zip"
+        onChange={handleFileChange}
+      />
       <button onClick={handleUpload}>Upload</button>
     </div>
   );

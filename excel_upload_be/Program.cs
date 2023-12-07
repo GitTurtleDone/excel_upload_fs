@@ -32,6 +32,10 @@ builder.Services.AddDbContext<ExcelUploadContext>(options=>{
     options.UseSqlServer(builder.Configuration.GetConnectionString("conString"));
 });
 builder.Services.AddScoped<IFolderTreeService, FolderTreeService>();
+builder.Services.AddScoped<IProcessBatchFoldersService, ComparisonFolder>();
+builder.Services.AddScoped<IProcessDevFoldersService, DeviceFolder>();
+builder.Services.AddScoped<IProcessSBDFoldersService, SBDFolder>();
+
 
 var app = builder.Build();
 

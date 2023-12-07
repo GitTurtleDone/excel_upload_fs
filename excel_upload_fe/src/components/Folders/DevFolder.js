@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./Folder.css";
 import NameContainer from "./NameContainer";
+import axios from "axios";
 
 function DevFolder({
   folderTrees,
@@ -36,53 +37,19 @@ function DevFolder({
           if (Object.entries(batchFolderSubFolders)) {
             Object.entries(batchFolderSubFolders).forEach(
               ([devFolderName, devFolderSubFolders]) => {
-                // console.log(
-                //   "In Dev Folder, tempObj[batchFolderName]",
-                //   tempObj[batchFolderName]
-                // );
                 if (
                   Array.isArray(tempObj[batchFolderName]) &&
                   !tempObj[batchFolderName].includes(devFolderName)
                 ) {
-                  // console.log(
-                  //   "In dev Folder, Went in tempObj1[batchFolderName][devFolderName]"
-                  // );
                   delete tempObj1[batchFolderName][devFolderName];
                 }
               }
             );
           }
-          // if (
-          //   Object.keys(value).length === 0 &&
-          //   tempObj1[key].constructor === Object
-          // )
-          //   delete tempObj1[key];
-          // if (Array.isArray(value) && value.length === 0) delete tempObj1[key];
-          // else if (Object.entries(value))
-          //   Object.entries(value).forEach(([key2, value2]) => {
-          //     // console.log(`Went in key2 ${key2}  `);
-          //     if (Array.isArray(value2) && value2.length === 0) {
-          //       //console.log(`Went in value2 ${value2}  `);
-          //       delete tempObj1[key][key2];
-          //     }
-          //   });
         }
       }
     );
     updateCheckedSBDFolders(tempObj1);
-    //somehow using prevCheckedDevFolderNames gave some small bugs
-    // setCheckedDevFolderNames((prevCheckedDevFolderNames) => {
-    //   const tempObj = { ...prevCheckedDevFolderNames };
-    //   tempObj[checkedBatchFolders[index]] = data;
-    //   Object.entries(tempObj).forEach(([key, value]) => {
-    //     if (!checkedBatchFolders.includes(key)) delete tempObj[key];
-    //     if (Array.isArray(value) && value.length === 0) delete tempObj[key];
-    //   });
-
-    //   updateCheckedDevFolders(tempObj);
-    //   console.log("In Dev Folder, checked Dev Folder Names: ", tempObj);
-    //   return tempObj;
-    // });
   };
   const devFolderNames = [];
   checkedBatchFolders.forEach((checkedBatchFolder) => {
@@ -98,15 +65,41 @@ function DevFolder({
     });
     devFolderNames.push(subFolderNames);
   });
-  // console.log(
-  //   `In Dev Folder before rendering, checkedDevFolders: `,
-  //   checkedDevFolders
-  // );
+  const processDevFolders = async () => {
+    const objTemp = { ...checkedDevFolders };
+    const lstDevFolders = [];
+    Object.entries(objTemp).forEach(([batchFolderName, devFolders]) => {
+      if (devFolders && devFolders.length > 0) {
+        devFolders.forEach((devFolderName) => {
+          let strTemp = batchFolderName + "/" + devFolderName;
+          lstDevFolders.push(strTemp);
+        });
+      }
+    });
+    console.log("Before sending to C#: ", lstDevFolders);
+    try {
+      const response = await axios
+        .post(
+          "https://localhost:7200/ProcessFolders/PostProcessDevFolders",
+          lstDevFolders
+        )
+        .then((response) => {
+          console.log("Response from ProcessDevFolder ", response.data);
+        })
+        .catch((error) => {
+          console.error("Errors in axios DevFolder.js: ", error);
+        });
+    } catch (error) {
+      console.error("Processing dev folder error: ", error);
+    }
+  };
 
   return (
     <div>
       <div>
-        <button className="processButton">Process</button>
+        <button className="processButton" onClick={processDevFolders}>
+          Process
+        </button>
         <h6>Device Level Folders</h6>
       </div>
 
