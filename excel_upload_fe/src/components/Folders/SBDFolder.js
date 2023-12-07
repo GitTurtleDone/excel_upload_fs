@@ -47,6 +47,15 @@ function SBDFolder({
       tempDevObj[batchFolderName] = checkedDevFolders[batchFolderName];
   });
 
+  console.log(
+    "In SBD Folders before rendering checkedBatchFolders: ",
+    checkedBatchFolders
+  );
+  console.log(
+    "In SBD Folders before rendering checkedDevFolders: ",
+    checkedDevFolders
+  );
+
   Object.keys(tempDevObj).forEach((key) =>
     folderTrees.forEach((folderTree) => {
       if (folderTree.Name === key) {
@@ -98,9 +107,10 @@ function SBDFolder({
       }
     })
   );
+
   const processSBDFolders = async () => {
     try {
-      let arrTempSBDFolderPaths = [];
+      const arrTempSBDFolderPaths = [];
       console.log("In SBDFolder.js checkedSBDFolders: ", checkedSBDFolders);
       Object.entries(checkedSBDFolders).forEach(
         ([batchFolderName, batchFolders]) => {
@@ -115,15 +125,7 @@ function SBDFolder({
           );
         }
       );
-      // console.log(
-      //   "In SBDFolder.js arrTempSBDFolderPaths: ",
-      //   arrTempSBDFolderPaths
-      // );
 
-      // axios.post(
-      //   "https://localhost:7200/ProcessFolder/ProcessSBDFolders",
-
-      // )
       const response = await axios
         .post(
           "https://localhost:7200/ProcessFolders/PostProcessSBDFolders",

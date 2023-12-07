@@ -52,17 +52,18 @@ function DevFolder({
     updateCheckedSBDFolders(tempObj1);
   };
   const devFolderNames = [];
-  checkedBatchFolders.forEach((checkedBatchFolderName) => {
-    const devFolderNamePaths = [];
+  checkedBatchFolders.forEach((checkedBatchFolder) => {
+    const subFolderNames = [];
     folderTrees.forEach((folderTree) => {
-      if (folderTree.Name === checkedBatchFolderName) {
+      if (folderTree.Name === checkedBatchFolder) {
         if (folderTree.Subfolders.length > 0) {
-          folderTree.Subfolders.forEach((devFolder) => {
-            devFolderNames.push(checkedBatchFolderName + "/" + devFolder.Name);
+          folderTree.Subfolders.forEach((subFolder) => {
+            subFolderNames.push(subFolder.Name);
           });
         }
       }
     });
+    devFolderNames.push(subFolderNames);
   });
   const processDevFolders = async () => {
     const objTemp = { ...checkedDevFolders };
