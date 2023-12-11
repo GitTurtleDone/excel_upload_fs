@@ -3,6 +3,7 @@ import "./FolderTrees.css";
 import BatchFolder from "./Folders/BatchFolder";
 import DevFolder from "./Folders/DevFolder";
 import SBDFolder from "./Folders/SBDFolder";
+import DropdownMenu from "./Folders/DropdownMenu";
 
 function FolderTrees({ folderTrees, folderTreeNames }) {
   const [checkedBatchFolders, setCheckedBatchFolders] = useState([]);
@@ -58,6 +59,7 @@ function FolderTrees({ folderTrees, folderTreeNames }) {
         checkedSBDFolders={checkedSBDFolders}
         updateCheckedSBDFolders={updateCheckedSBDFolders}
       ></SBDFolder>
+      <DropdownMenu />
     </div>
   );
 }
