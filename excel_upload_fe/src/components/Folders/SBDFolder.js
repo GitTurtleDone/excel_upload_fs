@@ -182,19 +182,6 @@ function SBDFolder({
                         : []
                       : []
                   }
-                  // arrCheckedNames={["B15", "C08"]}
-                  // arrCheckedNames={
-                  //   checkedSBDFolders &&
-                  //   checkedSBDFolders[checkedBatchFolders[index1]]
-                  //     ? checkedSBDFolders[checkedBatchFolders[index1]][
-                  //         checkedDevFolders[checkedBatchFolders[index1][index2]]
-                  //       ]
-                  //       ? checkedSBDFolders[checkedBatchFolders[index1]][
-                  //           checkedDevFolders[checkedBatchFolders[index1][index2]]
-                  //         ]
-                  //       : []
-                  //     : []
-                  // }
                   updateCheckedNames={(data) =>
                     updateCheckedNames(batchFolderName, devFolderName, data)
                   }

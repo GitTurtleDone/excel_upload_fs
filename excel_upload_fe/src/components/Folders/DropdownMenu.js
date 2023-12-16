@@ -2,10 +2,12 @@ import React, { useState } from "react";
 
 const DropdownMenu = () => {
   const allFiles = [
-    { name: "File 1", type: "Image" },
-    { name: "File 2", type: "Document" },
-    { name: "File 3", type: "Image" },
-    { name: "File 4", type: "Video" },
+    { type: "All", extension: "." },
+    { type: "Excel", extension: ".xlsx" },
+    { type: "CSV", extension: ".csv" },
+    { type: "PNG Image", extension: ".png" },
+    { type: "Text", extension: ".txt" },
+
     // Add more files with different types
   ];
 

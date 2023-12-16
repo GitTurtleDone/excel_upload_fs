@@ -4,11 +4,13 @@ import BatchFolder from "./Folders/BatchFolder";
 import DevFolder from "./Folders/DevFolder";
 import SBDFolder from "./Folders/SBDFolder";
 import DropdownMenu from "./Folders/DropdownMenu";
+import DataFile from "./Folders/DataFile";
 
 function FolderTrees({ folderTrees, folderTreeNames }) {
   const [checkedBatchFolders, setCheckedBatchFolders] = useState([]);
   const [checkedDevFolders, setCheckedDevFolders] = useState({});
   const [checkedSBDFolders, setCheckedSBDFolders] = useState({});
+  const [checkedDataFiles, setCheckedDataFiles] = useState({});
   const updateCheckedBatchFolders = (data) => {
     setCheckedBatchFolders(data);
     // const tempObj = { ...checkedDevFolders };
@@ -59,7 +61,13 @@ function FolderTrees({ folderTrees, folderTreeNames }) {
         checkedSBDFolders={checkedSBDFolders}
         updateCheckedSBDFolders={updateCheckedSBDFolders}
       ></SBDFolder>
-      <DropdownMenu />
+      <DataFile
+        folderTrees={folderTrees}
+        checkedBatchFolders={checkedBatchFolders}
+        checkedDevFolders={checkedDevFolders}
+        checkedSBDFolders={checkedSBDFolders}
+        checkedDataFiles={checkedDataFiles}
+      />
     </div>
   );
 }
