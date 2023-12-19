@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const DropdownMenu = () => {
+const DropdownMenu = ({ updateSelectedFileType }) => {
   const allFiles = [
     { type: "All", extension: "." },
     { type: "Excel", extension: ".xlsx" },
@@ -18,7 +18,9 @@ const DropdownMenu = () => {
       : allFiles.filter((file) => file.type === selectedFileType);
 
   const handleFilterChange = (event) => {
-    setSelectedFileType(event.target.value);
+    // setSelectedFileType(event.target.value);
+    // updateSelectedFileType(event.target.value);
+    console.log("In DropdownMenu.js ", event.target.value);
   };
 
   return (
@@ -27,9 +29,10 @@ const DropdownMenu = () => {
         Select File Type:
         <select value={selectedFileType} onChange={handleFilterChange}>
           <option value="All">All</option>
-          <option value="Image">Image</option>
-          <option value="Document">Document</option>
-          <option value="Video">Video</option>
+          <option value="Excel">.xlsx</option>
+          <option value="CSV">.csv</option>
+          <option value="PNG Image">.png</option>
+          <option value="Text">.txt</option>
           {/* Add more file types as needed */}
         </select>
       </label>
