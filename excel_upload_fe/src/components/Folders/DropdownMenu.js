@@ -11,16 +11,16 @@ const DropdownMenu = ({ updateSelectedFileType }) => {
     // Add more files with different types
   ];
 
-  const [selectedFileType, setSelectedFileType] = useState("All");
+  const [selectedFileType, setSelectedFileType] = useState(".xlsx");
   const filteredFiles =
     selectedFileType === "All"
       ? allFiles
       : allFiles.filter((file) => file.type === selectedFileType);
 
   const handleFilterChange = (event) => {
-    // setSelectedFileType(event.target.value);
-    // updateSelectedFileType(event.target.value);
-    console.log("In DropdownMenu.js ", event.target.value);
+    setSelectedFileType(event.target.value);
+    updateSelectedFileType(event.target.value);
+    // console.log("In DropdownMenu.js ", event.target.value);
   };
 
   return (
@@ -29,15 +29,15 @@ const DropdownMenu = ({ updateSelectedFileType }) => {
         Select File Type:
         <select value={selectedFileType} onChange={handleFilterChange}>
           <option value="All">All</option>
-          <option value="Excel">.xlsx</option>
-          <option value="CSV">.csv</option>
-          <option value="PNG Image">.png</option>
-          <option value="Text">.txt</option>
+          <option value=".xlsx">Excel .xlsx</option>
+          <option value=".csv">CSV .csv</option>
+          <option value=".png">PNG Image.png</option>
+          <option value=".txt">Text .txt</option>
           {/* Add more file types as needed */}
         </select>
       </label>
 
-      <div
+      {/* <div
         className="file-container"
         style={{
           maxHeight: "200px",
@@ -53,7 +53,7 @@ const DropdownMenu = ({ updateSelectedFileType }) => {
             {file.name} - {file.type}
           </div>
         ))}
-      </div>
+      </div> */}
     </div>
   );
 };

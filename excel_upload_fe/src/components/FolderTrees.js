@@ -35,6 +35,9 @@ function FolderTrees({ folderTrees, folderTreeNames }) {
     setCheckedSBDFolders(data);
     // console.log(`Checked SBD Folders after clicked: `, data);
   };
+  const updateCheckedDataFiles = (data) => {
+    setCheckedDataFiles(data);
+  };
   return (
     <div className="folderTreeContainer">
       <BatchFolder
@@ -67,6 +70,7 @@ function FolderTrees({ folderTrees, folderTreeNames }) {
         checkedDevFolders={checkedDevFolders}
         checkedSBDFolders={checkedSBDFolders}
         checkedDataFiles={checkedDataFiles}
+        updateCheckedDataFiles={updateCheckedDataFiles}
       />
     </div>
   );

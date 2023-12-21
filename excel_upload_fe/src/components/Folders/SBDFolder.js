@@ -47,14 +47,14 @@ function SBDFolder({
       tempDevObj[batchFolderName] = checkedDevFolders[batchFolderName];
   });
 
-  console.log(
-    "In SBD Folders before rendering checkedBatchFolders: ",
-    checkedBatchFolders
-  );
-  console.log(
-    "In SBD Folders before rendering checkedDevFolders: ",
-    checkedDevFolders
-  );
+  // console.log(
+  //   "In SBD Folders before rendering checkedBatchFolders: ",
+  //   checkedBatchFolders
+  // );
+  // console.log(
+  //   "In SBD Folders before rendering checkedDevFolders: ",
+  //   checkedDevFolders
+  // );
 
   Object.keys(tempDevObj).forEach((key) =>
     folderTrees.forEach((folderTree) => {
@@ -111,7 +111,7 @@ function SBDFolder({
   const processSBDFolders = async () => {
     try {
       const arrTempSBDFolderPaths = [];
-      console.log("In SBDFolder.js checkedSBDFolders: ", checkedSBDFolders);
+      // console.log("In SBDFolder.js checkedSBDFolders: ", checkedSBDFolders);
       Object.entries(checkedSBDFolders).forEach(
         ([batchFolderName, batchFolders]) => {
           Object.entries(batchFolders).forEach(
