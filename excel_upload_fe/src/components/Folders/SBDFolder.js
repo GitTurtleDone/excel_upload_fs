@@ -8,9 +8,12 @@ function SBDFolder({
   checkedBatchFolders,
   checkedDevFolders,
   checkedSBDFolders,
+  checkedDataFiles,
   updateCheckedSBDFolders,
+  updateCheckedDataFiles,
 }) {
   const updateCheckedNames = (batchFolderName, devFolderName, data) => {
+    // update checkedSBDFolders
     const tempObj = { ...checkedSBDFolders };
     if (checkedDevFolders) {
       if (!tempObj[batchFolderName]) {
@@ -38,6 +41,26 @@ function SBDFolder({
     });
 
     updateCheckedSBDFolders(tempObj);
+
+    // update checkedDataFiles
+
+    const tempObj1 = { ...checkedDataFiles };
+    if (
+      tempObj1 &&
+      tempObj1[batchFolderName] &&
+      tempObj1[batchFolderName][devFolderName]
+    ) {
+      Object.keys(tempObj1[batchFolderName][devFolderName]).forEach(
+        (SBDFolderName) => {
+          if (
+            !tempObj[batchFolderName][devFolderName] ||
+            !tempObj[batchFolderName][devFolderName].includes(SBDFolderName)
+          )
+            delete tempObj1[batchFolderName][devFolderName][SBDFolderName];
+        }
+      );
+    }
+    updateCheckedDataFiles(tempObj1);
   };
   const batchFolderNames = [];
 

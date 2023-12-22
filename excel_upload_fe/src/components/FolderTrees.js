@@ -45,24 +45,30 @@ function FolderTrees({ folderTrees, folderTreeNames }) {
         checkedBatchFolders={checkedBatchFolders}
         checkedDevFolders={checkedDevFolders}
         checkedSBDFolders={checkedSBDFolders}
+        checkedDataFiles={checkedDataFiles}
         updateCheckedBatchFolders={updateCheckedBatchFolders}
         updateCheckedDevFolders={updateCheckedDevFolders}
         updateCheckedSBDFolders={updateCheckedSBDFolders}
+        updateCheckedDataFiles={updateCheckedDataFiles}
       ></BatchFolder>
       <DevFolder
         folderTrees={folderTrees}
         checkedBatchFolders={checkedBatchFolders}
         checkedDevFolders={checkedDevFolders}
         checkedSBDFolders={checkedSBDFolders}
+        checkedDataFiles={checkedDataFiles}
         updateCheckedDevFolders={updateCheckedDevFolders}
         updateCheckedSBDFolders={updateCheckedSBDFolders}
+        updateCheckedDataFiles={updateCheckedDataFiles}
       ></DevFolder>
       <SBDFolder
         folderTrees={folderTrees}
         checkedBatchFolders={checkedBatchFolders}
         checkedDevFolders={checkedDevFolders}
         checkedSBDFolders={checkedSBDFolders}
+        checkedDataFiles={checkedDataFiles}
         updateCheckedSBDFolders={updateCheckedSBDFolders}
+        updateCheckedDataFiles={updateCheckedDataFiles}
       ></SBDFolder>
       <DataFile
         folderTrees={folderTrees}

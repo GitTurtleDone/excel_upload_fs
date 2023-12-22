@@ -10,13 +10,16 @@ function FileContainer({
 }) {
   // const arrFileNames = ["File 1", "File 2"];
   const [selectedFileType, setSelectedFileType] = useState(".xlsx");
+  const [selectAll, setSelectAll] = useState(false);
   const updateCheckedNames = (data) => {
     updateCheckedFileNames(data);
+    // console.log("FileContainer checked Data File ", data);
   };
   const updateSelectedFileType = (fileType) => {
     // updateCheckedFileType(fileType);
     setSelectedFileType(fileType);
-    console.log("FileContainer.js ", fileType);
+    updateCheckedFileNames([]);
+    setSelectAll(false);
   };
   const renderFileNames = arrFileNames.filter(
     (fileName) =>
@@ -26,6 +29,7 @@ function FileContainer({
     (checkedFileName) =>
       checkedFileName.includes(selectedFileType) || selectedFileType === "All"
   );
+
   // renderFileNames.filter(
   //   (fileName) =>
   //     fileName.includes(selectedFileType) || selectedFileType === "All"
@@ -34,6 +38,7 @@ function FileContainer({
   //   (checkedFileName) =>
   //     checkedFileName.includes(selectedFileType) || selectedFileType === "All"
   // );
+  // console.log("File Container before rendering", renderCheckedFileNames);
   return (
     <div>
       <DropdownMenu updateSelectedFileType={updateSelectedFileType} />
@@ -41,6 +46,7 @@ function FileContainer({
         arrNames={renderFileNames}
         arrCheckedNames={renderCheckedFileNames}
         updateCheckedNames={updateCheckedNames}
+        selectAllFromParent={selectAll}
       />
     </div>
   );

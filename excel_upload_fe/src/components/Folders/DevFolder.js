@@ -8,40 +8,49 @@ function DevFolder({
   checkedBatchFolders,
   checkedDevFolders,
   checkedSBDFolders,
+  checkedDataFiles,
   updateCheckedDevFolders,
   updateCheckedSBDFolders,
+  updateCheckedDataFiles,
 }) {
   // const [checkedDevFolderNames, setCheckedDevFolderNames] =
   //   useState(checkedDevFolders);
   const updateCheckedNames = (index, data) => {
     //
-    const tempObj = { ...checkedDevFolders };
-    tempObj[checkedBatchFolders[index]] = data;
-    Object.entries(tempObj).forEach(([key, value]) => {
-      if (!checkedBatchFolders.includes(key)) delete tempObj[key];
-      if (Array.isArray(value) && value.length === 0) delete tempObj[key];
+    const objTempCheckedDevFolders = { ...checkedDevFolders };
+    objTempCheckedDevFolders[checkedBatchFolders[index]] = data;
+    Object.entries(objTempCheckedDevFolders).forEach(([key, value]) => {
+      if (!checkedBatchFolders.includes(key))
+        delete objTempCheckedDevFolders[key];
+      if (Array.isArray(value) && value.length === 0)
+        delete objTempCheckedDevFolders[key];
     });
 
-    updateCheckedDevFolders(tempObj);
-    console.log("In Dev Folder, checked Dev Folder Names: ", tempObj);
-    const tempObj1 = { ...checkedSBDFolders };
-    Object.entries(tempObj1).forEach(
+    updateCheckedDevFolders(objTempCheckedDevFolders);
+
+    // update checkedSBDFolders
+    const objTempCheckedSBDFolders = { ...checkedSBDFolders };
+    Object.entries(objTempCheckedSBDFolders).forEach(
       ([batchFolderName, batchFolderSubFolders]) => {
         if (
-          Object.keys(tempObj) &&
-          !Object.keys(tempObj).includes(batchFolderName)
+          Object.keys(objTempCheckedDevFolders) &&
+          !Object.keys(objTempCheckedDevFolders).includes(batchFolderName)
         ) {
-          delete tempObj1[batchFolderName];
-          // console.log("In dev Folder, Went in tempObj1[batchFolderName]");
+          delete objTempCheckedSBDFolders[batchFolderName];
+          // console.log("In dev Folder, Went in objTempCheckedSBDFolders[batchFolderName]");
         } else {
           if (Object.entries(batchFolderSubFolders)) {
             Object.entries(batchFolderSubFolders).forEach(
               ([devFolderName, devFolderSubFolders]) => {
                 if (
-                  Array.isArray(tempObj[batchFolderName]) &&
-                  !tempObj[batchFolderName].includes(devFolderName)
+                  Array.isArray(objTempCheckedDevFolders[batchFolderName]) &&
+                  !objTempCheckedDevFolders[batchFolderName].includes(
+                    devFolderName
+                  )
                 ) {
-                  delete tempObj1[batchFolderName][devFolderName];
+                  delete objTempCheckedSBDFolders[batchFolderName][
+                    devFolderName
+                  ];
                 }
               }
             );
@@ -49,8 +58,30 @@ function DevFolder({
         }
       }
     );
-    updateCheckedSBDFolders(tempObj1);
+    updateCheckedSBDFolders(objTempCheckedSBDFolders);
+
+    // update checkedDataFiles
+    const objTempCheckedDataFiles = { ...checkedDataFiles };
+    if (
+      objTempCheckedDataFiles &&
+      objTempCheckedDataFiles[checkedBatchFolders[index]]
+    ) {
+      Object.keys(objTempCheckedDataFiles[checkedBatchFolders[index]]).forEach(
+        (devFolderName) => {
+          if (
+            !objTempCheckedDevFolders[checkedBatchFolders[index]] ||
+            !data.includes(devFolderName)
+          )
+            delete objTempCheckedDataFiles[checkedBatchFolders[index]][
+              devFolderName
+            ];
+        }
+      );
+    }
+    updateCheckedDataFiles(objTempCheckedDataFiles);
   };
+
+  //-----------------------------------------------------------------
   const devFolderNames = [];
   checkedBatchFolders.forEach((checkedBatchFolder) => {
     const subFolderNames = [];

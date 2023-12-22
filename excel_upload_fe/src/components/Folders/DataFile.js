@@ -18,17 +18,23 @@ function DataFile({
     data
   ) => {
     const objTempCheckedDataFiles = { ...checkedDataFiles };
-    if (!checkedDataFiles[batchFolderName])
-      checkedDataFiles[batchFolderName] = {};
-    if (!checkedDataFiles[batchFolderName][devFolderName])
-      checkedDataFiles[batchFolderName][devFolderName] = {};
-    if (!checkedDataFiles[batchFolderName][devFolderName][SBDFolderName])
-      checkedDataFiles[batchFolderName][devFolderName][SBDFolderName] = {};
-    checkedDataFiles[batchFolderName][devFolderName][SBDFolderName] = data;
+    if (!objTempCheckedDataFiles[batchFolderName])
+      objTempCheckedDataFiles[batchFolderName] = {};
+    if (!objTempCheckedDataFiles[batchFolderName][devFolderName])
+      objTempCheckedDataFiles[batchFolderName][devFolderName] = {};
+    if (!objTempCheckedDataFiles[batchFolderName][devFolderName][SBDFolderName])
+      objTempCheckedDataFiles[batchFolderName][devFolderName][SBDFolderName] =
+        {};
+    objTempCheckedDataFiles[batchFolderName][devFolderName][SBDFolderName] =
+      data;
 
     // Order the objTempCheckedDataFiles according to the folderTrees
     // Order the objTempCheckedDataFiles according to the folderTrees
     updateCheckedDataFiles(objTempCheckedDataFiles);
+    console.log(
+      "DataFile.js objTempCheckedDataFiles ",
+      objTempCheckedDataFiles
+    );
   };
   const processDataFiles = () => {
     console.log("In DataFile.js");
@@ -43,7 +49,7 @@ function DataFile({
     ) {
       if (!objDataFileNames[batchFolder.Name])
         objDataFileNames[batchFolder.Name] = {};
-      //console.log(`DataFile.js `, batchFolder);
+
       batchFolder.Subfolders.forEach((devFolder) => {
         if (
           Object.keys(checkedSBDFolders[batchFolder.Name]) &&
@@ -60,7 +66,6 @@ function DataFile({
                 SBDFolder.Name
               )
             ) {
-              console.log(`DataFile.js Went in here`);
               if (
                 !objDataFileNames[batchFolder.Name][devFolder.Name][
                   SBDFolder.Name
@@ -75,12 +80,12 @@ function DataFile({
                     SBDFolder.Name
                   ].push(fileName)
                 );
-              console.log(
-                `DataFile.js ${batchFolder.Name} ${devFolder.Name} ${SBDFolder.Name}`,
-                objDataFileNames[batchFolder.Name][devFolder.Name][
-                  SBDFolder.Name
-                ]
-              );
+              // console.log(
+              //   `DataFile.js ${batchFolder.Name} ${devFolder.Name} ${SBDFolder.Name}`,
+              //   objDataFileNames[batchFolder.Name][devFolder.Name][
+              //     SBDFolder.Name
+              //   ]
+              // );
             }
           });
         }
