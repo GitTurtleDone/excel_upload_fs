@@ -4,6 +4,7 @@ using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using System.Globalization;
 using System.Threading;
+using excel_upload_be.Models;
 namespace excel_upload_be.Services
 {
 
@@ -85,16 +86,25 @@ class Program
 */      
 public class ComparisonFolder: IProcessBatchFoldersService
 {
-    public string FolderPath {get; set;}
-    public string[] ComparedFolderPaths { get; set;}
-    public string TemplateFolderPath {get; set;}
-    public string TemplatePath {get; set;}
-    public string[] SBDTypes {get; set;}
+    public string? FolderPath {get; set;}
+    public string[]? ComparedFolderPaths { get; set;}
+    public string? TemplateFolderPath {get; set;}
+    public string? TemplatePath {get; set;}
+    public string[]? SBDTypes {get; set;}
     
     public List<string> ComparedWorkbookPaths {get; set;} = new List<string>();
     public List<string> ComparisonUploadDetailPaths {get; set;} = new List<string>();
     public List<DeviceFolder> DeviceFolders {get; set;} = new List<DeviceFolder>();
-
+    private readonly ExcelUploadContext _DBContext;
+    public ComparisonFolder(ExcelUploadContext dbContext)
+    {
+        _DBContext = dbContext;
+    }
+    public void createComparisonUploadDetailCSVFile(List<string> fComparisonExcelFiles, string fComparisonUploadDetailCSVFilePath = "../ComparisonUploadDetailTemplates/A_0050um.csv")
+    {
+        int entryNum = 16; //number of template entries in the CompareDetail table
+        Console.WriteLine($"Went In ProcessFolderService.cs: {fComparisonExcelFiles[0]} ");
+    }
     public void getAllDeviceFolders()
     {
         if (ComparedFolderPaths.Length == 0)
