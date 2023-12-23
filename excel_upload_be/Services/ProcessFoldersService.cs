@@ -5,6 +5,7 @@ using OfficeOpenXml.Style;
 using System.Globalization;
 using System.Threading;
 using excel_upload_be.Models;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 namespace excel_upload_be.Services
 {
 
@@ -103,7 +104,30 @@ public class ComparisonFolder: IProcessBatchFoldersService
     public void createComparisonUploadDetailCSVFile(List<string> fComparisonExcelFiles, string fComparisonUploadDetailCSVFilePath = "../ComparisonUploadDetailTemplates/A_0050um.csv")
     {
         int entryNum = 16; //number of template entries in the CompareDetail table
-        Console.WriteLine($"Went In ProcessFolderService.cs: {fComparisonExcelFiles[0]} ");
+        var templateDetails = _DBContext.ComparisonDetails.Take(2).ToList<ComparisonDetail>();
+        List<ComparisonDetail> uploadDetails = new List<ComparisonDetail>();
+        foreach (var row in templateDetails)
+        {
+            int i = 0;
+            
+            // foreach (var detailValue in row.GetType().GetProperties())
+
+            // {
+            //     rowDetail.Add(detailValue.GetValue(row));
+            // }
+            for (short j = 0; j < fComparisonExcelFiles.Count; j++)
+            {
+                ComparisonDetail rowDetail = row;
+                
+                rowDetail.DStartCol = (short)( row.DStartCol + (row.DStopCol-row.DStopCol) * j); 
+                // tempRowDetail.RemoveAt(0);
+                // uploadDetails.Add(tempRowDetail);
+
+            }
+            i++;
+            
+        }
+        //Console.WriteLine($"ProcessFolderService.cs: {uploadDetails[0][1]} ");
     }
     public void getAllDeviceFolders()
     {

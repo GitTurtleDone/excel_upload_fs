@@ -48,14 +48,18 @@ public class ProcessFoldersController : ControllerBase
         {
             // var formCollection = await Request.ReadFormAsync();
             // var file = formCollection.Files[0];
-            if (comparisonExcelFiles != null) {
+            Console.WriteLine(comparisonExcelFiles);
+            if (comparisonExcelFiles != null && comparisonExcelFiles.Count > 0) {
                 comparisonExcelFiles = comparisonExcelFiles.Select(excelFile => excelFile = publicFolderPath + excelFile).ToList();
                 _processBatchFoldersService.createComparisonUploadDetailCSVFile(comparisonExcelFiles);
-            }
+                return Ok("Got the folderTrees in .NET");
+            } else {
+                Console.WriteLine("No excel files were selected");
+                return Ok("No excel files were selected");}
             //Console.WriteLine(comparisonExcelFiles[0]);
             
             
-            return Ok("Got the folderTrees in .NET");
+            
 
             
         }
