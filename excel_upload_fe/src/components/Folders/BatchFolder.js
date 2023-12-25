@@ -83,7 +83,7 @@ function BatchFolder({
           }
         });
       });
-      console.log("In BatchFolder.js before sending to C#: ", devFolderNames);
+      // console.log("In BatchFolder.js: ", devFolderNames);
       const response = await axios
         .post(
           // send to PostProcessDevFolders because uploading is similar to uploading DevFolders

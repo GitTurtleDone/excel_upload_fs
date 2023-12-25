@@ -111,22 +111,24 @@ public class ComparisonFolder: IProcessBatchFoldersService
         List<List<string>> uploadDetails = new List<List<string>>();
 
         // prepare a list of string to write to an CSV file
-        Dictionary<string,string> dicSBDType = new Dictionary<string, string>
+        Dictionary<char,string> dicSBDType = new Dictionary<char, string>
         {
-            {"A", "A_0050um"},
-            {"B", "B_0100um"},
-            {"C", "C_0200um"},
-            {"D", "D_0300um"},
-            {"E", "E_0500um"},
-            {"F", "F_1000um"},
-            {"R", "R_0250um"},
-            {"S", "S_0250um"}
+            {'A', "A_0050um"},
+            {'B', "B_0100um"},
+            {'C', "C_0200um"},
+            {'D', "D_0300um"},
+            {'E', "E_0500um"},
+            {'F', "F_1000um"},
+            {'R', "R_0250um"},
+            {'S', "S_0250um"}
         };
         string comparisonUploadFolderPath = "../../PublicFolder/";
+        int comparisonUploadFolderPathLimit = 50;
         string SBDFileName = "";
         
         try
         {
+            int i = 0;
             foreach (var row in templateDetails)
             {
                 // Console.WriteLine($"createComparisonUploadDetailCSVFile fComparisonExcelFiles.Count ", fComparisonExcelFiles.Count);
@@ -136,29 +138,33 @@ public class ComparisonFolder: IProcessBatchFoldersService
 
                 // {
                 //     rowDetail.Add(detailValue.GetValue(row));
-                int i = 0;
+                
                 for (short j = 0; j < fComparisonExcelFiles.Count; j++)
                 {
                     // ComparisonDetail rowDetail = (ComparisonDetail)row.MemberwiseClone();
                     //get the path to store the uploadDetail .csv file 
-                    if (i==0) {
+                    if (i==0) 
+                    {
                         int underscoreIndex = fComparisonExcelFiles[j].IndexOf('_');
                         int slashIndex = fComparisonExcelFiles[j].IndexOf('/', underscoreIndex + 1);
-                        if (underscoreIndex != -1 && slashIndex != -1)
-                            if (j != fComparisonExcelFiles.Count-1)
+                        if (underscoreIndex != -1 && slashIndex != -1 && comparisonUploadFolderPath.Length < 50)
+                        {
+                            if (j != (fComparisonExcelFiles.Count-1))
                                 comparisonUploadFolderPath = comparisonUploadFolderPath + fComparisonExcelFiles[j].Substring(underscoreIndex + 1, slashIndex - underscoreIndex -1) + '_';
                             else 
                                 comparisonUploadFolderPath = comparisonUploadFolderPath + fComparisonExcelFiles[j].Substring(underscoreIndex + 1, slashIndex - underscoreIndex -1);
-                        
+                            //Console.WriteLine ($"i: {i}, j: {j}, comparisonUploadFolderPaht: {comparisonUploadFolderPath}" );
+                        };
                         //Console.WriteLine($"underscoreIndex: {underscoreIndex}, slashIndex: {slashIndex}, comparisonUploadFolderPath: {comparisonUploadFolderPath}, fComparisonExcelFiles[j]: {fComparisonExcelFiles[j]}");
                         // get the type of diodes in comparison 
                         // only first selected .xlsx file
                         if (j == 0) {
                             int lastSlashIndex = fComparisonExcelFiles[j].LastIndexOf('/');
                             int secondLastSlashIndex = fComparisonExcelFiles[j].LastIndexOf('/', lastSlashIndex -1);
-                            string SBDType = fComparisonExcelFiles[j]; 
-                            Console.WriteLine(SBDType);
-                            SBDFileName = dicSBDType["A"];
+                            char SBDType = fComparisonExcelFiles[j][secondLastSlashIndex+1]; 
+                            //Console.WriteLine($"SBDType[j]: {SBDType}, lastSlashIndex: {lastSlashIndex}, secondLastSlashIndex: {secondLastSlashIndex}, fComparisonExcelFiles[j]: {fComparisonExcelFiles[j]}");
+                            //Console.WriteLine(SBDType);
+                            SBDFileName = dicSBDType[SBDType];
                         }
                     }
                     ComparisonDetail rowDetail = (ComparisonDetail)Activator.CreateInstance(row.GetType());
@@ -193,14 +199,14 @@ public class ComparisonFolder: IProcessBatchFoldersService
                 i++;
                 
             }
-            Directory.CreateDirectory(Path.GetDirectoryName(comparisonUploadFolderPath));
-            using (StreamWriter writer = new StreamWriter("../../PublicFolder/myCSV.csv"))//comparisonUploadFolderPath + "/" + SBDFileName + ".csv"
+            Directory.CreateDirectory(comparisonUploadFolderPath);
+            using (StreamWriter writer = new StreamWriter(comparisonUploadFolderPath + "/" + SBDFileName + ".csv"))//comparisonUploadFolderPath + "/" + SBDFileName + ".csv"
             {
                 
                 string comparisonSBDFileName =comparisonUploadFolderPath + "/" + SBDFileName + ".xlsx";
                 foreach (List<string> uploadDetail in uploadDetails)
                 {
-                    // uploadDetail[7] = comparisonSBDFileName;
+                    uploadDetail[7] = comparisonSBDFileName;
                     writer.WriteLine(string.Join(",", uploadDetail));
                 }
             }

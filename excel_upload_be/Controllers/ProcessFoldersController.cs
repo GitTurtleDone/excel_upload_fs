@@ -41,7 +41,7 @@ public class ProcessFoldersController : ControllerBase
     
     public async Task<IActionResult> CompareExcelFiles([FromBody] List<string> comparisonExcelFiles)
     {
-        string publicFolderPath = @"";//../../PublicFolder/
+        string publicFolderPath = @"../../PublicFolder/";//
         FolderNode folderTree;
         
         try

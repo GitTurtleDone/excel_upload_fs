@@ -33,7 +33,7 @@ CREATE TABLE ComparisonDetails (
 
 --SELECT * from DiodeDataFiles
 --INSERT into DiodeDataFiles values (2, 'Batch2', 'Dev02', 'A2', 'Forward2.csv')
---INSERT into dbo.ComparisonDetails values('0', '../230216_Fab230215/230414_Fab230215IrOxNonRecess/Dev07/A21/Fab230215IrOxNonRecess_Dev07_A21.xlsx','Rev100',	7,1,511,2,'	../IrOxOASRecVsNonRec/A_0050um.xlsx','Rev100I',	3,1,507,2)
+INSERT into dbo.ComparisonDetails values('0', '../230216_Fab230215/230414_Fab230215IrOxNonRecess/Dev07/A21/Fab230215IrOxNonRecess_Dev07_A21.xlsx','Rev100',	7,1,511,2,'	../IrOxOASRecVsNonRec/A_0050um.xlsx','Rev100I',	3,1,507,2)
 INSERT into dbo.ComparisonDetails values('0', '../230216_Fab230215/230414_Fab230215IrOxNonRecess/Dev07/A21/Fab230215IrOxNonRecess_Dev07_A21.xlsx','Rev100',	7,1,511,1,'	../IrOxOASRecVsNonRec/A_0050um.xlsx','Rev100J',	3,1,507,1)
 INSERT into dbo.ComparisonDetails values('0', '../230216_Fab230215/230414_Fab230215IrOxNonRecess/Dev07/A21/Fab230215IrOxNonRecess_Dev07_A21.xlsx','Rev100',	7,7,511,7,'	../IrOxOASRecVsNonRec/A_0050um.xlsx','Rev100J',	3,2,507,2)
 
@@ -48,10 +48,21 @@ INSERT into dbo.ComparisonDetails values('0', '../230216_Fab230215/230414_Fab230
 INSERT into dbo.ComparisonDetails values('0', '../230216_Fab230215/230414_Fab230215IrOxNonRecess/Dev07/A21/Fab230215IrOxNonRecess_Dev07_A21.xlsx','Rev500',	3,3,509,3,'	../IrOxOASRecVsNonRec/A_0050um.xlsx','Rev500I',	3,2,509,2)
 INSERT into dbo.ComparisonDetails values('0', '../230216_Fab230215/230414_Fab230215IrOxNonRecess/Dev07/A21/Fab230215IrOxNonRecess_Dev07_A21.xlsx','Rev500',	3,1,509,1,'	../IrOxOASRecVsNonRec/A_0050um.xlsx','Rev500J',	3,1,509,1)
 INSERT into dbo.ComparisonDetails values('0', '../230216_Fab230215/230414_Fab230215IrOxNonRecess/Dev07/A21/Fab230215IrOxNonRecess_Dev07_A21.xlsx','Rev500',	3,7,509,7,'	../IrOxOASRecVsNonRec/A_0050um.xlsx','Rev500J',	3,2,509,2)
+
 UPDATE ComparisonDetails
 SET dPath = '../ComparisonExcelTemplates/ComparisonMaster.xlsx'
-WHERE CompareID BETWEEN 1 AND 10
-SELECT * from ComparisonDetails
+WHERE CompareID BETWEEN 1 AND 16
+
+
+INSERT into dbo.ComparisonDetails values('0', '../230216_Fab230215/230414_Fab230215IrOxNonRecess/Dev07/A21/Fab230215IrOxNonRecess_Dev07_A21.xlsx','ForNRevARev500WO',	11,18,1214,19,'../ComparisonExcelTemplates/ComparisonMaster.xlsx','ForNRevARev500J',	3,1,1206,2)
+INSERT into dbo.ComparisonDetails values('0', '../230216_Fab230215/230414_Fab230215IrOxNonRecess/Dev07/A21/Fab230215IrOxNonRecess_Dev07_A21.xlsx','ForNRevARev500WO',	11,18,1214,18,'../ComparisonExcelTemplates/ComparisonMaster.xlsx','ForNRevARev500J',	3,1,1206,1)
+INSERT into dbo.ComparisonDetails values('0', '../230216_Fab230215/230414_Fab230215IrOxNonRecess/Dev07/A21/Fab230215IrOxNonRecess_Dev07_A21.xlsx','ForNRevARev500WO',	11,20,1214,20,'../ComparisonExcelTemplates/ComparisonMaster.xlsx', 'ForNRevARev500J',	3,2,1206,2)
+INSERT into dbo.ComparisonDetails values('0', '../230216_Fab230215/230414_Fab230215IrOxNonRecess/Dev07/A21/Fab230215IrOxNonRecess_Dev07_A21.xlsx','Summary',	5,2,5,24,'../ComparisonExcelTemplates/ComparisonMaster.xlsx', 'Summary',	5,2,5,24)
+INSERT into dbo.ComparisonDetails values('0', '../230216_Fab230215/230414_Fab230215IrOxNonRecess/Dev07/A21/Fab230215IrOxNonRecess_Dev07_A21.xlsx','Summary',	5,28,5,28,'../ComparisonExcelTemplates/ComparisonMaster.xlsx', 'Summary',	5,2,5,28)
+
+UPDATE ComparisonDetails
+SET dStartCol = 28
+WHERE CompareID = 16
 */
 
 SELECT * from ComparisonDetails
