@@ -1,11 +1,6 @@
 import "./Folder.css";
-import React, { useState } from "react";
-function NameContainer({
-  arrNames,
-  arrCheckedNames,
-  updateCheckedNames,
-  selectAllFromParent,
-}) {
+import React, { useState, useEffect } from "react";
+function NameContainer({ arrNames, arrCheckedNames, updateCheckedNames }) {
   // function NameContainer({ arrNames, updateCheckedNames }) {
   const [checkedFolderNames, setCheckedFolderNames] = useState(arrCheckedNames);
   const handleCheckboxChange = (folderName) => {
@@ -39,14 +34,16 @@ function NameContainer({
       arrNames.length > 0 &&
       arrNames.every((arrName) => arrCheckedNames.includes(arrName))
   );
-
+  // const [selectAll, setSelectAll] = useState(false);
   const handleSelectAll = (selectAll) => {
     setSelectAll(!selectAll);
     if (!selectAll) updateCheckedNames(arrNames);
     else updateCheckedNames([]);
     // console.log("NameContainer selectAll ", selectAll);
   };
-  //console.log(`In Name Cointainer, arrCheckedNames: `, arrCheckedNames);
+  // console.log(
+  //   `In Name Cointainer, selectAllFromParent:  ${selectAllFromParent} selectAll: ${selectAll} `
+  // );
   return (
     <div className="nameContainer">
       <input

@@ -46,7 +46,7 @@ function FileContainer({
         arrNames={renderFileNames}
         arrCheckedNames={renderCheckedFileNames}
         updateCheckedNames={updateCheckedNames}
-        selectAllFromParent={selectAll}
+        // selectAllFromParent={selectAll}
       />
     </div>
   );

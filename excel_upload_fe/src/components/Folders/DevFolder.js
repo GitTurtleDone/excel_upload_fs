@@ -15,10 +15,10 @@ function DevFolder({
 }) {
   // const [checkedDevFolderNames, setCheckedDevFolderNames] =
   //   useState(checkedDevFolders);
-  const updateCheckedNames = (index, data) => {
+  const updateCheckedNames = (batchFolderName, data) => {
     //
     const objTempCheckedDevFolders = { ...checkedDevFolders };
-    objTempCheckedDevFolders[checkedBatchFolders[index]] = data;
+    objTempCheckedDevFolders[batchFolderName] = data;
     Object.entries(objTempCheckedDevFolders).forEach(([key, value]) => {
       if (!checkedBatchFolders.includes(key))
         delete objTempCheckedDevFolders[key];
@@ -62,19 +62,14 @@ function DevFolder({
 
     // update checkedDataFiles
     const objTempCheckedDataFiles = { ...checkedDataFiles };
-    if (
-      objTempCheckedDataFiles &&
-      objTempCheckedDataFiles[checkedBatchFolders[index]]
-    ) {
-      Object.keys(objTempCheckedDataFiles[checkedBatchFolders[index]]).forEach(
+    if (objTempCheckedDataFiles && objTempCheckedDataFiles[batchFolderName]) {
+      Object.keys(objTempCheckedDataFiles[batchFolderName]).forEach(
         (devFolderName) => {
           if (
-            !objTempCheckedDevFolders[checkedBatchFolders[index]] ||
+            !objTempCheckedDevFolders[batchFolderName] ||
             !data.includes(devFolderName)
           )
-            delete objTempCheckedDataFiles[checkedBatchFolders[index]][
-              devFolderName
-            ];
+            delete objTempCheckedDataFiles[batchFolderName][devFolderName];
         }
       );
     }
@@ -82,19 +77,33 @@ function DevFolder({
   };
 
   //-----------------------------------------------------------------
-  const devFolderNames = [];
+  // const devFolderNames = [];
+  // checkedBatchFolders.forEach((checkedBatchFolder) => {
+  //   const subFolderNames = [];
+  //   folderTrees.forEach((folderTree) => {
+  //     if (folderTree.Name === checkedBatchFolder) {
+  //       if (folderTree.Subfolders.length > 0) {
+  //         folderTree.Subfolders.forEach((subFolder) => {
+  //           subFolderNames.push(subFolder.Name);
+  //         });
+  //       }
+  //     }
+  //   });
+  //   devFolderNames.push(subFolderNames);
+  // });
+  const devFolderNames = {};
   checkedBatchFolders.forEach((checkedBatchFolder) => {
-    const subFolderNames = [];
-    folderTrees.forEach((folderTree) => {
-      if (folderTree.Name === checkedBatchFolder) {
-        if (folderTree.Subfolders.length > 0) {
-          folderTree.Subfolders.forEach((subFolder) => {
-            subFolderNames.push(subFolder.Name);
+    const devFolders = [];
+    folderTrees.forEach((batchFolderName) => {
+      if (batchFolderName.Name === checkedBatchFolder) {
+        if (batchFolderName.Subfolders.length > 0) {
+          batchFolderName.Subfolders.forEach((subFolder) => {
+            devFolders.push(subFolder.Name);
           });
         }
       }
     });
-    devFolderNames.push(subFolderNames);
+    devFolderNames[checkedBatchFolder] = devFolders;
   });
   const processDevFolders = async () => {
     const objTemp = { ...checkedDevFolders };
@@ -135,33 +144,32 @@ function DevFolder({
       </div>
 
       {(() => {
-        return devFolderNames.map((_, index) => (
-          <div>
-            <h6>
-              {checkedBatchFolders && checkedBatchFolders[index]
-                ? checkedBatchFolders[index]
-                : ""}
-            </h6>
-            {/* <h6>
+        return Object.entries(devFolderNames).map(
+          ([batchFolderName, devFolders]) => (
+            <div>
+              <h6>{batchFolderName}</h6>
+              {/* <h6>
               During rendering
               {checkedDevFolders &&
               checkedDevFolders[checkedBatchFolders[index]]
                 ? checkedDevFolders[checkedBatchFolders[index]]
                 : []}
             </h6> */}
-            <NameContainer
-              key={index}
-              arrNames={devFolderNames[index]}
-              arrCheckedNames={
-                checkedDevFolders &&
-                checkedDevFolders[checkedBatchFolders[index]]
-                  ? checkedDevFolders[checkedBatchFolders[index]]
-                  : []
-              }
-              updateCheckedNames={(data) => updateCheckedNames(index, data)}
-            ></NameContainer>
-          </div>
-        ));
+              <NameContainer
+                key={batchFolderName}
+                arrNames={devFolders}
+                arrCheckedNames={
+                  checkedDevFolders && checkedDevFolders[batchFolderName]
+                    ? checkedDevFolders[batchFolderName]
+                    : []
+                }
+                updateCheckedNames={(data) =>
+                  updateCheckedNames(batchFolderName, data)
+                }
+              ></NameContainer>
+            </div>
+          )
+        );
       })()}
     </div>
   );
