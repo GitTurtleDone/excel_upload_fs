@@ -41,7 +41,7 @@ public class ProcessFoldersController : ControllerBase
     
     public async Task<IActionResult> CompareExcelFiles([FromBody] List<string> comparisonExcelFiles)
     {
-        string publicFolderPath = @"../../PublicFolder/";
+        string publicFolderPath = @"";//../../PublicFolder/
         FolderNode folderTree;
         
         try
@@ -50,7 +50,7 @@ public class ProcessFoldersController : ControllerBase
             // var file = formCollection.Files[0];
             Console.WriteLine(comparisonExcelFiles);
             if (comparisonExcelFiles != null && comparisonExcelFiles.Count > 0) {
-                comparisonExcelFiles = comparisonExcelFiles.Select(excelFile => excelFile = publicFolderPath + excelFile).ToList();
+                comparisonExcelFiles = comparisonExcelFiles.Select(excelFile =>excelFile  = publicFolderPath + excelFile).ToList(); //publicFolderPath +
                 _processBatchFoldersService.createComparisonUploadDetailCSVFile(comparisonExcelFiles);
                 return Ok("Got the folderTrees in .NET");
             } else {

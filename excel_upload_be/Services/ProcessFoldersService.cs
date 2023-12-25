@@ -1,9 +1,11 @@
 ﻿using System;
 using System.IO;
+using System.Reflection;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using System.Globalization;
 using System.Threading;
+using System.Linq;
 using excel_upload_be.Models;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 namespace excel_upload_be.Services
@@ -104,30 +106,111 @@ public class ComparisonFolder: IProcessBatchFoldersService
     public void createComparisonUploadDetailCSVFile(List<string> fComparisonExcelFiles, string fComparisonUploadDetailCSVFilePath = "../ComparisonUploadDetailTemplates/A_0050um.csv")
     {
         int entryNum = 16; //number of template entries in the CompareDetail table
-        var templateDetails = _DBContext.ComparisonDetails.Take(2).ToList<ComparisonDetail>();
-        List<ComparisonDetail> uploadDetails = new List<ComparisonDetail>();
-        foreach (var row in templateDetails)
+        var templateDetails = _DBContext.ComparisonDetails.Take(entryNum).ToList<ComparisonDetail>();
+        // List<string> equalDStartStopEntries = ['Rev100J', 'ForNRevJ', 'Rev500I', 'Rev500J', 'ForNRev500I', 'ForNRev500J'];
+        List<List<string>> uploadDetails = new List<List<string>>();
+
+        // prepare a list of string to write to an CSV file
+        Dictionary<string,string> dicSBDType = new Dictionary<string, string>
         {
-            int i = 0;
-            
-            // foreach (var detailValue in row.GetType().GetProperties())
-
-            // {
-            //     rowDetail.Add(detailValue.GetValue(row));
-            // }
-            for (short j = 0; j < fComparisonExcelFiles.Count; j++)
+            {"A", "A_0050um"},
+            {"B", "B_0100um"},
+            {"C", "C_0200um"},
+            {"D", "D_0300um"},
+            {"E", "E_0500um"},
+            {"F", "F_1000um"},
+            {"R", "R_0250um"},
+            {"S", "S_0250um"}
+        };
+        string comparisonUploadFolderPath = "../../PublicFolder/";
+        string SBDFileName = "";
+        
+        try
+        {
+            foreach (var row in templateDetails)
             {
-                ComparisonDetail rowDetail = row;
+                // Console.WriteLine($"createComparisonUploadDetailCSVFile fComparisonExcelFiles.Count ", fComparisonExcelFiles.Count);
+                // Console.WriteLine($"createComparisonUploadDetailCSVFile after fComparisonExcelFiles.Count ");
                 
-                rowDetail.DStartCol = (short)( row.DStartCol + (row.DStopCol-row.DStopCol) * j); 
-                // tempRowDetail.RemoveAt(0);
-                // uploadDetails.Add(tempRowDetail);
+                // foreach (var detailValue in row.GetType().GetProperties())
 
+                // {
+                //     rowDetail.Add(detailValue.GetValue(row));
+                int i = 0;
+                for (short j = 0; j < fComparisonExcelFiles.Count; j++)
+                {
+                    // ComparisonDetail rowDetail = (ComparisonDetail)row.MemberwiseClone();
+                    //get the path to store the uploadDetail .csv file 
+                    if (i==0) {
+                        int underscoreIndex = fComparisonExcelFiles[j].IndexOf('_');
+                        int slashIndex = fComparisonExcelFiles[j].IndexOf('/', underscoreIndex + 1);
+                        if (underscoreIndex != -1 && slashIndex != -1)
+                            if (j != fComparisonExcelFiles.Count-1)
+                                comparisonUploadFolderPath = comparisonUploadFolderPath + fComparisonExcelFiles[j].Substring(underscoreIndex + 1, slashIndex - underscoreIndex -1) + '_';
+                            else 
+                                comparisonUploadFolderPath = comparisonUploadFolderPath + fComparisonExcelFiles[j].Substring(underscoreIndex + 1, slashIndex - underscoreIndex -1);
+                        
+                        //Console.WriteLine($"underscoreIndex: {underscoreIndex}, slashIndex: {slashIndex}, comparisonUploadFolderPath: {comparisonUploadFolderPath}, fComparisonExcelFiles[j]: {fComparisonExcelFiles[j]}");
+                        // get the type of diodes in comparison 
+                        // only first selected .xlsx file
+                        if (j == 0) {
+                            int lastSlashIndex = fComparisonExcelFiles[j].LastIndexOf('/');
+                            int secondLastSlashIndex = fComparisonExcelFiles[j].LastIndexOf('/', lastSlashIndex -1);
+                            string SBDType = fComparisonExcelFiles[j]; 
+                            Console.WriteLine(SBDType);
+                            SBDFileName = dicSBDType["A"];
+                        }
+                    }
+                    ComparisonDetail rowDetail = (ComparisonDetail)Activator.CreateInstance(row.GetType());
+                        foreach (PropertyInfo property in row.GetType().GetProperties())
+                        {
+                            property.SetValue(rowDetail, property.GetValue(row));
+                        }
+                    if (rowDetail.DSheet != "CV_C" && rowDetail.DSheet != "Summary")
+                    {
+                        rowDetail.DStartCol = (short)( row.DStartCol + 2 * j); 
+                        rowDetail.DStopCol = (short)( row.DStopCol + 2 * j);
+                    } else if (rowDetail.DSheet == "CV_C")
+                    {
+                        rowDetail.DStartCol = (short)( row.DStartCol + 7 * j); 
+                        rowDetail.DStopCol = (short)( row.DStopCol + 7 * j);
+                    } else if (rowDetail.DSheet == "Summary")
+                    {
+                        rowDetail.DStartRow =  (short) (row.DStartRow + 1 * j);
+                        rowDetail.DStopRow =  (short) (row.DStopRow + 1 * j);
+                    }
+                    rowDetail.SPath = fComparisonExcelFiles[j];
+                    List<string> rowDetailValues = rowDetail.GetType()
+                                                            .GetProperties()
+                                                            .Select(p => p.GetValue(rowDetail)?.ToString())
+                                                            .ToList();
+                    rowDetailValues.RemoveAt(0);
+                                                            
+                    uploadDetails.Add(rowDetailValues);
+                    
+
+                }
+                i++;
+                
             }
-            i++;
-            
+            Directory.CreateDirectory(Path.GetDirectoryName(comparisonUploadFolderPath));
+            using (StreamWriter writer = new StreamWriter("../../PublicFolder/myCSV.csv"))//comparisonUploadFolderPath + "/" + SBDFileName + ".csv"
+            {
+                
+                string comparisonSBDFileName =comparisonUploadFolderPath + "/" + SBDFileName + ".xlsx";
+                foreach (List<string> uploadDetail in uploadDetails)
+                {
+                    // uploadDetail[7] = comparisonSBDFileName;
+                    writer.WriteLine(string.Join(",", uploadDetail));
+                }
+            }
+            Console.WriteLine($"Successfully created uploadCSV file ");
         }
-        //Console.WriteLine($"ProcessFolderService.cs: {uploadDetails[0][1]} ");
+        catch (Exception ex)
+        {
+            Console.WriteLine( $"createComparisonUploadDetailCSVFile: {ex.Message}");
+        }
+
     }
     public void getAllDeviceFolders()
     {

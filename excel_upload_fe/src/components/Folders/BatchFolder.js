@@ -101,13 +101,48 @@ function BatchFolder({
       console.error("Processing batch folder error: ", error);
     }
   };
-
+  const compareExcelFiles = async () => {
+    const compareExcelFileNames = [];
+    Object.entries(checkedDataFiles).forEach(
+      ([batchFolderName, devFolders]) => {
+        Object.entries(devFolders).forEach(([devFolderName, SBDFolders]) => {
+          Object.entries(SBDFolders).forEach(([SBDFolderName, excelFiles]) => {
+            excelFiles.forEach((dataFileName) => {
+              if (dataFileName.includes(".xlsx"))
+                compareExcelFileNames.push(
+                  batchFolderName +
+                    "/" +
+                    devFolderName +
+                    "/" +
+                    SBDFolderName +
+                    "/" +
+                    dataFileName
+                );
+            });
+          });
+        });
+      }
+    );
+    console.log("BatchFolder.js before sending to C# ", compareExcelFileNames);
+    const response = axios
+      .post(
+        "https://localhost:7200/ProcessFolders/PostCompareExcelFiles",
+        compareExcelFileNames
+      )
+      .then((response) => console.log(response))
+      .catch((error) => console.log("Error in PostCompareExcelFile"));
+  };
   return (
     <div>
       <div>
-        <button className="processButton" onClick={processBatchFolders}>
-          Process
-        </button>
+        <div>
+          <button className="processButton" onClick={processBatchFolders}>
+            Process
+          </button>
+          <button className="processButton" onClick={compareExcelFiles}>
+            Compare
+          </button>
+        </div>
         <h6>Batch Level Folders</h6>
       </div>
 
