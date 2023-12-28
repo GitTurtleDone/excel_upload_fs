@@ -8,6 +8,7 @@ using System.Threading;
 using System.Linq;
 using excel_upload_be.Models;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Data.SqlTypes;
 namespace excel_upload_be.Services
 {
 
@@ -94,6 +95,9 @@ public class ComparisonFolder: IProcessBatchFoldersService
     public string? TemplateFolderPath {get; set;}
     public string? TemplatePath {get; set;}
     public string[]? SBDTypes {get; set;}
+
+    public int CSVUploadStartRow {get; set;}
+    public int CSVUploadStopRow {get; set;}
     
     public List<string> ComparedWorkbookPaths {get; set;} = new List<string>();
     public List<string> ComparisonUploadDetailPaths {get; set;} = new List<string>();
@@ -105,9 +109,9 @@ public class ComparisonFolder: IProcessBatchFoldersService
     }
     public void createComparisonUploadDetailCSVFile(List<string> fComparisonExcelFiles, string fComparisonUploadDetailCSVFilePath = "../ComparisonUploadDetailTemplates/A_0050um.csv")
     {
-        int entryNum = 16; //number of template entries in the CompareDetail table
+        int entryNum = 16; //number of template entries in the CompareDetail table in the database
         var templateDetails = _DBContext.ComparisonDetails.Take(entryNum).ToList<ComparisonDetail>();
-        // List<string> equalDStartStopEntries = ['Rev100J', 'ForNRevJ', 'Rev500I', 'Rev500J', 'ForNRev500I', 'ForNRev500J'];
+        
         List<List<string>> uploadDetails = new List<List<string>>();
 
         // prepare a list of string to write to an CSV file
@@ -123,37 +127,28 @@ public class ComparisonFolder: IProcessBatchFoldersService
             {'S', "S_0250um"}
         };
         string comparisonUploadFolderPath = "../../PublicFolder/";
-        int comparisonUploadFolderPathLimit = 50;
+        int comparisonUploadFolderPathCharacterLimit = 50; // uper limit of the number of characters of the ComparisonUploadFolderPath
         string SBDFileName = "";
+        
         
         try
         {
             int i = 0;
             foreach (var row in templateDetails)
-            {
-                // Console.WriteLine($"createComparisonUploadDetailCSVFile fComparisonExcelFiles.Count ", fComparisonExcelFiles.Count);
-                // Console.WriteLine($"createComparisonUploadDetailCSVFile after fComparisonExcelFiles.Count ");
-                
-                // foreach (var detailValue in row.GetType().GetProperties())
-
-                // {
-                //     rowDetail.Add(detailValue.GetValue(row));
-                
+            {        
                 for (short j = 0; j < fComparisonExcelFiles.Count; j++)
                 {
-                    // ComparisonDetail rowDetail = (ComparisonDetail)row.MemberwiseClone();
                     //get the path to store the uploadDetail .csv file 
                     if (i==0) 
                     {
                         int underscoreIndex = fComparisonExcelFiles[j].IndexOf('_');
                         int slashIndex = fComparisonExcelFiles[j].IndexOf('/', underscoreIndex + 1);
-                        if (underscoreIndex != -1 && slashIndex != -1 && comparisonUploadFolderPath.Length < 50)
+                        if (underscoreIndex != -1 && slashIndex != -1 && comparisonUploadFolderPath.Length < comparisonUploadFolderPathCharacterLimit)
                         {
                             if (j != (fComparisonExcelFiles.Count-1))
                                 comparisonUploadFolderPath = comparisonUploadFolderPath + fComparisonExcelFiles[j].Substring(underscoreIndex + 1, slashIndex - underscoreIndex -1) + '_';
                             else 
                                 comparisonUploadFolderPath = comparisonUploadFolderPath + fComparisonExcelFiles[j].Substring(underscoreIndex + 1, slashIndex - underscoreIndex -1);
-                            //Console.WriteLine ($"i: {i}, j: {j}, comparisonUploadFolderPaht: {comparisonUploadFolderPath}" );
                         };
                         //Console.WriteLine($"underscoreIndex: {underscoreIndex}, slashIndex: {slashIndex}, comparisonUploadFolderPath: {comparisonUploadFolderPath}, fComparisonExcelFiles[j]: {fComparisonExcelFiles[j]}");
                         // get the type of diodes in comparison 
@@ -164,6 +159,8 @@ public class ComparisonFolder: IProcessBatchFoldersService
                             char SBDType = fComparisonExcelFiles[j][secondLastSlashIndex+1]; 
                             //Console.WriteLine($"SBDType[j]: {SBDType}, lastSlashIndex: {lastSlashIndex}, secondLastSlashIndex: {secondLastSlashIndex}, fComparisonExcelFiles[j]: {fComparisonExcelFiles[j]}");
                             //Console.WriteLine(SBDType);
+                            SBDTypes = new string[] {SBDType.ToString()};
+                            //SBDTypes[0] = SBDType.ToString(); // preparing for ProcessComparisonFolder function
                             SBDFileName = dicSBDType[SBDType];
                         }
                     }
@@ -200,6 +197,8 @@ public class ComparisonFolder: IProcessBatchFoldersService
                 
             }
             Directory.CreateDirectory(comparisonUploadFolderPath);
+            
+            
             using (StreamWriter writer = new StreamWriter(comparisonUploadFolderPath + "/" + SBDFileName + ".csv"))//comparisonUploadFolderPath + "/" + SBDFileName + ".csv"
             {
                 
@@ -210,6 +209,15 @@ public class ComparisonFolder: IProcessBatchFoldersService
                     writer.WriteLine(string.Join(",", uploadDetail));
                 }
             }
+            // preparing for ProcessComparisonFolder function
+            FolderPath = comparisonUploadFolderPath;
+            TemplateFolderPath = "../ComparisonExcelTemplates";
+            ComparisonUploadDetailPaths = new List<string> {$"{comparisonUploadFolderPath}/{SBDFileName}.csv"};
+            // ComparisonUploadDetailPaths.Add($"{comparisonUploadFolderPath}/{SBDFileName}.csv" );
+            
+            CSVUploadStartRow = 1;
+            CSVUploadStopRow = uploadDetails.Count;
+            ComparisonUploadDetailPaths = new List<string>{comparisonUploadFolderPath + "/" + SBDFileName + ".csv"};
             Console.WriteLine($"Successfully created uploadCSV file ");
         }
         catch (Exception ex)
@@ -244,6 +252,7 @@ public class ComparisonFolder: IProcessBatchFoldersService
         }
     }
 
+
     public void ProcessComparisonFolder (bool fOverrideDestination = true, int fStartRow = 3, int fEndRow = 130)
     {
     
@@ -253,8 +262,7 @@ public class ComparisonFolder: IProcessBatchFoldersService
         {
             CreateWorkbooks(fOverrideDestination);
         }
-        else
-        getAllDeviceFolders();
+        else getAllDeviceFolders();
         if (ComparisonUploadDetailPaths.Count == 0) getComparisonUploadDetailPaths();
         if (SBDTypes.Length == ComparisonUploadDetailPaths.Count)
         
@@ -263,6 +271,10 @@ public class ComparisonFolder: IProcessBatchFoldersService
                 Console.WriteLine($"Detail Path: {ComparisonUploadDetailPaths[i]}, Start Row: {fStartRow}, End Row: {fEndRow}");
                 UploadMultipleSheets(ComparisonUploadDetailPaths[i], fStartRow, fEndRow);
             }
+    }
+    public void ProcessComparisonFolder()
+    {
+        ProcessComparisonFolder(true,CSVUploadStartRow,CSVUploadStopRow);
     }
     public void FillUploadDetails()
     {
@@ -335,17 +347,25 @@ public class ComparisonFolder: IProcessBatchFoldersService
                         string[] data = line.Split(',');
                         try
                         { 
-                            if (row > 1) //((row >= 17) && (row < 18))
-                            {
-                                if ((row >= startRow -1) && (row <= stopRow -1))
-                                {
-                                    if (!string.IsNullOrEmpty(data[1]))
-                                    {
-                                        sources.Add((data[1], data[2], int.Parse(data[3]), int.Parse(data[4]), int.Parse(data[5]), int.Parse(data[6])));    
-                                        destinations.Add((data[7], data[8], int.Parse(data[9]), int.Parse(data[10]), int.Parse(data[11]), int.Parse(data[12])));
-                                    }
-                                }
+                            // if (row > 1) //((row >= 17) && (row < 18))
+                            // {
+                            //     if ((row >= startRow -1) && (row <= stopRow -1))
+                            //     {
+                            //         if (!string.IsNullOrEmpty(data[1]))
+                            //         {
+                            //             sources.Add((data[1], data[2], int.Parse(data[3]), int.Parse(data[4]), int.Parse(data[5]), int.Parse(data[6])));    
+                            //             destinations.Add((data[7], data[8], int.Parse(data[9]), int.Parse(data[10]), int.Parse(data[11]), int.Parse(data[12])));
+                            //         }
+                            //     }
                                                   
+                            // }
+                            if ((row >= startRow -1) && (row <= stopRow -1))
+                            {
+                                if (!string.IsNullOrEmpty(data[1]))
+                                {
+                                    sources.Add((data[1], data[2], int.Parse(data[3]), int.Parse(data[4]), int.Parse(data[5]), int.Parse(data[6])));    
+                                    destinations.Add((data[7], data[8], int.Parse(data[9]), int.Parse(data[10]), int.Parse(data[11]), int.Parse(data[12])));
+                                }
                             }
                         }
                         catch (FormatException ex)

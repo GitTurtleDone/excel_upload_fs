@@ -52,6 +52,7 @@ public class ProcessFoldersController : ControllerBase
             if (comparisonExcelFiles != null && comparisonExcelFiles.Count > 0) {
                 comparisonExcelFiles = comparisonExcelFiles.Select(excelFile =>excelFile  = publicFolderPath + excelFile).ToList(); //publicFolderPath +
                 _processBatchFoldersService.createComparisonUploadDetailCSVFile(comparisonExcelFiles);
+                _processBatchFoldersService.ProcessComparisonFolder();
                 return Ok("Got the folderTrees in .NET");
             } else {
                 Console.WriteLine("No excel files were selected");
