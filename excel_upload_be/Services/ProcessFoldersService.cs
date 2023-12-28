@@ -347,26 +347,26 @@ public class ComparisonFolder: IProcessBatchFoldersService
                         string[] data = line.Split(',');
                         try
                         { 
-                            // if (row > 1) //((row >= 17) && (row < 18))
-                            // {
-                            //     if ((row >= startRow -1) && (row <= stopRow -1))
-                            //     {
-                            //         if (!string.IsNullOrEmpty(data[1]))
-                            //         {
-                            //             sources.Add((data[1], data[2], int.Parse(data[3]), int.Parse(data[4]), int.Parse(data[5]), int.Parse(data[6])));    
-                            //             destinations.Add((data[7], data[8], int.Parse(data[9]), int.Parse(data[10]), int.Parse(data[11]), int.Parse(data[12])));
-                            //         }
-                            //     }
-                                                  
-                            // }
-                            if ((row >= startRow -1) && (row <= stopRow -1))
+                            if (row > 1) //((row >= 17) && (row < 18))
                             {
-                                if (!string.IsNullOrEmpty(data[1]))
+                                if ((row >= startRow -1) && (row <= stopRow -1))
                                 {
-                                    sources.Add((data[1], data[2], int.Parse(data[3]), int.Parse(data[4]), int.Parse(data[5]), int.Parse(data[6])));    
-                                    destinations.Add((data[7], data[8], int.Parse(data[9]), int.Parse(data[10]), int.Parse(data[11]), int.Parse(data[12])));
+                                    if (!string.IsNullOrEmpty(data[1]))
+                                    {
+                                        sources.Add((data[1], data[2], int.Parse(data[3]), int.Parse(data[4]), int.Parse(data[5]), int.Parse(data[6])));    
+                                        destinations.Add((data[7], data[8], int.Parse(data[9]), int.Parse(data[10]), int.Parse(data[11]), int.Parse(data[12])));
+                                    }
                                 }
+                                                  
                             }
+                            // if ((row >= startRow -1) && (row <= stopRow -1))
+                            // {
+                            //     if (!string.IsNullOrEmpty(data[1]))
+                            //     {
+                            //         sources.Add((data[1], data[2], int.Parse(data[3]), int.Parse(data[4]), int.Parse(data[5]), int.Parse(data[6])));    
+                            //         destinations.Add((data[7], data[8], int.Parse(data[9]), int.Parse(data[10]), int.Parse(data[11]), int.Parse(data[12])));
+                            //     }
+                            // }
                         }
                         catch (FormatException ex)
                         {
