@@ -696,7 +696,7 @@ public class SBDFolder : IProcessSBDFoldersService
     public string? SBDID { get; set;}
     public string? SBDType { get; set;}
     public string[]? AllFilePaths { get; set;}
-    public bool? Rev500Done {get; set;}
+    public bool Rev500Done {get; set;}
     public string? SBDTemplateFolderPath {get; set;}
     public List<string> AllCsvFileNames { get; set;} = new List<string>();
     public List<string> AllCsvFilePaths { get; set;} = new List<string>();
@@ -718,7 +718,7 @@ public class SBDFolder : IProcessSBDFoldersService
         SBDID = null;
         SBDType = null;
         AllFilePaths = null;
-        Rev500Done = null;
+        Rev500Done = false;
         SBDTemplateFolderPath = null;
         AllCsvFileNames = new List<string>();
         AllCsvFilePaths = new List<string>();
