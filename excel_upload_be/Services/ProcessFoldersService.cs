@@ -107,6 +107,19 @@ public class ComparisonFolder: IProcessBatchFoldersService
     {
         _DBContext = dbContext;
     }
+    public void ResetProperties()
+    {
+        FolderPath = null;
+        ComparedFolderPaths = null;
+        TemplateFolderPath = null;
+        TemplatePath = null;
+        SBDTypes = null;
+        CSVUploadStartRow = default(int);
+        CSVUploadStopRow = default(int);
+        ComparedWorkbookPaths = new List<string>();
+        ComparisonUploadDetailPaths = new List<string>();
+        DeviceFolders = new List<DeviceFolder>();
+    }
     public void createComparisonUploadDetailCSVFile(List<string> fComparisonExcelFiles, string fComparisonUploadDetailCSVFilePath = "../ComparisonUploadDetailTemplates/A_0050um.csv")
     {
         int entryNum = 16; //number of template entries in the CompareDetail table in the database
@@ -347,26 +360,26 @@ public class ComparisonFolder: IProcessBatchFoldersService
                         string[] data = line.Split(',');
                         try
                         { 
-                            if (row > 1) //((row >= 17) && (row < 18))
-                            {
-                                if ((row >= startRow -1) && (row <= stopRow -1))
-                                {
-                                    if (!string.IsNullOrEmpty(data[1]))
-                                    {
-                                        sources.Add((data[1], data[2], int.Parse(data[3]), int.Parse(data[4]), int.Parse(data[5]), int.Parse(data[6])));    
-                                        destinations.Add((data[7], data[8], int.Parse(data[9]), int.Parse(data[10]), int.Parse(data[11]), int.Parse(data[12])));
-                                    }
-                                }
-                                                  
-                            }
-                            // if ((row >= startRow -1) && (row <= stopRow -1))
+                            // if (row > 1) //((row >= 17) && (row < 18))
                             // {
-                            //     if (!string.IsNullOrEmpty(data[1]))
+                            //     if ((row >= startRow -1) && (row <= stopRow -1))
                             //     {
-                            //         sources.Add((data[1], data[2], int.Parse(data[3]), int.Parse(data[4]), int.Parse(data[5]), int.Parse(data[6])));    
-                            //         destinations.Add((data[7], data[8], int.Parse(data[9]), int.Parse(data[10]), int.Parse(data[11]), int.Parse(data[12])));
+                            //         if (!string.IsNullOrEmpty(data[1]))
+                            //         {
+                            //             sources.Add((data[1], data[2], int.Parse(data[3]), int.Parse(data[4]), int.Parse(data[5]), int.Parse(data[6])));    
+                            //             destinations.Add((data[7], data[8], int.Parse(data[9]), int.Parse(data[10]), int.Parse(data[11]), int.Parse(data[12])));
+                            //         }
                             //     }
+                                                  
                             // }
+                            if ((row >= startRow -1) && (row <= stopRow -1))
+                            {
+                                if (!string.IsNullOrEmpty(data[1]))
+                                {
+                                    sources.Add((data[1], data[2], int.Parse(data[3]), int.Parse(data[4]), int.Parse(data[5]), int.Parse(data[6])));    
+                                    destinations.Add((data[7], data[8], int.Parse(data[9]), int.Parse(data[10]), int.Parse(data[11]), int.Parse(data[12])));
+                                }
+                            }
                         }
                         catch (FormatException ex)
                         {
@@ -490,20 +503,35 @@ public class ComparisonFolder: IProcessBatchFoldersService
 public class DeviceFolder : IProcessDevFoldersService
 
 {
-    public string FolderPath { get; set;}
+    public string? FolderPath { get; set;}
     
-    public string AllSBDIDs { get; set;}
-    public string AllSBDTypes { get; set;}
-    public string SampleID { get; set;}
-    public string LogFilePath {get; set;}
-    public string LogMessage {get; set;}
-    public string MemoFilePath {get;set;} 
-    public string Memo {get; set;}
+    public string? AllSBDIDs { get; set;}
+    public string? AllSBDTypes { get; set;}
+    public string? SampleID { get; set;}
+    public string? LogFilePath {get; set;}
+    public string? LogMessage {get; set;}
+    public string? MemoFilePath {get;set;} 
+    public string? Memo {get; set;}
     public List<SBDFolder> AllSBDFolders { get; set;} = new List<SBDFolder>();
     public List<string> AllSubFolderPaths { get; set;} = new List<string>();
     public List<string> AllSubFolderNames { get; set;} = new List<string>();
     public List<bool> AllRev500Dones { get; set;} = new List<bool>();
 
+    public void ResetProperties()
+    {
+        FolderPath = null;
+        AllSBDIDs = null;
+        AllSBDTypes = null;
+        SampleID = null;
+        LogFilePath = null;
+        LogMessage = null;
+        MemoFilePath = null;
+        Memo = null;
+        AllSBDFolders = new List<SBDFolder>();
+        AllSubFolderPaths = new List<string>();
+        AllSubFolderNames = new List<string>();
+        AllRev500Dones = new List<bool>();
+    }
     public void processDeviceFolder(string fUploadDetailTemplatePath = "../UploadDetailsTemplate.csv", 
                                     string fSBDTemplateFolderPath = "../SBDExcelTemplates", bool OverrideDestination = true)
     {
@@ -659,17 +687,17 @@ public class DeviceFolder : IProcessDevFoldersService
 
 public class SBDFolder : IProcessSBDFoldersService
 {
-    public string FolderPath { get; set;}
-    public string WorkbookPath { get; set; }
-    public string UploadDetailTemplatePath{ get; set;}
-    public string LogFilePath {get; set;}
-    public string LogMessage {get; set;}
-    public string SampleID { get; set;}
-    public string SBDID { get; set;}
-    public string SBDType { get; set;}
-    public string[] AllFilePaths { get; set;}
-    public bool Rev500Done {get; set;}
-    public string SBDTemplateFolderPath {get; set;}
+    public string? FolderPath { get; set;}
+    public string? WorkbookPath { get; set; }
+    public string? UploadDetailTemplatePath{ get; set;}
+    public string? LogFilePath {get; set;}
+    public string? LogMessage {get; set;}
+    public string? SampleID { get; set;}
+    public string? SBDID { get; set;}
+    public string? SBDType { get; set;}
+    public string[]? AllFilePaths { get; set;}
+    public bool? Rev500Done {get; set;}
+    public string? SBDTemplateFolderPath {get; set;}
     public List<string> AllCsvFileNames { get; set;} = new List<string>();
     public List<string> AllCsvFilePaths { get; set;} = new List<string>();
     public List<string> AllMeasTypes { get; set;} = new List<string>();
@@ -678,6 +706,29 @@ public class SBDFolder : IProcessSBDFoldersService
     public List<(string, string, int, int)> AllUploadDetails { get; set;} = new List<(string, string, int, int)>();
     public List<(string, string, int, int)> UploadDetailTemplates { get; set;} = new List<(string, string, int, int)>();
     //public ExcelPackage Workbook;
+    public void ResetProperties()
+    {
+        FolderPath = null;
+        WorkbookPath = null;
+        UploadDetailTemplatePath = null;
+        SampleID = null;
+        LogFilePath = null;
+        LogMessage = null;
+        SampleID = null;
+        SBDID = null;
+        SBDType = null;
+        AllFilePaths = null;
+        Rev500Done = null;
+        SBDTemplateFolderPath = null;
+        AllCsvFileNames = new List<string>();
+        AllCsvFilePaths = new List<string>();
+        AllMeasTypes = new List<string>();
+        AllMeasTimes = new List<DateTime>();
+        AllIsLasts = new List<bool>();
+        AllUploadDetails = new List<(string, string, int, int)>();
+        UploadDetailTemplates = new List<(string, string, int, int)>();
+
+    }
     
     public void processSBDFolder(string fUploadDetailTemplatePath ="../UploadDetailsTemplate.csv",
                                  string fSBDTemplateFolderPath = "../SBDExcelTemplates",
@@ -813,16 +864,16 @@ public class SBDFolder : IProcessSBDFoldersService
         }
         else if (csvFileName.Contains("Stop3"))
         {
-            if (csvFileName.Contains("Rev500"))
+            if (csvFileName.Contains("Sweep8"))
                 measType = "KL For After Rev500";
-            else
+            else //if (csvFileName.Contains("Sweep1"))
                 measType = "KL For";
         }
         else if (csvFileName.Contains("StopM3"))
         {
-            if (csvFileName.Contains("Rev500"))
+            if (csvFileName.Contains("Sweep9"))
                 measType = "KL Rev After Rev500";
-            else
+            else //if (csvFileName.Contains("Sweep2"))
                 measType = "KL Rev";
         }
         else if (csvFileName.Contains("StopM500"))

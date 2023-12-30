@@ -82,6 +82,7 @@ public class ProcessFoldersController : ControllerBase
             devFolders.ForEach((devFolderPath) => {
                 devFolderPath = publicFolderPath + devFolderPath;
                 Console.WriteLine($"Received devFolder: {devFolderPath}");
+                _processDevFoldersService.ResetProperties();
                 _processDevFoldersService.FolderPath = devFolderPath;
                 _processDevFoldersService.processDeviceFolder();
                 
@@ -109,6 +110,7 @@ public class ProcessFoldersController : ControllerBase
             SBDFolders.ForEach((SBDFolderPath) => {
                 SBDFolderPath = publicFolderPath + SBDFolderPath;
                 Console.WriteLine($"Received SBDFolder: {SBDFolderPath}");
+                _processSBDFoldersService.ResetProperties();
                 _processSBDFoldersService.FolderPath = SBDFolderPath;
                 _processSBDFoldersService.processSBDFolder();
                 

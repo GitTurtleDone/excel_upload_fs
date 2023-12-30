@@ -12,6 +12,7 @@ public interface IProcessBatchFoldersService: IProcessFoldersService
     public string[]? SBDTypes {get; set;}
     public int CSVUploadStartRow {get; set;}
     public int CSVUploadStopRow {get; set;}
+    public void ResetProperties();
     public void ProcessComparisonFolder (bool fOverrideDestination = true, int fStartRow = 3, int fEndRow = 130);
     public void ProcessComparisonFolder ();
     public void uploadOneSheet ((string, string, int, int, int, int) source, (string, string, int, int, int, int) destination);
@@ -21,6 +22,7 @@ public interface IProcessBatchFoldersService: IProcessFoldersService
 }
 public interface IProcessDevFoldersService: IProcessFoldersService
 {
+    public void ResetProperties();
     public void processDeviceFolder(string fUploadDetailTemplatePath = "../UploadDetailsTemplate.csv", 
                                     string fSBDTemplateFolderPath = "../SBDExcelTemplates", bool OverrideDestination = true);
 }
@@ -28,6 +30,7 @@ public interface IProcessDevFoldersService: IProcessFoldersService
 public interface IProcessSBDFoldersService: IProcessFoldersService
 {
     public string SBDTemplateFolderPath {get; set;}
+    public void ResetProperties();
     public void processSBDFolder(string fUploadDetailTemplatePath ="../UploadDetailsTemplate.csv",
                                  string fSBDTemplateFolderPath = "../SBDExcelTemplates",
                                  bool OverrideDestination = true);
