@@ -122,7 +122,7 @@ public class ComparisonFolder: IProcessBatchFoldersService
     }
     public void createComparisonUploadDetailCSVFile(List<string> fComparisonExcelFiles, string fComparisonUploadDetailCSVFilePath = "../ComparisonUploadDetailTemplates/A_0050um.csv")
     {
-        int entryNum = 16; //number of template entries in the CompareDetail table in the database
+        int entryNum = 15; //number of template entries in the CompareDetail table in the database
         var templateDetails = _DBContext.ComparisonDetails.Take(entryNum).ToList<ComparisonDetail>();
         
         List<List<string>> uploadDetails = new List<List<string>>();

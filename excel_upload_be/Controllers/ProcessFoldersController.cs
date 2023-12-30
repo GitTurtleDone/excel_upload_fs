@@ -48,6 +48,7 @@ public class ProcessFoldersController : ControllerBase
         {
             // var formCollection = await Request.ReadFormAsync();
             // var file = formCollection.Files[0];
+            _processBatchFoldersService.ResetProperties();
             Console.WriteLine(comparisonExcelFiles);
             if (comparisonExcelFiles != null && comparisonExcelFiles.Count > 0) {
                 comparisonExcelFiles = comparisonExcelFiles.Select(excelFile =>excelFile  = publicFolderPath + excelFile).ToList(); //publicFolderPath +
