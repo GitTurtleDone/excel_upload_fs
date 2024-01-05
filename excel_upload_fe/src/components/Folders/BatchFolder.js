@@ -16,27 +16,32 @@ function BatchFolder({
   checkedBatchFolders,
   checkedDevFolders,
   checkedSBDFolders,
+  checkedDataFiles,
   updateCheckedBatchFolders,
   updateCheckedDevFolders,
   updateCheckedSBDFolders,
+  updateCheckedDataFiles,
 }) {
   // const [checkedDevFolderNames, setCheckedDevFolderNames] =
   //   useState(checkedDevFolders);
   const [checkedBatchFolderNames, setCheckedBatchFolderNames] =
     useState(checkedBatchFolders);
   const updateCheckedNames = (data) => {
+    // update checkedBatchFolders
     updateCheckedBatchFolders(data);
-    const tempObj = { ...checkedDevFolders };
-    Object.entries(tempObj).forEach(([key, value]) => {
+
+    // update checkedDevFolders
+    const objTempCheckedDevFolders = { ...checkedDevFolders };
+    Object.entries(objTempCheckedDevFolders).forEach(([key, value]) => {
       if (!data.includes(key)) {
-        delete tempObj[key];
+        delete objTempCheckedDevFolders[key];
       }
-      if (Array.isArray(value) && value.length === 0) delete tempObj[key];
+      if (Array.isArray(value) && value.length === 0)
+        delete objTempCheckedDevFolders[key];
     });
+    updateCheckedDevFolders(objTempCheckedDevFolders);
 
-    console.log("In Batch Folders, checked Dev Folder Names: ", tempObj);
-    updateCheckedDevFolders(tempObj);
-
+    // update checkedSBDFolders
     const objTempSBDFolders = { ...checkedSBDFolders };
     Object.entries(objTempSBDFolders).forEach(
       ([batchFolderName, devFolders]) => {
@@ -50,6 +55,14 @@ function BatchFolder({
       }
     );
     updateCheckedSBDFolders(objTempSBDFolders);
+
+    // update checkedDatFiles
+    const objTempCheckedDataFiles = { ...checkedDataFiles };
+    Object.keys(objTempCheckedDataFiles).forEach((batchFolderName) => {
+      if (!data.includes(batchFolderName))
+        delete objTempCheckedDataFiles[batchFolderName];
+    });
+    updateCheckedDataFiles(objTempCheckedDataFiles);
   };
 
   const folderTreeNames = folderTrees.map((folderTree) => folderTree.Name);
@@ -70,7 +83,7 @@ function BatchFolder({
           }
         });
       });
-      console.log("In BatchFolder.js: ", devFolderNames);
+      // console.log("In BatchFolder.js: ", devFolderNames);
       const response = await axios
         .post(
           // send to PostProcessDevFolders because uploading is similar to uploading DevFolders
@@ -88,13 +101,48 @@ function BatchFolder({
       console.error("Processing batch folder error: ", error);
     }
   };
-
+  const compareExcelFiles = async () => {
+    const compareExcelFileNames = [];
+    Object.entries(checkedDataFiles).forEach(
+      ([batchFolderName, devFolders]) => {
+        Object.entries(devFolders).forEach(([devFolderName, SBDFolders]) => {
+          Object.entries(SBDFolders).forEach(([SBDFolderName, excelFiles]) => {
+            excelFiles.forEach((dataFileName) => {
+              if (dataFileName.includes(".xlsx"))
+                compareExcelFileNames.push(
+                  batchFolderName +
+                    "/" +
+                    devFolderName +
+                    "/" +
+                    SBDFolderName +
+                    "/" +
+                    dataFileName
+                );
+            });
+          });
+        });
+      }
+    );
+    console.log("BatchFolder.js before sending to C# ", compareExcelFileNames);
+    const response = axios
+      .post(
+        "https://localhost:7200/ProcessFolders/PostCompareExcelFiles",
+        compareExcelFileNames
+      )
+      .then((response) => console.log(response))
+      .catch((error) => console.log("Error in PostCompareExcelFile"));
+  };
   return (
     <div>
       <div>
-        <button className="processButton" onClick={processBatchFolders}>
-          Process
-        </button>
+        <div>
+          <button className="processButton" onClick={processBatchFolders}>
+            Process
+          </button>
+          <button className="processButton" onClick={compareExcelFiles}>
+            Compare
+          </button>
+        </div>
         <h6>Batch Level Folders</h6>
       </div>
 

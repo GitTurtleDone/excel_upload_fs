@@ -20,28 +20,48 @@ namespace excel_upload_be.Controllers;
 public class ProcessFoldersController : ControllerBase
 {
     
+    private readonly IProcessBatchFoldersService _processBatchFoldersService;
     private readonly IProcessDevFoldersService _processDevFoldersService;
     private readonly IProcessSBDFoldersService _processSBDFoldersService;
-    public ProcessFoldersController(IProcessDevFoldersService processDevFoldersService,
+    public ProcessFoldersController(IProcessBatchFoldersService processBatchFoldersService,IProcessDevFoldersService processDevFoldersService,
     IProcessSBDFoldersService processSBDFoldersService)
     {
+        _processBatchFoldersService = processBatchFoldersService;
         _processDevFoldersService = processDevFoldersService;
         _processSBDFoldersService = processSBDFoldersService;
     }
     
-    [HttpPost("PostProcessBatchFolders")]
+    // [HttpPost("PostCreateComparisonUploadDetailCSVFile")]
+    // public async Task<IActionResult> CreateComparisonUploadDetailCSVFile([FromBody] List<string> comparisonExcelFiles)
+    // {
+
+    // }
     
-    public async Task<IActionResult> ProcessBatchFolders([FromBody] List<string> devFolders)
+    [HttpPost("PostCompareExcelFiles")]
+    
+    public async Task<IActionResult> CompareExcelFiles([FromBody] List<string> comparisonExcelFiles)
     {
-        string publicFolderPath = @"..\..\PublicFolder";
+        string publicFolderPath = @"../../PublicFolder/";//
         FolderNode folderTree;
         
         try
         {
             // var formCollection = await Request.ReadFormAsync();
             // var file = formCollection.Files[0];
-            Console.WriteLine(devFolders[0]);
-            return Ok("Got the folderTrees in .NET");
+            _processBatchFoldersService.ResetProperties();
+            Console.WriteLine(comparisonExcelFiles);
+            if (comparisonExcelFiles != null && comparisonExcelFiles.Count > 0) {
+                comparisonExcelFiles = comparisonExcelFiles.Select(excelFile =>excelFile  = publicFolderPath + excelFile).ToList(); //publicFolderPath +
+                _processBatchFoldersService.createComparisonUploadDetailCSVFile(comparisonExcelFiles);
+                _processBatchFoldersService.ProcessComparisonFolder();
+                return Ok("Got the folderTrees in .NET");
+            } else {
+                Console.WriteLine("No excel files were selected");
+                return Ok("No excel files were selected");}
+            //Console.WriteLine(comparisonExcelFiles[0]);
+            
+            
+            
 
             
         }
@@ -63,6 +83,7 @@ public class ProcessFoldersController : ControllerBase
             devFolders.ForEach((devFolderPath) => {
                 devFolderPath = publicFolderPath + devFolderPath;
                 Console.WriteLine($"Received devFolder: {devFolderPath}");
+                _processDevFoldersService.ResetProperties();
                 _processDevFoldersService.FolderPath = devFolderPath;
                 _processDevFoldersService.processDeviceFolder();
                 
@@ -90,6 +111,7 @@ public class ProcessFoldersController : ControllerBase
             SBDFolders.ForEach((SBDFolderPath) => {
                 SBDFolderPath = publicFolderPath + SBDFolderPath;
                 Console.WriteLine($"Received SBDFolder: {SBDFolderPath}");
+                _processSBDFoldersService.ResetProperties();
                 _processSBDFoldersService.FolderPath = SBDFolderPath;
                 _processSBDFoldersService.processSBDFolder();
                 

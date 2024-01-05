@@ -1,0 +1,104 @@
+Issue: big files cannot be pushed --> commit serveral times --> push up ---> but cannot push
+Solution: squash severl commits in one commit then was able to push.
+
+
+Add database:
+1) dotnet tool install --global dotnet-ef
+dotnet add package Microsoft.EntityFrameworkCore.Design
+dotnet add package Microsoft.EntityFrameworkCore.SqlServer
+dotnet ef dbcontext scaffold "Server=ELECPG082;Database=ExcelUpload;Trusted_Connection=True;Integrated Security=True;MultipleActiveResultSets=true;TrustServerCertificate=true;encrypt=false" Microsoft.EntityFrameworkCore.SqlServer --output-dir Models
+2) Add to appsettings.json:
+,
+  "ConnectionStrings": {
+    "conString": "Server=ELECPG082;Database=ExcelUpload;Trusted_Connection=True;Integrated Security=True;MultipleActiveResultSets=true;TrustServerCertificate=true;encrypt=false"
+  }
+3) Add to Program.cs:
+builder.Services.AddDbContext<ExcelUploadContext>(options=>{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("conString"));
+});
+
+
+Add Service layer to the project:
+
+1) Add a Services folder in the same level as Controllers and Models
+2) Add two files:
+IFolderTreeService.cs: as interface that declares all the methods 
+FolderTreeService.cs: implement all the methods in the interface above
+3) Add following code to the Program.cs file:
+builder.Services.AddScoped<IFolderTreeService, FolderTreeService>();
+
+before the code:
+
+var app = builder.Build();
+
+// "ConnectionStrings": {
+  //   "conString": "Server=ELECPG082;Database=ExcelUpload;Trusted_Connection=True;Integrated Security=True;MultipleActiveResultSets=true;TrustServerCertificate=true;encrypt=false"
+  // }
+
+
+Home computer connecting string:
+
+"Server=DANG-THAI-GIANG;Database=ExcelUpload;Trusted_Connection=True;Integrated Security=True;MultipleActiveResultSets=true;TrustServerCertificate=true;encrypt=false"
+
+
+{(() => {
+  // // Assign the value to arrNames
+  // const arrNames = Array.isArray(devFolderNames[0])
+  //   ? devFolderNames[0]
+  //   : [devFolderNames[0]];
+
+  // // Use parentheses instead of curly braces
+  // return arrNames.map((folderName) => (
+  //   <div className="folderLineContainer" key={folderName}>
+  //     <input
+  //       type="checkbox"
+  //       // checked={checkedFolderNames.includes(folderName)}
+  //       // onChange={() => handleCheckboxChange(folderName)}
+  //     />
+  //     <h6>{folderName}</h6>
+  //   </div>
+  // ));
+
+  return devFolderNames.map((_, index) => (
+    <NameContainer
+      key={index} // Add a key prop for each NameContainer
+      arrNames={devFolderNames[index]}
+      updateCheckedNames={(data) => updateCheckedNames(index, data)}
+    ></NameContainer>
+  ));
+})()}
+
+When send a json string from React to .NET, need to stringify twice don't know why
+
+
+const jsonStrTemp = JSON.stringify(checkedDevFolders);
+    console.log("Before sending to C#: ", jsonStrTemp);
+    try {
+      const response = await axios
+        .post(
+          "https://localhost:7200/ProcessFolders/PostProcessDevFolders",
+          JSON.stringify(jsonStrTemp),
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        )
+        .then((response) => {
+          console.log("Response from ProcessDevFolder ", response.data);
+        })
+        .catch((error) => {
+          console.error("Errors in axios DevFolder.js: ", error);
+        });
+    } catch (error) {
+      console.error("Processing dev folder error: ", error);
+    }
+
+
+
+When adding a new table in the database:
+command: dotnet ef migrations add AddedComparisonDetailsTable
+response message: Done. To undo this action, use 'ef migrations remove'
+another try, scaffolding again using: dotnet ef dbcontext scaffold "Server=ELECPG082;Database=ExcelUpload;Trusted_Connection=True;Integrated Security=True;MultipleActiveResultSets=true;TrustServerCertificate=true;encrypt=false" Microsoft.EntityFrameworkCore.SqlServer --output-dir Models -f
+it worked and -f meant force scaffolding in existing Models folder.
+

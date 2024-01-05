@@ -3,11 +3,14 @@ import "./FolderTrees.css";
 import BatchFolder from "./Folders/BatchFolder";
 import DevFolder from "./Folders/DevFolder";
 import SBDFolder from "./Folders/SBDFolder";
+import DropdownMenu from "./Folders/DropdownMenu";
+import DataFile from "./Folders/DataFile";
 
 function FolderTrees({ folderTrees, folderTreeNames }) {
   const [checkedBatchFolders, setCheckedBatchFolders] = useState([]);
   const [checkedDevFolders, setCheckedDevFolders] = useState({});
   const [checkedSBDFolders, setCheckedSBDFolders] = useState({});
+  const [checkedDataFiles, setCheckedDataFiles] = useState({});
   const updateCheckedBatchFolders = (data) => {
     setCheckedBatchFolders(data);
     // const tempObj = { ...checkedDevFolders };
@@ -32,6 +35,9 @@ function FolderTrees({ folderTrees, folderTreeNames }) {
     setCheckedSBDFolders(data);
     // console.log(`Checked SBD Folders after clicked: `, data);
   };
+  const updateCheckedDataFiles = (data) => {
+    setCheckedDataFiles(data);
+  };
   return (
     <div className="folderTreeContainer">
       <BatchFolder
@@ -39,25 +45,39 @@ function FolderTrees({ folderTrees, folderTreeNames }) {
         checkedBatchFolders={checkedBatchFolders}
         checkedDevFolders={checkedDevFolders}
         checkedSBDFolders={checkedSBDFolders}
+        checkedDataFiles={checkedDataFiles}
         updateCheckedBatchFolders={updateCheckedBatchFolders}
         updateCheckedDevFolders={updateCheckedDevFolders}
         updateCheckedSBDFolders={updateCheckedSBDFolders}
+        updateCheckedDataFiles={updateCheckedDataFiles}
       ></BatchFolder>
       <DevFolder
         folderTrees={folderTrees}
         checkedBatchFolders={checkedBatchFolders}
         checkedDevFolders={checkedDevFolders}
         checkedSBDFolders={checkedSBDFolders}
+        checkedDataFiles={checkedDataFiles}
         updateCheckedDevFolders={updateCheckedDevFolders}
         updateCheckedSBDFolders={updateCheckedSBDFolders}
+        updateCheckedDataFiles={updateCheckedDataFiles}
       ></DevFolder>
       <SBDFolder
         folderTrees={folderTrees}
         checkedBatchFolders={checkedBatchFolders}
         checkedDevFolders={checkedDevFolders}
         checkedSBDFolders={checkedSBDFolders}
+        checkedDataFiles={checkedDataFiles}
         updateCheckedSBDFolders={updateCheckedSBDFolders}
+        updateCheckedDataFiles={updateCheckedDataFiles}
       ></SBDFolder>
+      <DataFile
+        folderTrees={folderTrees}
+        checkedBatchFolders={checkedBatchFolders}
+        checkedDevFolders={checkedDevFolders}
+        checkedSBDFolders={checkedSBDFolders}
+        checkedDataFiles={checkedDataFiles}
+        updateCheckedDataFiles={updateCheckedDataFiles}
+      />
     </div>
   );
 }

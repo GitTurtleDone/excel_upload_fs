@@ -8,9 +8,12 @@ function SBDFolder({
   checkedBatchFolders,
   checkedDevFolders,
   checkedSBDFolders,
+  checkedDataFiles,
   updateCheckedSBDFolders,
+  updateCheckedDataFiles,
 }) {
   const updateCheckedNames = (batchFolderName, devFolderName, data) => {
+    // update checkedSBDFolders
     const tempObj = { ...checkedSBDFolders };
     if (checkedDevFolders) {
       if (!tempObj[batchFolderName]) {
@@ -38,6 +41,26 @@ function SBDFolder({
     });
 
     updateCheckedSBDFolders(tempObj);
+
+    // update checkedDataFiles
+
+    const tempObj1 = { ...checkedDataFiles };
+    if (
+      tempObj1 &&
+      tempObj1[batchFolderName] &&
+      tempObj1[batchFolderName][devFolderName]
+    ) {
+      Object.keys(tempObj1[batchFolderName][devFolderName]).forEach(
+        (SBDFolderName) => {
+          if (
+            !tempObj[batchFolderName][devFolderName] ||
+            !tempObj[batchFolderName][devFolderName].includes(SBDFolderName)
+          )
+            delete tempObj1[batchFolderName][devFolderName][SBDFolderName];
+        }
+      );
+    }
+    updateCheckedDataFiles(tempObj1);
   };
   const batchFolderNames = [];
 
@@ -47,14 +70,14 @@ function SBDFolder({
       tempDevObj[batchFolderName] = checkedDevFolders[batchFolderName];
   });
 
-  console.log(
-    "In SBD Folders before rendering checkedBatchFolders: ",
-    checkedBatchFolders
-  );
-  console.log(
-    "In SBD Folders before rendering checkedDevFolders: ",
-    checkedDevFolders
-  );
+  // console.log(
+  //   "In SBD Folders before rendering checkedBatchFolders: ",
+  //   checkedBatchFolders
+  // );
+  // console.log(
+  //   "In SBD Folders before rendering checkedDevFolders: ",
+  //   checkedDevFolders
+  // );
 
   Object.keys(tempDevObj).forEach((key) =>
     folderTrees.forEach((folderTree) => {
@@ -111,7 +134,7 @@ function SBDFolder({
   const processSBDFolders = async () => {
     try {
       const arrTempSBDFolderPaths = [];
-      console.log("In SBDFolder.js checkedSBDFolders: ", checkedSBDFolders);
+      // console.log("In SBDFolder.js checkedSBDFolders: ", checkedSBDFolders);
       Object.entries(checkedSBDFolders).forEach(
         ([batchFolderName, batchFolders]) => {
           Object.entries(batchFolders).forEach(
@@ -182,19 +205,6 @@ function SBDFolder({
                         : []
                       : []
                   }
-                  // arrCheckedNames={["B15", "C08"]}
-                  // arrCheckedNames={
-                  //   checkedSBDFolders &&
-                  //   checkedSBDFolders[checkedBatchFolders[index1]]
-                  //     ? checkedSBDFolders[checkedBatchFolders[index1]][
-                  //         checkedDevFolders[checkedBatchFolders[index1][index2]]
-                  //       ]
-                  //       ? checkedSBDFolders[checkedBatchFolders[index1]][
-                  //           checkedDevFolders[checkedBatchFolders[index1][index2]]
-                  //         ]
-                  //       : []
-                  //     : []
-                  // }
                   updateCheckedNames={(data) =>
                     updateCheckedNames(batchFolderName, devFolderName, data)
                   }
