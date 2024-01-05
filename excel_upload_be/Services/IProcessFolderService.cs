@@ -16,7 +16,7 @@ public interface IProcessBatchFoldersService: IProcessFoldersService
     public void ProcessComparisonFolder (bool fOverrideDestination = true, int fStartRow = 3, int fEndRow = 130);
     public void ProcessComparisonFolder ();
     public void uploadOneSheet ((string, string, int, int, int, int) source, (string, string, int, int, int, int) destination);
-    public void createComparisonUploadDetailCSVFile(List<string> fComparisonExcelFiles, string fComparisonUploadDetailCSVFilePath = "../ComparisonUploadDetailTemplates/A_0050um.csv");
+    public List<List<string>> createComparisonUploadDetailCSVFile(List<string> fComparisonExcelFiles, string fComparisonUploadDetailCSVFilePath = "../ComparisonUploadDetailTemplates/A_0050um.csv");
    
 
 }
