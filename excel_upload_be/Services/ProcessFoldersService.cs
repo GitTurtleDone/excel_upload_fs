@@ -120,7 +120,7 @@ public class ComparisonFolder: IProcessBatchFoldersService
         ComparisonUploadDetailPaths = new List<string>();
         DeviceFolders = new List<DeviceFolder>();
     }
-    public void createComparisonUploadDetailCSVFile(List<string> fComparisonExcelFiles, string fComparisonUploadDetailCSVFilePath = "../ComparisonUploadDetailTemplates/A_0050um.csv")
+    public List<List<string>> createComparisonUploadDetailCSVFile(List<string> fComparisonExcelFiles, string fComparisonUploadDetailCSVFilePath = "../ComparisonUploadDetailTemplates/A_0050um.csv")
     {
         int entryNum = 15; //number of template entries in the CompareDetail table in the database
         var templateDetails = _DBContext.ComparisonDetails.Take(entryNum).ToList<ComparisonDetail>();
@@ -237,6 +237,7 @@ public class ComparisonFolder: IProcessBatchFoldersService
         {
             Console.WriteLine( $"createComparisonUploadDetailCSVFile: {ex.Message}");
         }
+        return uploadDetails;
 
     }
     public void getAllDeviceFolders()

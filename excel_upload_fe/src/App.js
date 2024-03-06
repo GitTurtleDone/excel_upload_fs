@@ -3,6 +3,7 @@ import axios, { AxiosResponse } from "axios";
 //import OpenFolder from "./components/UploadZipFile";
 import UploadZipFile from "./components/UploadZipFile";
 import FolderTrees from "./components/FolderTrees";
+import SpreadSheet from "./components/Folders/SpreadSheet";
 
 function App() {
   const [folderTrees, setFolderTrees] = useState([]);
@@ -32,6 +33,7 @@ function App() {
       ))}
 
       <FolderTrees folderTrees={folderTrees} />
+      <SpreadSheet />
     </div>
   );
 }
