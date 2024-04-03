@@ -23,6 +23,8 @@ public class AccessExcelUploadDBController : ControllerBase
     {
         var allFiles = this._DBContext.DiodeDataFiles.ToList();
         //Console.Write(jsonFolderTree);
+         
+        // return Ok(allFiles);
         return Ok(allFiles);
     }
 
