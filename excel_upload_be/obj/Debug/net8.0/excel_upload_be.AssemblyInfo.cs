@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("excel_upload_be")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+af01af52cd4e3c2d2d61122f75ea190812934214")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e58789c26cfd6448b8e0bab584cfc39d717699db")]
 [assembly: System.Reflection.AssemblyProductAttribute("excel_upload_be")]
 [assembly: System.Reflection.AssemblyTitleAttribute("excel_upload_be")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
