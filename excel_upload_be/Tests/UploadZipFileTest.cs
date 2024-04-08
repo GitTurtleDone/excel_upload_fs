@@ -103,18 +103,9 @@ namespace excel_upload_be.Tests
     {
         private Mock<ExcelUploadContext> _testDb;
         private AccessExcelUploadDBController _testController;
-        [SetUp]
-        public void Setup()
+        private List<DiodeDataFile> getDiodeDataFiles()
         {
-            _testDb = new Mock<ExcelUploadContext>();
-            var testDbSet = new Mock<DbSet<DiodeDataFile>>();
-            // _testDb.Setup<DbSet<DiodeDataFile>>(db => db.DiodeDataFiles).Returns(testDbSet.Object);
-            _testController = new AccessExcelUploadDBController (_testDb.Object);
-        }
-        [Test]
-        public void GetAllFilesTest()
-        {
-            var expectedFiles = new List<DiodeDataFile> 
+            var diodeDataFiles = new List<DiodeDataFile> 
             {
                 new DiodeDataFile
                 {
@@ -133,7 +124,53 @@ namespace excel_upload_be.Tests
                 }
 
             };
-            _testDb.Setup(db =>db.DiodeDataFiles).ReturnsDbSet(expectedFiles);
+            return diodeDataFiles;
         }
+        [SetUp]
+        public void Setup()
+        {
+            _testDb = new Mock<ExcelUploadContext>();
+            
+            _testController = new AccessExcelUploadDBController (_testDb.Object);
+
+        }
+        [Test]
+        public void GetAllFilesTest()
+        {
+            
+            var expectedFiles = getDiodeDataFiles();
+            _testDb.Setup(db =>db.DiodeDataFiles).ReturnsDbSet(expectedFiles);
+            var result = _testController.GetAllFiles() as OkObjectResult;
+            var returnedFiles = result.Value as List<DiodeDataFile>;
+            
+            Assert.That(result, Is.Not.Null);
+            Assert.AreEqual(200, result.StatusCode);
+            Assert.IsNotNull(returnedFiles);
+            Assert.AreEqual(expectedFiles.Count, returnedFiles.Count);
+            // Console.WriteLine(returnedFiles[0].Batch);
+        }
+        
+        [Test]
+        public void GetFileByIDTest()
+        {
+            var expectedFiles = getDiodeDataFiles();
+            int requestedFileID = 1; 
+            // _testDb.Setup(db =>db.DiodeDataFiles).ReturnsDbSet(expectedFiles);
+            _testDb.Setup(db => db.DiodeDataFiles).ReturnsDbSet(expectedFiles);
+            //for i in range(expectedFiles.Count):
+            var result = _testController.GetFileByID(1) as OkObjectResult;
+            Assert.That(result, Is.Not.Null);
+            Assert.IsType<DiodeDataFile>(result.Value);
+            var returnedFile = result.Value as DiodeDataFile;
+            
+            Assert.AreEqual(returnedFile.FileId, 1);
+                
+            // var result = _testController.GetFileByID(1) as OkObjectResult;
+            // var returnedFile = result.Value as DiodeDataFile;
+            // Assert.IsNotNull(result);
+            // Assert.AreEqual(200, restult.StatusCode);
+            // Assert.AreEqual(returnedFile.Batch, requestedFile.Batch);
+        }
+        
     }
 }

@@ -115,3 +115,8 @@ inside the
 <ItemGroup>
 </ItemGroup>
 
+
+To upgrade ms entity framework core to compatible with .NET 8.0
+
+dotnet add package Microsoft.EntityFrameworkCore.SqlServer
+dotnet add package Microsoft.EntityFrameworkCore.Design
