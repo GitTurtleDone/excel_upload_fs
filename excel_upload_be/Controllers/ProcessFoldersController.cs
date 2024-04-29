@@ -53,7 +53,7 @@ public class ProcessFoldersController : ControllerBase
             if (comparisonExcelFiles != null && comparisonExcelFiles.Count > 0) {
                 comparisonExcelFiles = comparisonExcelFiles.Select(excelFile =>excelFile  = publicFolderPath + excelFile).ToList(); //publicFolderPath +
                 List<List<string>> comparisonUploadDetails = _processBatchFoldersService.createComparisonUploadDetailCSVFile(comparisonExcelFiles);
-                //_processBatchFoldersService.ProcessComparisonFolder();
+                _processBatchFoldersService.ProcessComparisonFolder();
                 return Ok(comparisonUploadDetails);
             } else {
                 Console.WriteLine("No excel files were selected");

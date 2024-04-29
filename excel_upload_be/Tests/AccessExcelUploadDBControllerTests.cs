@@ -12,101 +12,21 @@ using System.Linq;
 using System.Threading.Tasks.Dataflow;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
-// using MockQueryable.Moq;
 using Moq.EntityFrameworkCore;
 using Microsoft.VisualBasic;
 using Microsoft.AspNetCore.Http.HttpResults;
 
 
 
-// namespace Tests;
-
-
-// public class AccessExcelUploadDBControllerTests
-// {
-
-
-//     [Test]
-//     public void GetAllFilesTest()
-//     {
-//         using (var mock = AutoMock.GetLoose())
-//         {
-//             var testDB = new Mock<ExcelUploadContext>();
-//             List<DiodeDataFile> expectedFiles = GetSampleFiles();
-//             var dbSetMock = new Mock<DbSet<List<DiodeDataFile>>>(); // Mock DbSet<DiodeDataFiles>
-//             dbSetMock.As<IQueryable<List<DiodeDataFile>>>().Setup(m => m.Provider).Returns(expectedFiles.AsQueryable().Provider);
-//             dbSetMock.As<IQueryable<List<DiodeDataFile>>>().Setup(m => m.Expression).Returns(expectedFiles.AsQueryable().Expression);
-//             dbSetMock.As<IQueryable<List<DiodeDataFile>>>().Setup(m => m.ElementType).Returns(expectedFiles.AsQueryable().ElementType);
-//             dbSetMock.As<IQueryable<List<DiodeDataFile>>>().Setup(m => m.GetEnumerator()).Returns(() => expectedFiles.AsQueryable().GetEnumerator());
-//             // var queryableFiles = expectedFiles.AsQueryable();
-//             testDB.Setup(d => d.DiodeDataFiles.ToList()).Returns(expectedFiles);
-//             // var controller = new AccessExcelUploadDBController(testDB.Object);
-//             // var result = controller.GetAllFiles();
-//             // Assert.That(result, Is.Not.Null);
-//         }
-
-//     }
-
-//     [Test]
-//     public void CreateExistingFileTest()
-//     {
-//         var testDB = new Mock<ExcelUploadContext>();
-//         var existingFile = new DiodeDataFile 
-//         {
-//             FileId = 1,
-//             Batch = "240402"
-//         };
-//         var testDbSet = new Mock<DbSet<DiodeDataFile>>();
-//         testDbSet.Setup(d => d.Find(existingFile.FileId)).Returns(existingFile);
-//         // testDB.Setup(d => d.DiodeDataFiles.FirstOrDefault(o => o.FileId == 1)).Returns(existingFile);
-//         testDB.Setup(d => d.DiodeDataFiles).Returns(testDbSet.Object);
-//         // testDB.Setup(d => d.DiodeDataFiles.FirstOrDefault(It.IsAny<Expression<Func<DiodeDataFile, bool>>>()))
-//         //             .Returns((Expression<Func<DiodeDataFile, bool>> predicate) => files.FirstOrDefault(predicate.Compile()));
-
-//         var controller = new AccessExcelUploadDBController(testDB.Object);
-//         var newFile = new DiodeDataFile 
-//         {
-//             FileId = 1,
-//             Batch = "Tomorrow"
-//         };
-//         // var result = controller.Create(newFile);
-//         // Assert.IsInstanceOfType
-//     }
-
-//     private List<DiodeDataFile> GetSampleFiles()
-//     {
-//         List<DiodeDataFile> output = new List<DiodeDataFile>
-//         {
-//             new DiodeDataFile
-//             {
-//                 FileId = 1,
-//                 Batch = "230202"
-//             },
-//             new DiodeDataFile
-//             {
-//                 FileId = 2,
-//                 Batch = "230509"
-//             },
-//             new DiodeDataFile
-//             {
-//                 FileId = 3,
-//                 Batch = "231209"
-//             }
-
-//         };
-//         return output;
-//     }
-// }
-
 namespace excel_upload_be.Tests
 {
     [TestFixture]
     public class AccessExcelUploadDBControllerTests
-    {
+    {   
         private Mock<ExcelUploadContext> _testDb;
         private AccessExcelUploadDBController _testController;
 
-        // Get a sample list of DiodeDataFile for testing
+        // Get a sample list of DiodeDataFiles for testing
         private List<DiodeDataFile> getDiodeDataFiles()
         {
             var diodeDataFiles = new List<DiodeDataFile> 
@@ -133,8 +53,9 @@ namespace excel_upload_be.Tests
         [SetUp]
         public void Setup()
         {
+            //Create a mocked database
             _testDb = new Mock<ExcelUploadContext>();
-            
+            //Create a mocked controller ating upon the mocked database
             _testController = new AccessExcelUploadDBController (_testDb.Object);
 
         }
@@ -156,6 +77,8 @@ namespace excel_upload_be.Tests
         public void GetFileByIDTest()
         {
             var expectedFiles = getDiodeDataFiles();
+            int testFileId = 1;
+            //_testDb.Setup(db => db.DiodeDataFiles.FirstOrDefault(f=>f.FileId==testFileId)).Returns(expectedFiles[testFileId]);
             _testDb.Setup(db => db.DiodeDataFiles).ReturnsDbSet(expectedFiles);
             // Assert the FileID of the returned file are correct for all DiodeDataFiles
             // in expected Files
@@ -175,6 +98,7 @@ namespace excel_upload_be.Tests
         [Test]
         public void CreateTest()
         {
+            int saveChangesCallCount = 0;
             var newFile = new DiodeDataFile 
             {
                 FileId = 4,
@@ -186,7 +110,10 @@ namespace excel_upload_be.Tests
                 Batch = "231209"
             };
             var expectedFiles = getDiodeDataFiles();
+            
             _testDb.Setup(d => d.DiodeDataFiles).ReturnsDbSet(expectedFiles);
+            _testDb.Setup(db => db.SaveChanges())
+                    .Callback(() => saveChangesCallCount++);
             // test the case, when the file already exists
             var resultOk = _testController.Create(oldFile) as OkObjectResult;
             Assert.That(resultOk, Is.Not.Null);
@@ -197,11 +124,40 @@ namespace excel_upload_be.Tests
             resultOk = _testController.Create(newFile) as OkObjectResult ;
             Assert.That(resultOk, Is.Not.Null);
             Assert.That(resultOk.Value, Is.EqualTo(true));
-            allFilesResult = _testController.GetAllFiles() as OkObjectResult;
-            Assert.That(allFilesResult.Value, Has.Count.EqualTo(expectedFiles.Count + 1));
-            
-
+            _testDb.Verify(db => db.DiodeDataFiles.Add(newFile), Times.Once); 
+            _testDb.Verify(db => db.SaveChanges(), Times.Exactly(2));
+            Assert.That(saveChangesCallCount, Is.EqualTo(2)); 
         }
-        
+        [Test]
+        public void RemoveFileByIDTest()
+        {
+            var expectedFiles = getDiodeDataFiles();
+            List<int> lstFileIds = [];
+            foreach(var file in expectedFiles)
+            {
+                lstFileIds.Add(file.FileId);
+            }
+            int removedFileID, saveChangesCount = 0;
+            _testDb.Setup(db => db.DiodeDataFiles).ReturnsDbSet(expectedFiles);
+            _testDb.Setup(db => db.DiodeDataFiles).ReturnsDbSet(expectedFiles);
+            _testDb.Setup(db => db.Remove(It.IsAny<DiodeDataFile>()))
+                    .Callback<DiodeDataFile>((DiodeDataFile diodeDataFile) => removedFileID = diodeDataFile.FileId);
+            _testDb.Setup(db => db.SaveChanges())
+                   .Callback(() => saveChangesCount++);       
+            var resultOk = _testController.RemoveFileByID(0) as OkObjectResult;
+            for (int i = 1; i < 6; i++)
+            {
+                resultOk = _testController.RemoveFileByID(i) as OkObjectResult;
+                Assert.That(resultOk, Is.Not.Null);
+                if (lstFileIds.Contains(i))
+                {
+                    Assert.That(resultOk.Value, Is.EqualTo(true));
+                } else
+                {
+                    Assert.That(resultOk.Value, Is.EqualTo(false));
+                }
+                _testDb.Verify(db=>db.SaveChanges(), Times.Exactly(saveChangesCount));
+            }
+        }
     }
 }
