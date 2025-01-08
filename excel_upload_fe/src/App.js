@@ -33,7 +33,7 @@ function App() {
       ))}
 
       <FolderTrees folderTrees={folderTrees} />
-      <SpreadSheet />
+      {/* <SpreadSheet /> */}
     </div>
   );
 }

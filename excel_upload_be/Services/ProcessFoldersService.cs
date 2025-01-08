@@ -881,6 +881,18 @@ public class SBDFolder : IProcessSBDFoldersService
         {
             measType = "Pico Rev 500";
         }
+        else if (csvFileName.Contains("Stop2.5"))
+        {
+            measType = "KL For";
+        }
+        else if (csvFileName.Contains("StopM2.5"))
+        {
+            measType = "KL Rev";
+        }
+        else if (csvFileName.Contains("Stop1500"))
+        {
+            measType = "M2657A Rev 1500";
+        }
         else measType = "No Type";
 
         //Console.WriteLine(measType);
@@ -1106,18 +1118,22 @@ public class SBDFolder : IProcessSBDFoldersService
             // Read the CSV file
             using (StreamReader reader = new StreamReader(fCsvFilePath))
             {
+                
                 try
                 {
                     using (ExcelPackage package = new ExcelPackage(new FileInfo(fExcelFilePath)))
                     {
                         package.Workbook.CalcMode = ExcelCalcMode.Manual;
+                        
                         ExcelWorksheet worksheet = package.Workbook.Worksheets[fSheetName];
+                        
                         if (worksheet == null)
                         {
                             Console.WriteLine("Worksheet not found!");
                             return;
                         }
                         int row = fStartRow;
+                        
                         while (!reader.EndOfStream)
                         {
                             string line = reader.ReadLine();
@@ -1139,15 +1155,14 @@ public class SBDFolder : IProcessSBDFoldersService
 
                             row++;
                         }
-
                         // Save the Excel file
                         //FileInfo excelFile = new FileInfo(fExcelFilePath);
                         LogMessage = $"Data file: {Path.GetFileName(fCsvFilePath)} has been successfully imported to the sheet: {fSheetName} in {Path.GetFileName(fExcelFilePath)}";
                         package.Workbook.CalcMode = ExcelCalcMode.Automatic;
                         package.Save();
-                        Thread.Sleep(5000);
+                        // Thread.Sleep(5000);
                         worksheet.Dispose();
-                        package.Dispose();
+                        package.Dispose();  
                     }
                 }
                 catch (FileNotFoundException)
@@ -1222,6 +1237,18 @@ public class MeasFile
         else if (CsvFileName.Contains("StopM500"))
         {
             MeasType = "Pico Rev 500";
+        }
+        else if (CsvFileName.Contains("Stop2.5"))
+        {
+            MeasType = "KL For";
+        }
+        else if (CsvFileName.Contains("StopM2.5"))
+        {
+            MeasType = "KL Rev";
+        }
+        else if (CsvFileName.Contains("Stop1500"))
+        {
+            MeasType = "M2657A Rev 1500";
         }
         else MeasType = "No Type";
 
