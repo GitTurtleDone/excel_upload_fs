@@ -20,10 +20,10 @@ I_V Diode For AfterRev100 w PC,ForNRevARev100,7,1
 I_V Diode Rev AfterRev100,ForNRevARev100,7,4
 I_V Diode Rev AfterRev100,ForNRevARev100WO,7,4
 C-V Sweep Mod AfterIV,CVaRev100,10,1
-KL For,ForNRevKL,10,1
-KL Rev,ForNRevKL,10,5
-KL For After Rev500,ForNRevARev500KL,10,1
-KL Rev After Rev500,ForNRevARev500KL,10,5
+KL For,ForNRevKL,7,1
+KL Rev,ForNRevKL,7,5
+KL For After Rev500,ForNRevARev500KL,7,1
+KL Rev After Rev500,ForNRevARev500KL,7,5
 Pico Rev 500,Rev500,3,1
 I_V Diode Full AfterRev500 wo PC,FullARev500WO,7,1
 I_V Diode For Full After Rev500 wo PowComp,FullARev500WO,7,1
@@ -33,3 +33,4 @@ I_V Diode For After Rev500 wo PowComp,ForNRevARev500WO,7,1
 I_V Diode Rev After Rev500 wo PowComp,ForNRevARev500,7,4
 I_V Diode Rev After Rev500 wo PowComp,ForNRevARev500WO,7,4
 C-V Sweep Mod After Rev500,CVaRev500,10,1
+M2657A Rev 1500,Rev1500,3,1

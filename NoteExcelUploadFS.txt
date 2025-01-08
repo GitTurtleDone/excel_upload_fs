@@ -102,3 +102,21 @@ response message: Done. To undo this action, use 'ef migrations remove'
 another try, scaffolding again using: dotnet ef dbcontext scaffold "Server=ELECPG082;Database=ExcelUpload;Trusted_Connection=True;Integrated Security=True;MultipleActiveResultSets=true;TrustServerCertificate=true;encrypt=false" Microsoft.EntityFrameworkCore.SqlServer --output-dir Models -f
 it worked and -f meant force scaffolding in existing Models folder.
 
+Problems:
+Using Moq along with NUnit, trying to install NUnit with and created a NUnit project inside the main excel_upload_be project, but there always be duplicate attributes mistake, and new version of NUnit doesn't seem to have Assert.IsNotNull methods.
+Solutions:
+In the excel_upload_be.csproj paste:
+<PackageReference Include="NUnit" Version="3.13.3" />
+<PackageReference Include="NUnit3TestAdapter" Version="4.4.2" />
+<PackageReference Include="NUnit.Analyzers" Version="3.6.1" />
+<PackageReference Include="coverlet.collector" Version="3.2.0" />  
+
+inside the 
+<ItemGroup>
+</ItemGroup>
+
+
+To upgrade ms entity framework core to compatible with .NET 8.0
+
+dotnet add package Microsoft.EntityFrameworkCore.SqlServer
+dotnet add package Microsoft.EntityFrameworkCore.Design

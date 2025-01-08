@@ -15,14 +15,16 @@ public class AccessExcelUploadDBController : ControllerBase
 
     public AccessExcelUploadDBController(ExcelUploadContext dbContext)
     {
-        this._DBContext = dbContext;
+        _DBContext = dbContext;
     }
 
     [HttpGet("GetAllFiles")]
     public IActionResult GetAllFiles()
     {
-        var allFiles = this._DBContext.DiodeDataFiles.ToList();
+        var allFiles = _DBContext.DiodeDataFiles.ToList();
         //Console.Write(jsonFolderTree);
+         
+        // return Ok(allFiles);
         return Ok(allFiles);
     }
 
@@ -32,17 +34,17 @@ public class AccessExcelUploadDBController : ControllerBase
     [HttpGet("GetFileByID/{ID}")]
     public IActionResult GetFileByID(int ID)
     {
-        var file = this._DBContext.DiodeDataFiles.FirstOrDefault(o=>o.FileId==ID);
+        var file = _DBContext.DiodeDataFiles.FirstOrDefault(o=>o.FileId==ID);
         return Ok(file);
     }
 
     [HttpDelete("RemoveFileByID/{ID}")]
     public IActionResult RemoveFileByID(int ID)
     {
-        var file = this._DBContext.DiodeDataFiles.FirstOrDefault(o=>o.FileId==ID);
+        var file = _DBContext.DiodeDataFiles.FirstOrDefault(o=>o.FileId==ID);
         if (file != null) {
-            this._DBContext.Remove(file);
-            this._DBContext.SaveChanges();
+            _DBContext.Remove(file);
+            _DBContext.SaveChanges();
             return Ok(true);
         }
         else return Ok(false);
@@ -51,7 +53,7 @@ public class AccessExcelUploadDBController : ControllerBase
     [HttpPost("Create")]
     public IActionResult Create([FromBody] DiodeDataFile _file)
     {
-        var file = this._DBContext.DiodeDataFiles.FirstOrDefault(o=>o.FileId==_file.FileId);
+        var file = _DBContext.DiodeDataFiles.FirstOrDefault(o=>o.FileId==_file.FileId);
         if (file != null) {
             //file.FileId = _file.FileId;
             file.Batch = _file.Batch;
@@ -63,8 +65,8 @@ public class AccessExcelUploadDBController : ControllerBase
             return Ok(true);
         }
         else {
-            this._DBContext.DiodeDataFiles.Add(_file);
-            this._DBContext.SaveChanges();
+            _DBContext.DiodeDataFiles.Add(_file);
+            _DBContext.SaveChanges();
         }
         return Ok(true);
     }
