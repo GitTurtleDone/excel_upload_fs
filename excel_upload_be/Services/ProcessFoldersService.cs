@@ -122,7 +122,7 @@ public class ComparisonFolder: IProcessBatchFoldersService
     }
     public List<List<string>> createComparisonUploadDetailCSVFile(List<string> fComparisonExcelFiles, string fComparisonUploadDetailCSVFilePath = "../ComparisonUploadDetailTemplates/A_0050um.csv")
     {
-        int entryNum = 15; //number of template entries in the CompareDetail table in the database
+        int entryNum = 23; //number of template entries in the CompareDetail table in the database
         var templateDetails = _DBContext.ComparisonDetails.Take(entryNum).ToList<ComparisonDetail>();
         
         List<List<string>> uploadDetails = new List<List<string>>();
@@ -135,9 +135,13 @@ public class ComparisonFolder: IProcessBatchFoldersService
             {'C', "C_0200um"},
             {'D', "D_0300um"},
             {'E', "E_0500um"},
-            {'F', "F_1000um"},
+            {'F', "F_0800um"},
             {'R', "R_0250um"},
-            {'S', "S_0250um"}
+            {'S', "S_0250um"},
+            {'G', "G_1000um"},
+            {'H', "H_2000um"},
+            {'I', "I_3000um"},
+            {'J', "J_3000um"}
         };
         string comparisonUploadFolderPath = "../../PublicFolder/";
         int comparisonUploadFolderPathCharacterLimit = 50; // uper limit of the number of characters of the ComparisonUploadFolderPath
